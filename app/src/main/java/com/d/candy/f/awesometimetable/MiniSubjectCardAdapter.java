@@ -145,7 +145,8 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if(viewType == VIEW_TYPE_HEADER) {
             mCurrentDayOfWeekPosition = adpPos;
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.mText.setText("A Day Of Week");
+            headerHolder.mText.setText(
+                    mTimeTable.getDayOfWeekAsString(mTimeTable.getDayOfWeekContainsPosition(adpPos)));
         }
     }
 }

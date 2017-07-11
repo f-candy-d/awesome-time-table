@@ -1,5 +1,6 @@
 package com.d.candy.f.awesometimetable;
 
+import android.content.Context;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 public class TimeTable {
 
     private SparseArray<ArrayList<Subject>> mSubjectTable;
+    private Context mContext;
 
     /**
      * The number of all of the subjects shown in the TimeTable
@@ -39,7 +41,9 @@ public class TimeTable {
         return mNumShownDayOfWeek;
     }
 
-    public TimeTable() {
+    public TimeTable(Context context) {
+        mContext = context;
+
         // TODO: The following codes are test code, Remove later
         ArrayList<Subject> monday = new ArrayList<>(5);
         ArrayList<Subject> tuesday = new ArrayList<>(3);
@@ -90,11 +94,24 @@ public class TimeTable {
         return dayOfWeek*mNumSubjectInOneDay+dayOfWeek;
     }
 
-    public int getPreviousDayOfWeekPosition(final int DayOfWeekPos) {
-        return DayOfWeekPos-(mNumSubjectInOneDay+1);
+    public int getPreviousDayOfWeekPosition(final int dayOfWeekPos) {
+        return dayOfWeekPos-(mNumSubjectInOneDay+1);
     }
 
     public int getDayOfWeekContainsPosition(final int position) {
         return position/(mNumSubjectInOneDay+1);
+    }
+
+    public String getDayOfWeekAsString(final int dayOfWeek) {
+        switch (dayOfWeek) {
+            case DayOfWeek.MONDAY: return mContext.getString(R.string.day_of_week_monday);
+            case DayOfWeek.TUESDAY: return mContext.getString(R.string.day_of_week_tuesday);
+            case DayOfWeek.WEDNESDAY: return mContext.getString(R.string.day_of_week_wednesday);
+            case DayOfWeek.THURSDAY: return mContext.getString(R.string.day_of_week_thursday);
+            case DayOfWeek.FRIDAY: return mContext.getString(R.string.day_of_week_friday);
+            case DayOfWeek.SATURDAY: return mContext.getString(R.string.day_of_week_saturday);
+            case DayOfWeek.SUNDAY: return mContext.getString(R.string.day_of_week_sunday);
+            default: throw new IllegalArgumentException("in getDayOfWeekAsString: unknown type of 'DayOfWeek'");
+        }
     }
 }

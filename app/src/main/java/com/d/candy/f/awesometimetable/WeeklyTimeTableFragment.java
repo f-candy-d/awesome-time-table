@@ -87,6 +87,6 @@ public class WeeklyTimeTableFragment extends Fragment {
     }
 
     private void initTimeTable() {
-        mTimeTable = new TimeTable();
+        mTimeTable = new TimeTable(getActivity());
     }
 }
