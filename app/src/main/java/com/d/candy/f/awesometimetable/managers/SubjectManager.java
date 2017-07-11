@@ -1,6 +1,7 @@
 package com.d.candy.f.awesometimetable.managers;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.d.candy.f.awesometimetable.structures.Subject;
@@ -68,6 +69,7 @@ public class SubjectManager {
         if (!mIsDataStored) {
             mSubjectTable = SubjectJSONParser.parse(
                     SubjectJSONParser.loadJSONFromAsset(context, JSON_DATA_LOCATION));
+            Log.d(TAG, "STORED SUBJECT DATA");
 
             if (mSubjectTable != null) {
                 mIsDataStored = true;
@@ -90,7 +92,7 @@ public class SubjectManager {
     }
 
     public Subject findSubjectByID(int id) {
-        if(mIsDataStored) {
+        if(!mIsDataStored) {
             throw new NullPointerException(TAG+":findSubjectByID():Subject data is not stored!");
         }
 

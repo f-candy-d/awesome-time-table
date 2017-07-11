@@ -5,6 +5,7 @@ import android.util.SparseArray;
 
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.R;
+import com.d.candy.f.awesometimetable.managers.SubjectManager;
 
 import java.util.ArrayList;
 
@@ -54,11 +55,12 @@ public class TimeTable {
         ArrayList<Subject> thursday = new ArrayList<>(4);
         ArrayList<Subject> friday = new ArrayList<>(1);
 
-        Subject math = new Subject("Math", "A-708", "Taylor Swift");
-        Subject japanese = new Subject("Japanese", "B-208", "DJ Onishi");
-        Subject english = new Subject("English", "E-009", "Mr.English");
-        Subject physics = new Subject("Physics", "F9-3", "Newton");
-        Subject chemistry = new Subject("Chemistry", "G-43", "Swift");
+        SubjectManager sbjManager = SubjectManager.getInstance();
+        Subject math = sbjManager.findSubjectByID(0);
+        Subject japanese = sbjManager.findSubjectByID(1);
+        Subject english = sbjManager.findSubjectByID(2);
+        Subject physics = sbjManager.findSubjectByID(3);
+        Subject chemistry = sbjManager.findSubjectByID(4);
 
         monday.add(math); monday.add(japanese); monday.add(english); monday.add(physics); monday.add(chemistry);
         tuesday.add(japanese); tuesday.add(physics); tuesday.add(chemistry);

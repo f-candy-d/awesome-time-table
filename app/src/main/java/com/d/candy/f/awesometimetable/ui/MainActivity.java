@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.WeeklyTimeTableFragment;
+import com.d.candy.f.awesometimetable.managers.SubjectManager;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 public class MainActivity extends AppCompatActivity
@@ -48,13 +49,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Start with WeeklyTimeTableFragment
-
         // The following code make a bug that beyond me on orientation change...
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
         navigationView.setCheckedItem(R.id.nav_table1);
+
+        setupDataManagers();
     }
 
     @Override
@@ -116,7 +118,16 @@ public class MainActivity extends AppCompatActivity
     private void switchFragments(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
+        // To turn back navigation on, enable this code
 //        transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void setupDataManagers() {
+        // SubjectManager
+        SubjectManager sbjManager = SubjectManager.getInstance();
+        if(!sbjManager.storeData(this)) {
+            throw new NullPointerException(TAG+":setupDataManagers():Setup for SubjectManager failed");
+        }
     }
 }

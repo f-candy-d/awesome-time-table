@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class LogHelper {
 
-    private static final String LOG_PREFIX = "awesometimetable_";
+    private static final String LOG_PREFIX = "mylog_";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
     private static final int MAX_LOG_TAG_LENGTH = 23;
 
