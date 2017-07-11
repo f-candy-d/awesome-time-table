@@ -9,13 +9,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.WeeklyTimeTableFragment;
 import com.d.candy.f.awesometimetable.managers.SubjectManager;
+import com.d.candy.f.awesometimetable.structures.Location;
+import com.d.candy.f.awesometimetable.structures.Teacher;
+import com.d.candy.f.awesometimetable.utils.LocationJSONParser;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
+import com.d.candy.f.awesometimetable.utils.TeacherJSONParser;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -128,6 +134,31 @@ public class MainActivity extends AppCompatActivity
         SubjectManager sbjManager = SubjectManager.getInstance();
         if(!sbjManager.storeData(this)) {
             throw new NullPointerException(TAG+":setupDataManagers():Setup for SubjectManager failed");
+        }
+
+        SparseArray<Location> ls = LocationJSONParser.parse(
+                LocationJSONParser.loadJSONFromAsset(this, "test_locations.json"));
+        SparseArray<Teacher> ts = TeacherJSONParser.parse(
+                TeacherJSONParser.loadJSONFromAsset(this, "test_teachers.json"));
+
+        for(int i = 0; i < 5; ++i) {
+            Location location = ls.get(i, null);
+            Teacher teacher = ts.get(i, null);
+            if(location != null) {
+                Log.d(TAG, "LOCATION:: name-> " + location.getName() + " | id-> " + location.getID());
+            } else {
+                Log.d(TAG, "LOCATION:: null");
+            }
+            if (teacher != null) {
+                Log.d(TAG, "TEACHER:: name-> " + teacher.getName() +
+                " | id-> " + teacher.getID() +
+                " | room-> " + teacher.getRoom() +
+                " | mail-> " + teacher.getMail() +
+                " | phone-> " + teacher.getPhone() +
+                " | subjectID-> " + teacher.getSubjectID());
+            } else {
+                Log.d(TAG, "TEACHER:: null");
+            }
         }
     }
 }

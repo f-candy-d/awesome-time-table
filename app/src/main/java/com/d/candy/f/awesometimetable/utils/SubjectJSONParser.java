@@ -1,6 +1,5 @@
 package com.d.candy.f.awesometimetable.utils;
 
-import android.content.Context;
 import android.util.SparseArray;
 
 import com.d.candy.f.awesometimetable.structures.Subject;
@@ -9,14 +8,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * Created by daichi on 7/12/17.
  */
 
-public class SubjectJSONParser {
+public class SubjectJSONParser extends BaseJSONParser {
 
     private static final String TAG = LogHelper.makeLogTag(SubjectJSONParser.class);
 
@@ -25,28 +21,9 @@ public class SubjectJSONParser {
      */
     private static final String KEY_SUBJECTS = "subjects";
     private static final String KEY_NAME = "name";
-    private static final String KEY_ID = "id";
-    private static final String KEY_LOCATION_ID = "location_id";
-    private static final String KEY_TEACHER_ID = "teacher_id";
-
-    public static String loadJSONFromAsset(Context context, String file) {
-
-        String json;
-        try {
-            InputStream is = context.getAssets().open(file);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-
-        return json;
-    }
+    private static final String KEY_ID = "ID";
+    private static final String KEY_LOCATION_ID = "locationID";
+    private static final String KEY_TEACHER_ID = "teacherID";
 
     public static SparseArray<Subject> parse(String jsonStr) {
 
