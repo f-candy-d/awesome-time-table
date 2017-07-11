@@ -71,19 +71,30 @@ public class TimeTable {
         mSubjectTable.put(getDayOfWeekPosition(DayOfWeek.FRIDAY), friday);
     }
 
-    public boolean isPositionDayOfWeek(int position) {
+    public boolean isPositionDayOfWeek(final int position) {
         return (mSubjectTable.get(position, null) != null);
     }
 
-    public ArrayList<Subject> getSubjectsForDayOfWeekPosition(int dayOfWeekPos) {
+    public boolean isPositionOccupiedByAnySubject(final int position) {
+        int dayOfWeek = getDayOfWeekContainsPosition(position);
+        int dayOfWeekPos = getDayOfWeekPosition(dayOfWeek);
+        int offset = position-dayOfWeekPos-1;
+        return (0 <= offset && offset < mSubjectTable.get(dayOfWeekPos).size());
+    }
+
+    public ArrayList<Subject> getSubjectsForDayOfWeekPosition(final int dayOfWeekPos) {
         return mSubjectTable.get(dayOfWeekPos, null);
     }
 
-    public int getDayOfWeekPosition(int dayOfWeek) {
+    public int getDayOfWeekPosition(final int dayOfWeek) {
         return dayOfWeek*mNumSubjectInOneDay+dayOfWeek;
     }
 
-    public int getPreviousDayOfWeekPosition(int DayOfWeekPos) {
+    public int getPreviousDayOfWeekPosition(final int DayOfWeekPos) {
         return DayOfWeekPos-(mNumSubjectInOneDay+1);
+    }
+
+    public int getDayOfWeekContainsPosition(final int position) {
+        return position/(mNumSubjectInOneDay+1);
     }
 }
