@@ -1,7 +1,10 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.structures;
 
 import android.content.Context;
 import android.util.SparseArray;
+
+import com.d.candy.f.awesometimetable.DayOfWeek;
+import com.d.candy.f.awesometimetable.R;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,9 @@
 package com.d.candy.f.awesometimetable.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.SparseArray;
 
-import com.d.candy.f.awesometimetable.Subject;
+import com.d.candy.f.awesometimetable.structures.Subject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +11,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * Created by daichi on 7/12/17.
