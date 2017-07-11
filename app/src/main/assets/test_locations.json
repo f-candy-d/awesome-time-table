@@ -1,0 +1,24 @@
+{
+	"locations" : [
+		{
+			"name" : "Lec.406",
+			"ID" : 0
+		},
+		{
+			"name" : "Lec.409",
+			"ID" : 1
+		},
+		{
+			"name" : "Lec.102",
+			"ID" : 2
+		},
+		{
+			"name" : "Lec.202",
+			"ID" : 3
+		},
+		{
+			"name" : "Lang.Cent.405-A",
+			"ID" : 4
+		}
+	]
+}

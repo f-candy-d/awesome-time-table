@@ -1,0 +1,44 @@
+{
+	"Teachers" : [
+		{
+			"name" : "Bill Gates",
+			"ID" : 0,
+			"room" : "A-670",
+			"mail" : "microsoft@com",
+			"phone" : "090-9224-7844",
+			"subjectID" : 0
+		},
+		{
+			"name" : "Amancio Ortega",
+			"ID" : 1,
+			"room" : "A-098",
+			"mail" : "inditex@org.com",
+			"phone" : "04-3033-3322",
+			"subjectID" : 1
+		},
+		{
+			"name" : "Warren Buffett",
+			"ID" : 2,
+			"room" : "B-897",
+			"mail" : "andromeda@co.jp",
+			"phone" : "1192-296-296",
+			"subjectID" : 2
+		},
+		{
+			"name" : "Carlos Slim",
+			"ID" : 3,
+			"room" : "A-111",
+			"mail" : "group-carlo@org.com",
+			"phone" : "222-333-2322",
+			"subjectID" : 3
+		},
+		{
+			"name" : "Mark Zuckerberg",
+			"ID" : 4,
+			"room" : "C-090",
+			"mail" : "facebook@co.jp",
+			"phone" : "3764-960-3453",
+			"subjectID" : 4
+		}
+	]
+}
