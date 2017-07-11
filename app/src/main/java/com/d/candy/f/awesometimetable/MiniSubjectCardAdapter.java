@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.d.candy.f.awesometimetable.utils.LogHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -53,12 +55,20 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int VIEW_TYPE_HEADER = 1;
     private static final int VIEW_TYPE_SPACER = 2;
 
-    private final TimeTable mTimeTable;
+    /**
+     * Class tag for log
+     */
+    private static final String TAG = LogHelper.makeLogTag(MiniSubjectCardAdapter.class);
 
     /**
      * The position of the position of a current day-of-week cell
      */
     private int mCurrentDayOfWeekPosition;
+
+    /**
+     * TimeTable data
+     */
+    private final TimeTable mTimeTable;
 
     public MiniSubjectCardAdapter(TimeTable timeTable) {
         mTimeTable = timeTable;
@@ -145,8 +155,8 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if(viewType == VIEW_TYPE_HEADER) {
             mCurrentDayOfWeekPosition = adpPos;
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.mText.setText(
-                    mTimeTable.getDayOfWeekAsString(mTimeTable.getDayOfWeekContainsPosition(adpPos)));
+            headerHolder.mText.setText(mTimeTable.getDayOfWeekAsString(
+                    mTimeTable.getDayOfWeekContainsPosition(adpPos)));
         }
     }
 }
