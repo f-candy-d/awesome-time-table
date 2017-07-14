@@ -17,4 +17,9 @@ abstract public class Entity {
      * @return An unique integer which specify an entity type
      */
     abstract public int getEntityType();
+
+    /**
+     * @return The name of a table where the entity belong to
+     */
+    abstract public String getAffiliation();
 }
