@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable.structures;
+package com.d.candy.f.awesometimetable.structure;
 
 /**
  * Created by daichi on 7/12/17.

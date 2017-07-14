@@ -2,8 +2,7 @@ package com.d.candy.f.awesometimetable.utils;
 
 import android.util.SparseArray;
 
-import com.d.candy.f.awesometimetable.structures.Subject;
-import com.d.candy.f.awesometimetable.structures.Teacher;
+import com.d.candy.f.awesometimetable.structure.Teacher;
 
 import org.json.JSONArray;
 import org.json.JSONException;

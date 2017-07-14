@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.ui;
 
 
 import android.os.Bundle;
@@ -9,8 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.candy.f.awesometimetable.structures.TimeTable;
-import com.d.candy.f.awesometimetable.ui.MiniSubjectCardAdapter;
+import com.d.candy.f.awesometimetable.MiniSubjectCardAdapter;
+import com.d.candy.f.awesometimetable.R;
+import com.d.candy.f.awesometimetable.structure.TimeTable;
 
 
 /**

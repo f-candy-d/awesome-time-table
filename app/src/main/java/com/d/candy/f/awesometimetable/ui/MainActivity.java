@@ -15,10 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.WeeklyTimeTableFragment;
-import com.d.candy.f.awesometimetable.managers.SubjectManager;
-import com.d.candy.f.awesometimetable.structures.Location;
-import com.d.candy.f.awesometimetable.structures.Teacher;
+import com.d.candy.f.awesometimetable.manager.SubjectManager;
+import com.d.candy.f.awesometimetable.structure.Location;
+import com.d.candy.f.awesometimetable.structure.Teacher;
 import com.d.candy.f.awesometimetable.utils.LocationJSONParser;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 import com.d.candy.f.awesometimetable.utils.TeacherJSONParser;

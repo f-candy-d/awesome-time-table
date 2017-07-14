@@ -1,10 +1,10 @@
-package com.d.candy.f.awesometimetable.managers;
+package com.d.candy.f.awesometimetable.manager;
 
 import android.content.Context;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.d.candy.f.awesometimetable.structures.Subject;
+import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 import com.d.candy.f.awesometimetable.utils.SubjectJSONParser;
 
