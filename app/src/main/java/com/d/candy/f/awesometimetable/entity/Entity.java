@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable.idea;
+package com.d.candy.f.awesometimetable.entity;
 
 import android.content.ContentValues;
 
@@ -14,9 +14,9 @@ abstract public class Entity {
     abstract public ContentValues toContentValues();
 
     /**
-     * @return An unique integer which specify an entity type
+     * @return An enum value which specify an entity type
      */
-    abstract public int getEntityType();
+    abstract public EntityType getEntityType();
 
     /**
      * @return The name of a table where the entity belong to

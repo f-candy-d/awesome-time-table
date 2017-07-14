@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable.idea;
+package com.d.candy.f.awesometimetable;
 
 /**
  * Created by daichi on 7/14/17.
@@ -13,7 +13,8 @@ public class DBContract {
         // TODO: When define a new table contents, add the name of the table to the returned String array below
         return new String[] {
                 SubjectEntity.TABLE_NAME,
-                TeacherEntity.TABLE_NAME
+                TeacherEntity.TABLE_NAME,
+                EnrollingInfoEntity.TABLE_NAME
         };
     }
 
@@ -33,5 +34,13 @@ public class DBContract {
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_LAB = "lab";
+    }
+
+    public static class EnrollingInfoEntity {
+        public static final String TABLE_NAME = "enrolling_info";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_DAY_OF_WEEK = "day_of_week";
+        public static final String COLUMN_PERIOD = "period";
+        public static final String COLUMN_SUBJECT_ID = "subject_id";
     }
 }

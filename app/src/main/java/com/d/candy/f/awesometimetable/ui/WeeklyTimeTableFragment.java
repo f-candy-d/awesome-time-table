@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.d.candy.f.awesometimetable.DataStructureFactory;
 import com.d.candy.f.awesometimetable.MiniSubjectCardAdapter;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.TimeTable;
@@ -90,6 +91,6 @@ public class WeeklyTimeTableFragment extends Fragment {
     }
 
     private void initTimeTable() {
-        mTimeTable = new TimeTable(getActivity());
+        mTimeTable = DataStructureFactory.makeTimeTable(0, getActivity());
     }
 }

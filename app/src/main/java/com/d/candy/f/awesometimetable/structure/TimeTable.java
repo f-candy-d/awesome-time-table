@@ -4,8 +4,9 @@ import android.content.Context;
 import android.util.SparseArray;
 
 import com.d.candy.f.awesometimetable.DayOfWeek;
+import com.d.candy.f.awesometimetable.DataStructureFactory;
 import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.manager.SubjectManager;
+import com.d.candy.f.awesometimetable.entity.Subject;
 
 import java.util.ArrayList;
 
@@ -55,12 +56,17 @@ public class TimeTable {
         ArrayList<Subject> thursday = new ArrayList<>(4);
         ArrayList<Subject> friday = new ArrayList<>(1);
 
-        SubjectManager sbjManager = SubjectManager.getInstance();
-        Subject math = sbjManager.findSubjectByID(0);
-        Subject japanese = sbjManager.findSubjectByID(1);
-        Subject english = sbjManager.findSubjectByID(2);
-        Subject physics = sbjManager.findSubjectByID(3);
-        Subject chemistry = sbjManager.findSubjectByID(4);
+//        SubjectManager sbjManager = SubjectManager.getInstance();
+//        Subject math = sbjManager.findSubjectByID(0);
+//        Subject japanese = sbjManager.findSubjectByID(1);
+//        Subject english = sbjManager.findSubjectByID(2);
+//        Subject physics = sbjManager.findSubjectByID(3);
+//        Subject chemistry = sbjManager.findSubjectByID(4);
+        Subject math = DataStructureFactory.makeSubject(0);
+        Subject japanese = DataStructureFactory.makeSubject(1);
+        Subject english = DataStructureFactory.makeSubject(2);
+        Subject physics = DataStructureFactory.makeSubject(3);
+        Subject chemistry = DataStructureFactory.makeSubject(4);
 
         monday.add(math); monday.add(japanese); monday.add(english); monday.add(physics); monday.add(chemistry);
         tuesday.add(japanese); tuesday.add(physics); tuesday.add(chemistry);
@@ -85,7 +91,7 @@ public class TimeTable {
     }
 
     public boolean isPositionOccupiedByAnySubject(final int position) {
-        int dayOfWeek = getDayOfWeekContainsPosition(position);
+        DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(position);
         int dayOfWeekPos = getDayOfWeekPosition(dayOfWeek);
         int offset = position-dayOfWeekPos-1;
         return (0 <= offset && offset < mSubjectTable.get(dayOfWeekPos).size());
@@ -95,27 +101,27 @@ public class TimeTable {
         return mSubjectTable.get(dayOfWeekPos, null);
     }
 
-    public int getDayOfWeekPosition(final int dayOfWeek) {
-        return dayOfWeek*mNumSubjectInOneDay+dayOfWeek;
+    public int getDayOfWeekPosition(final DayOfWeek dayOfWeek) {
+        return dayOfWeek.toInt()*mNumSubjectInOneDay+dayOfWeek.toInt();
     }
 
     public int getPreviousDayOfWeekPosition(final int dayOfWeekPos) {
         return dayOfWeekPos-(mNumSubjectInOneDay+1);
     }
 
-    public int getDayOfWeekContainsPosition(final int position) {
-        return position/(mNumSubjectInOneDay+1);
+    public DayOfWeek getDayOfWeekContainsPosition(final int position) {
+        return DayOfWeek.getDayOfWeek(position/(mNumSubjectInOneDay+1));
     }
 
-    public String getDayOfWeekAsString(final int dayOfWeek) {
+    public String getDayOfWeekAsString(final DayOfWeek dayOfWeek) {
         switch (dayOfWeek) {
-            case DayOfWeek.MONDAY: return mContext.getString(R.string.day_of_week_monday);
-            case DayOfWeek.TUESDAY: return mContext.getString(R.string.day_of_week_tuesday);
-            case DayOfWeek.WEDNESDAY: return mContext.getString(R.string.day_of_week_wednesday);
-            case DayOfWeek.THURSDAY: return mContext.getString(R.string.day_of_week_thursday);
-            case DayOfWeek.FRIDAY: return mContext.getString(R.string.day_of_week_friday);
-            case DayOfWeek.SATURDAY: return mContext.getString(R.string.day_of_week_saturday);
-            case DayOfWeek.SUNDAY: return mContext.getString(R.string.day_of_week_sunday);
+            case MONDAY: return mContext.getString(R.string.day_of_week_monday);
+            case TUESDAY: return mContext.getString(R.string.day_of_week_tuesday);
+            case WEDNESDAY: return mContext.getString(R.string.day_of_week_wednesday);
+            case THURSDAY: return mContext.getString(R.string.day_of_week_thursday);
+            case FRIDAY: return mContext.getString(R.string.day_of_week_friday);
+            case SATURDAY: return mContext.getString(R.string.day_of_week_saturday);
+            case SUNDAY: return mContext.getString(R.string.day_of_week_sunday);
             default: throw new IllegalArgumentException("in getDayOfWeekAsString: unknown type of 'DayOfWeek'");
         }
     }

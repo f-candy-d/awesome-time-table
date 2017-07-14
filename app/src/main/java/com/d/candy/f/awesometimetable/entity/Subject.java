@@ -1,10 +1,14 @@
-package com.d.candy.f.awesometimetable.structure;
+package com.d.candy.f.awesometimetable.entity;
+
+import android.content.ContentValues;
+
+import com.d.candy.f.awesometimetable.DBContract;
 
 /**
  * Created by daichi on 7/11/17.
  */
 
-public class Subject {
+public class Subject extends Entity {
 
     private String mName = null;
     private String mLocation = null;
@@ -70,5 +74,20 @@ public class Subject {
         mName = name;
         mLocation = location;
         mTeacher = teacher;
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.SUBJECT;
+    }
+
+    @Override
+    public String getAffiliation() {
+        return DBContract.SubjectEntity.TABLE_NAME;
+    }
+
+    @Override
+    public ContentValues toContentValues() {
+        return null;
     }
 }

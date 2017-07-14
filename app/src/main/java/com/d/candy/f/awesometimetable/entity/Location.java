@@ -1,10 +1,12 @@
-package com.d.candy.f.awesometimetable.structure;
+package com.d.candy.f.awesometimetable.entity;
+
+import android.content.ContentValues;
 
 /**
  * Created by daichi on 7/12/17.
  */
 
-public class Location {
+public class Location extends Entity {
 
     private String mName = null;
     private int mID;
@@ -31,5 +33,20 @@ public class Location {
     public Location(String name, int id) {
         mName = name;
         mID = id;
+    }
+
+    @Override
+    public String getAffiliation() {
+        return null;
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.LOCATION;
+    }
+
+    @Override
+    public ContentValues toContentValues() {
+        return null;
     }
 }

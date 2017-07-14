@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.d.candy.f.awesometimetable.structure.Subject;
+import com.d.candy.f.awesometimetable.entity.Subject;
 import com.d.candy.f.awesometimetable.structure.TimeTable;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 
