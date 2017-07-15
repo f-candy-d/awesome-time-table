@@ -24,7 +24,7 @@ public class DBContract {
     public static class SubjectEntity {
         // id=1 is used for BLANK-Subject entity
         public static final int MIN_USABLE_ID = 2;
-        // The id used for BLANK_Subject
+        // The id used for BLANK-Subject
         public static final int BLANK_SUBJECT_ID = 1;
         public static final String TABLE_NAME = "subject";
         public static final String COLUMN_ID = "id";

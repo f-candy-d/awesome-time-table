@@ -1,6 +1,9 @@
 package com.d.candy.f.awesometimetable;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,25 +75,57 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      */
     private final WeeklyTimeTable mWeeklyTimeTable;
 
-    private int[] mHeaderPositions = null;
+    private SparseIntArray mHeaderPositions;
+    private DayOfWeek[] mDayOfWeekOrder = null;
 
-    public MiniSubjectCardAdapter(WeeklyTimeTable weeklyTimeTable, int[] headerPositions) {
+    public MiniSubjectCardAdapter(WeeklyTimeTable weeklyTimeTable, DayOfWeek[] dayOfWeekOrder) {
         mWeeklyTimeTable = weeklyTimeTable;
-        mHeaderPositions = headerPositions;
+        mDayOfWeekOrder = dayOfWeekOrder;
+
+        if(dayOfWeekOrder == null) {
+            throw new NullPointerException("'dayOfWeekOrder is null object");
+        }
+
+        // calculate header positions
+        mHeaderPositions = new SparseIntArray(mDayOfWeekOrder.length);
+        mHeaderPositions.put(mDayOfWeekOrder[0].toInt(), 0);
+        for (int i = 1; i < mDayOfWeekOrder.length; ++i) {
+            mHeaderPositions.put(
+                    mDayOfWeekOrder[i].toInt(),
+                    mWeeklyTimeTable.countSubjectOn(mDayOfWeekOrder[i-1]) + 1);
+        }
+
+        for (DayOfWeek dayOfWeek : mDayOfWeekOrder) {
+            Log.d(TAG, dayOfWeek.toString() + " header position -> " + mHeaderPositions.get(dayOfWeek.toInt()));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return (mWeeklyTimeTable.getNumSubjectInOneDay()+1)* mWeeklyTimeTable.getNumSubjectInOneDay();
+//        return (mWeeklyTimeTable.getNumSubjectInOneDay()+1)* mWeeklyTimeTable.getNumSubjectInOneDay();
+        return mWeeklyTimeTable.countSubject() + mDayOfWeekOrder.length;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (mWeeklyTimeTable.isPositionDayOfWeek(position))
-                ? VIEW_TYPE_HEADER
-                : (mWeeklyTimeTable.isPositionOccupiedByAnySubject(position))
-                   ? VIEW_TYPE_SUBJECT
-                   : VIEW_TYPE_SPACER;
+//        return (mWeeklyTimeTable.isPositionDayOfWeek(position))
+//                ? VIEW_TYPE_HEADER
+//                : (mWeeklyTimeTable.isPositionOccupiedByAnySubject(position))
+//                   ? VIEW_TYPE_SUBJECT
+//                   : VIEW_TYPE_SPACER;
+
+        if(isPositionHeader(position)) {
+            return VIEW_TYPE_HEADER;
+        } else {
+            DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(position);
+            int offset = position - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
+            int id = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset).getID();
+            if(DBContract.SubjectEntity.MIN_USABLE_ID <= id) {
+                return VIEW_TYPE_SUBJECT;
+            } else {
+                return VIEW_TYPE_SPACER;
+            }
+        }
     }
 
     @Override
@@ -127,30 +162,37 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         // Make a mini-subject-card or a spacer-card
         if(viewType == VIEW_TYPE_SUBJECT) {
-            ArrayList<Subject> subjects;
-            Subject subject;
-            // The offset from a day of week adpPos
-            int offset;
+//            ArrayList<Subject> subjects;
+//            Subject subject;
+//            // The offset from a day of week adpPos
+//            int offset;
+//
+//            // On scroll to the top of the screen from the bottom of that
+//            if (mCurrentDayOfWeekPosition < adpPos) {
+//                subjects = mWeeklyTimeTable.getSubjectsForDayOfWeekPosition(mCurrentDayOfWeekPosition);
+//                offset = adpPos - mCurrentDayOfWeekPosition - 1;
+//
+//                // On scroll to the top of the screen from the bottom of that
+//            } else {
+//                int prevDayOfWeekPos = mWeeklyTimeTable.getPreviousDayOfWeekPosition(mCurrentDayOfWeekPosition);
+//                subjects = mWeeklyTimeTable.getSubjectsForDayOfWeekPosition(prevDayOfWeekPos);
+//                offset = adpPos - prevDayOfWeekPos - 1;
+//            }
+//
+//            if (0 <= offset && offset < subjects.size()) {
+//                // Set data to the item
+//                SubjectViewHolder sbjHolder = (SubjectViewHolder) holder;
+//                subject = subjects.get(offset);
+//                sbjHolder.mName.setText(subject.getName());
+//                sbjHolder.mLocation.setText(subject.getLocation());
+//            }
+            DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
+            int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
+            Subject subject = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset);
 
-            // On scroll to the top of the screen from the bottom of that
-            if (mCurrentDayOfWeekPosition < adpPos) {
-                subjects = mWeeklyTimeTable.getSubjectsForDayOfWeekPosition(mCurrentDayOfWeekPosition);
-                offset = adpPos - mCurrentDayOfWeekPosition - 1;
-
-                // On scroll to the top of the screen from the bottom of that
-            } else {
-                int prevDayOfWeekPos = mWeeklyTimeTable.getPreviousDayOfWeekPosition(mCurrentDayOfWeekPosition);
-                subjects = mWeeklyTimeTable.getSubjectsForDayOfWeekPosition(prevDayOfWeekPos);
-                offset = adpPos - prevDayOfWeekPos - 1;
-            }
-
-            if (0 <= offset && offset < subjects.size()) {
-                // Set data to the item
-                SubjectViewHolder sbjHolder = (SubjectViewHolder) holder;
-                subject = subjects.get(offset);
-                sbjHolder.mName.setText(subject.getName());
-                sbjHolder.mLocation.setText(subject.getLocation());
-            }
+            SubjectViewHolder sbjHolder = (SubjectViewHolder) holder;
+            sbjHolder.mName.setText(subject.getName());
+            sbjHolder.mLocation.setText(subject.getLocation());
 
             // Make a Spacer view
         } else if(viewType == VIEW_TYPE_SPACER) {
@@ -158,9 +200,33 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             // Make a Header view
         } else if(viewType == VIEW_TYPE_HEADER) {
-            mCurrentDayOfWeekPosition = adpPos;
+//            mCurrentDayOfWeekPosition = adpPos;
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.mText.setText(mWeeklyTimeTable.getDayOfWeekContainsPosition(adpPos).toString());
+//            headerHolder.mText.setText(mWeeklyTimeTable.getDayOfWeekContainsPosition(adpPos).toString());
+            headerHolder.mText.setText(getDayOfWeekContainsPosition(adpPos).toString());
         }
+    }
+
+    private boolean isPositionHeader(int position) {
+        for(int i = 0; i < mDayOfWeekOrder.length; ++i) {
+            int headerPos = mHeaderPositions.get(mDayOfWeekOrder[i].toInt());
+            if(position == headerPos) return true;
+            else if (position < headerPos) break;
+        }
+
+        return false;
+    }
+
+    private DayOfWeek getDayOfWeekContainsPosition(int position) {
+        for (DayOfWeek dayOfWeek : mDayOfWeekOrder) {
+            int threshold = mHeaderPositions.get(dayOfWeek.toInt())
+                    + mWeeklyTimeTable.countSubjectOn(dayOfWeek);
+
+            Log.d(TAG, dayOfWeek.toString() + " : position= " + String.valueOf(position) + " <= threshold=" + String.valueOf(threshold));
+            if(position <= threshold) return dayOfWeek;
+        }
+
+        throw new IllegalArgumentException(
+                "'position' is an illegal value");
     }
 }

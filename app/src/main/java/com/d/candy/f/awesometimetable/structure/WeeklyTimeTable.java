@@ -91,6 +91,7 @@ public class WeeklyTimeTable {
 
         // TODO: NEW
         mID = id;
+        mTable = new SparseArray<>();
     }
 
     // TODO: remove
@@ -157,6 +158,14 @@ public class WeeklyTimeTable {
         }
 
         return count;
+    }
+
+    public int countSubjectOn(DayOfWeek dayOfWeek) {
+        if(isTimeTableExistOn(dayOfWeek)) {
+            return mTable.get(dayOfWeek.toInt()).countSubject();
+        } else {
+            return 0;
+        }
     }
 
     // TODO: NEW

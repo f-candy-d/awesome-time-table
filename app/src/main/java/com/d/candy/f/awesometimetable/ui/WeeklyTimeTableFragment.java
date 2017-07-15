@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.d.candy.f.awesometimetable.DataStructureFactory;
+import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.MiniSubjectCardAdapter;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
@@ -85,8 +86,16 @@ public class WeeklyTimeTableFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
+        // TODO: test code
+        DayOfWeek[] order = {
+                DayOfWeek.MONDAY,
+                DayOfWeek.TUESDAY,
+                DayOfWeek.WEDNESDAY,
+                DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY
+        };
         // adapter
-        mAdapter = new MiniSubjectCardAdapter(mWeeklyTimeTable, null);
+        mAdapter = new MiniSubjectCardAdapter(mWeeklyTimeTable, order);
         recyclerView.setAdapter(mAdapter);
     }
 
