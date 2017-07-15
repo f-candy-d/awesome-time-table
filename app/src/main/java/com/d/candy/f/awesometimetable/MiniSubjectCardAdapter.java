@@ -72,8 +72,11 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      */
     private final WeeklyTimeTable mWeeklyTimeTable;
 
-    public MiniSubjectCardAdapter(WeeklyTimeTable weeklyTimeTable) {
+    private int[] mHeaderPositions = null;
+
+    public MiniSubjectCardAdapter(WeeklyTimeTable weeklyTimeTable, int[] headerPositions) {
         mWeeklyTimeTable = weeklyTimeTable;
+        mHeaderPositions = headerPositions;
     }
 
     @Override

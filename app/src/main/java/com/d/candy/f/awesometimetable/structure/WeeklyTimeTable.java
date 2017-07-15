@@ -14,8 +14,13 @@ import java.util.ArrayList;
 
 public class WeeklyTimeTable {
 
+    // TODO: remove
     private SparseArray<ArrayList<Subject>> mSubjectTable;
-    private Context mContext;
+
+    // TODO: NEW
+    private int mID;
+    private SparseArray<OneDayTimeTable> mTable;
+    private SparseArray<Subject> mSubjectCache;
 
     /**
      * The number of all of the subjects shown in the WeeklyTimeTable
@@ -25,11 +30,13 @@ public class WeeklyTimeTable {
     /**
      * The maximum number of subjects in one day
      */
+    // TODO: remove
     private int mNumSubjectInOneDay;
 
     /**
      * The number of the day of week shown in the WeeklyTimeTable
      */
+    // TODO: on hold
     private int mNumShownDayOfWeek;
 
     public int getNumSubject() {
@@ -44,8 +51,7 @@ public class WeeklyTimeTable {
         return mNumShownDayOfWeek;
     }
 
-    public WeeklyTimeTable(Context context) {
-        mContext = context;
+    public WeeklyTimeTable(int id) {
 
         // TODO: The following codes are test code, Remove later
         ArrayList<Subject> monday = new ArrayList<>(5);
@@ -60,11 +66,11 @@ public class WeeklyTimeTable {
 //        Subject english = sbjManager.findSubjectByID(2);
 //        Subject physics = sbjManager.findSubjectByID(3);
 //        Subject chemistry = sbjManager.findSubjectByID(4);
-        Subject math = DataStructureFactory.makeSubject(0);
-        Subject japanese = DataStructureFactory.makeSubject(1);
-        Subject english = DataStructureFactory.makeSubject(2);
-        Subject physics = DataStructureFactory.makeSubject(3);
-        Subject chemistry = DataStructureFactory.makeSubject(4);
+        Subject math = DataStructureFactory.makeSubject(2);
+        Subject japanese = DataStructureFactory.makeSubject(3);
+        Subject english = DataStructureFactory.makeSubject(4);
+        Subject physics = DataStructureFactory.makeSubject(5);
+        Subject chemistry = DataStructureFactory.makeSubject(6);
 
         monday.add(math); monday.add(japanese); monday.add(english); monday.add(physics); monday.add(chemistry);
         tuesday.add(japanese); tuesday.add(physics); tuesday.add(chemistry);
@@ -82,8 +88,12 @@ public class WeeklyTimeTable {
         mSubjectTable.put(getDayOfWeekPosition(DayOfWeek.WEDNESDAY), wednesday);
         mSubjectTable.put(getDayOfWeekPosition(DayOfWeek.THURSDAY), thursday);
         mSubjectTable.put(getDayOfWeekPosition(DayOfWeek.FRIDAY), friday);
+
+        // TODO: NEW
+        mID = id;
     }
 
+    // TODO: remove
     public boolean isPositionDayOfWeek(final int position) {
         return (mSubjectTable.get(position, null) != null);
     }
@@ -109,5 +119,48 @@ public class WeeklyTimeTable {
 
     public DayOfWeek getDayOfWeekContainsPosition(final int position) {
         return DayOfWeek.getDayOfWeek(position/(mNumSubjectInOneDay+1));
+    }
+
+    // TODO: NEW
+    public void addSubjectTo(DayOfWeek dayOfWeek, Subject subject) {
+        // If a time table does not exist on 'dayOfWeek', create new one
+        if(!isTimeTableExistOn(dayOfWeek)) {
+            OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek);
+            mTable.put(dayOfWeek.toInt(), oneDayTable);
+        }
+
+        mTable.get(dayOfWeek.toInt()).addSubject(subject);
+    }
+
+    // TODO: NEW
+    public Subject getSubjectAtPositionOn(DayOfWeek dayOfWeek, int position) {
+        if(isTimeTableExistOn(dayOfWeek)) {
+            return mTable.get(dayOfWeek.toInt()).getSubjectAtPosition(position);
+        } else {
+            return null;
+        }
+    }
+
+    public Subject getSubjectAtPeriodOn(DayOfWeek dayOfWeek, int period) {
+        if(isTimeTableExistOn(dayOfWeek)) {
+            return mTable.get(dayOfWeek.toInt()).getSubjectAtPeriod(period);
+        } else {
+            return null;
+        }
+    }
+
+    public int countSubject() {
+        int count = 0;
+        for (int i = 0; i < mTable.size(); ++i) {
+            int key = mTable.keyAt(i);
+            count += mTable.valueAt(key).countSubject();
+        }
+
+        return count;
+    }
+
+    // TODO: NEW
+    private boolean isTimeTableExistOn(DayOfWeek dayOfWeek) {
+        return (mTable.get(dayOfWeek.toInt(), null) != null);
     }
 }

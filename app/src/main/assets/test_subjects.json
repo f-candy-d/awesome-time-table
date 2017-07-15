@@ -3,35 +3,35 @@
 
     {
       "name" : "Math",
-      "ID" : 0,
+      "ID" : 2,
       "locationID" : 0,
       "teacherID" : 0
     },
 
     {
       "name" : "Japanese",
-      "ID" : 1,
+      "ID" : 3,
       "locationID" : 1,
       "teacherID" : 1
     },
 
     {
       "name" : "English",
-      "ID" : 2,
+      "ID" : 4,
       "locationID" : 2,
       "teacherID" : 2
     },
 
     {
       "name" : "Physics",
-      "ID" : 3,
+      "ID" : 5,
       "locationID" : 3,
       "teacherID" : 3
     },
 
     {
       "name" : "Chemistry",
-      "ID" : 4,
+      "ID" : 6,
       "locationID" : 4,
       "teacherID" : 4
     }

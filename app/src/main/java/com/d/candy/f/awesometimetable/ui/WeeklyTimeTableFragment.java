@@ -86,11 +86,11 @@ public class WeeklyTimeTableFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         // adapter
-        mAdapter = new MiniSubjectCardAdapter(mWeeklyTimeTable);
+        mAdapter = new MiniSubjectCardAdapter(mWeeklyTimeTable, null);
         recyclerView.setAdapter(mAdapter);
     }
 
     private void initTimeTable() {
-        mWeeklyTimeTable = DataStructureFactory.makeTimeTable(0, getActivity());
+        mWeeklyTimeTable = DataStructureFactory.makeTimeTable(0);
     }
 }
