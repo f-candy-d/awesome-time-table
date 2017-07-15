@@ -163,7 +163,8 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             sbjHolder.mSize = subject.getSize();
 
             sbjHolder.mName.setText(subject.getName());
-            sbjHolder.mLocation.setText(subject.getLocation());
+            sbjHolder.mLocation
+                    .setText(mWeeklyTimeTable.getLocation(subject.getLocationID()).getName());
 
             // Make a Spacer view
         } else if(viewType == VIEW_TYPE_SPACER) {

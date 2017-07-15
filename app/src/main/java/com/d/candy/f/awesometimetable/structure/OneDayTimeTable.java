@@ -72,6 +72,10 @@ public class OneDayTimeTable {
         mCache.cache(location, false);
     }
 
+    public Location getLocation(int id) {
+        return mCache.getLocation(id);
+    }
+
     public void enrollSubject(int id) {
         mTable.add(id);
     }

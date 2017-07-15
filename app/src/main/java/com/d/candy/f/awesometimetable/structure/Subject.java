@@ -11,8 +11,6 @@ import com.d.candy.f.awesometimetable.DBContract;
 public class Subject extends Entity {
 
     private String mName = null;
-    private String mLocation = null;
-    private String mTeacher = null;
     private int mLocationID;
     private int mTeacherID;
     private int mSize = 1;
@@ -23,22 +21,6 @@ public class Subject extends Entity {
 
     public void setName(String name) {
         mName = name;
-    }
-
-    public String getLocation() {
-        return mLocation;
-    }
-
-    public void setLocation(String location) {
-        mLocation = location;
-    }
-
-    public String getTeacher() {
-        return mTeacher;
-    }
-
-    public void setTeacher(String teacher) {
-        mTeacher = teacher;
     }
 
     public int getLocationID() {
@@ -66,11 +48,10 @@ public class Subject extends Entity {
      */
     public Subject() {}
 
-    public Subject(int id, String name, String location, String teacher, int size) {
+    public Subject(int id, String name, int locationID, String teacher, int size) {
         setID(id);
         mName = name;
-        mLocation = location;
-        mTeacher = teacher;
+        mLocationID = locationID;
         mSize = size;
     }
 
