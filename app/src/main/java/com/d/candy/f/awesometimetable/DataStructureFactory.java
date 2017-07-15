@@ -15,10 +15,11 @@ public class DataStructureFactory {
 
     public static Subject makeSubject(int id) {
         if(id == DBContract.SubjectEntity.BLANK_SUBJECT_ID) {
-            return new Subject(id, "BLANK", "blank", "blank", 1);
+            return TestObject.makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
         }
-        SubjectManager sbjManager = SubjectManager.getInstance();
-        return sbjManager.findSubjectByID(id);
+//        SubjectManager sbjManager = SubjectManager.getInstance();
+//        return sbjManager.findSubjectByID(id);
+        return TestObject.makeSubject(id);
     }
 
     public static WeeklyTimeTable makeTimeTable(int id) {
@@ -29,8 +30,6 @@ public class DataStructureFactory {
         Subject english = DataStructureFactory.makeSubject(4);
         Subject physics = DataStructureFactory.makeSubject(5);
         Subject chemistry = DataStructureFactory.makeSubject(6);
-
-        physics.setSize(3);
 
         table.addSubjectTo(DayOfWeek.MONDAY, math);
         table.addSubjectTo(DayOfWeek.MONDAY, japanese);

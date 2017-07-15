@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
         navigationView.setCheckedItem(R.id.nav_table1);
-
-        setupDataManagers();
     }
 
     @Override
@@ -126,38 +124,5 @@ public class MainActivity extends AppCompatActivity
         // To turn back navigation on, enable this code
 //        transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    private void setupDataManagers() {
-        // SubjectManager
-        SubjectManager sbjManager = SubjectManager.getInstance();
-        if(!sbjManager.storeData(this)) {
-            throw new NullPointerException(TAG+":setupDataManagers():Setup for SubjectManager failed");
-        }
-
-        SparseArray<Location> ls = LocationJSONParser.parse(
-                LocationJSONParser.loadJSONFromAsset(this, "test_locations.json"));
-        SparseArray<Teacher> ts = TeacherJSONParser.parse(
-                TeacherJSONParser.loadJSONFromAsset(this, "test_teachers.json"));
-
-        for(int i = 0; i < 5; ++i) {
-            Location location = ls.get(i, null);
-            Teacher teacher = ts.get(i, null);
-            if(location != null) {
-                Log.d(TAG, "LOCATION:: name-> " + location.getName() + " | id-> " + location.getID());
-            } else {
-                Log.d(TAG, "LOCATION:: null");
-            }
-            if (teacher != null) {
-                Log.d(TAG, "TEACHER:: name-> " + teacher.getName() +
-                " | id-> " + teacher.getID() +
-                " | room-> " + teacher.getRoom() +
-                " | mail-> " + teacher.getMail() +
-                " | phone-> " + teacher.getPhone() +
-                " | subjectID-> " + teacher.getSubjectID());
-            } else {
-                Log.d(TAG, "TEACHER:: null");
-            }
-        }
     }
 }
