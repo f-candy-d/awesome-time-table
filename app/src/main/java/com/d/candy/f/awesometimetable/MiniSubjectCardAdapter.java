@@ -1,9 +1,6 @@
 package com.d.candy.f.awesometimetable;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +11,6 @@ import android.widget.TextView;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
-
-import java.util.ArrayList;
 
 /**
  * Created by daichi on 7/11/17.

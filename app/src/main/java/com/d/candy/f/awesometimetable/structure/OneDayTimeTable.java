@@ -1,5 +1,7 @@
 package com.d.candy.f.awesometimetable.structure;
 
+import android.util.Log;
+
 import com.d.candy.f.awesometimetable.DBContract;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
@@ -66,6 +68,10 @@ public class OneDayTimeTable {
         mCache.cache(subject, false);
     }
 
+    public void addLocation(Location location) {
+        mCache.cache(location, false);
+    }
+
     public void enrollSubject(int id) {
         mTable.add(id);
     }
@@ -104,6 +110,7 @@ public class OneDayTimeTable {
     }
 
     public Subject getSubjectAtPosition(int position) {
+        Log.d("QQQ", "id -> " + String.valueOf(mTable.get(position)));
         return mCache.getSubject(mTable.get(position));
     }
 

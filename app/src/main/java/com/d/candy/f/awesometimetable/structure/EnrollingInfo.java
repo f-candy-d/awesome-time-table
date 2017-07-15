@@ -3,6 +3,7 @@ package com.d.candy.f.awesometimetable.structure;
 import android.content.ContentValues;
 
 import com.d.candy.f.awesometimetable.DBContract;
+import com.d.candy.f.awesometimetable.DayOfWeek;
 
 /**
  * Created by daichi on 7/15/17.
@@ -10,18 +11,25 @@ import com.d.candy.f.awesometimetable.DBContract;
 
 public class EnrollingInfo extends Entity {
 
-    private int mID;
-    private int mDayOfWeek;
+    private DayOfWeek mDayOfWeek;
     private int mPeriod;
     private int mSubjectID;
 
     public EnrollingInfo() {}
 
-    public EnrollingInfo(int id, int day_of_week, int period, int subject_id) {
-        mID = id;
+    public EnrollingInfo(int id, DayOfWeek day_of_week, int period, int subject_id) {
+        setID(id);
         mDayOfWeek = day_of_week;
         mPeriod = period;
         mSubjectID = subject_id;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return mDayOfWeek;
+    }
+
+    public int getID() {
+        return mSubjectID;
     }
 
     @Override

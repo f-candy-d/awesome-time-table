@@ -30,7 +30,7 @@ public class Location extends Entity {
 
     public Location() {}
 
-    public Location(String name, int id) {
+    public Location(int id, String name) {
         mName = name;
         mID = id;
     }

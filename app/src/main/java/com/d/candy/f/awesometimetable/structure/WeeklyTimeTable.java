@@ -39,6 +39,10 @@ public class WeeklyTimeTable {
         mCache.cache(subject, false);
     }
 
+    public void addLocation(Location location) {
+        mCache.cache(location, false);
+    }
+
     public void enrollBlankSubjectTo(DayOfWeek dayOfWeek, int size) {
         if(!isTimeTableExistOn(dayOfWeek)) {
             OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek, mCache);
