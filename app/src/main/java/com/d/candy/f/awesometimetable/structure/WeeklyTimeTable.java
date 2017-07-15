@@ -5,8 +5,6 @@ import android.util.SparseArray;
 
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.DataStructureFactory;
-import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.entity.Subject;
 
 import java.util.ArrayList;
 
@@ -14,13 +12,13 @@ import java.util.ArrayList;
  * Created by daichi on 7/11/17.
  */
 
-public class TimeTable {
+public class WeeklyTimeTable {
 
     private SparseArray<ArrayList<Subject>> mSubjectTable;
     private Context mContext;
 
     /**
-     * The number of all of the subjects shown in the TimeTable
+     * The number of all of the subjects shown in the WeeklyTimeTable
      */
     private int mNumSubject;
 
@@ -30,7 +28,7 @@ public class TimeTable {
     private int mNumSubjectInOneDay;
 
     /**
-     * The number of the day of week shown in the TimeTable
+     * The number of the day of week shown in the WeeklyTimeTable
      */
     private int mNumShownDayOfWeek;
 
@@ -46,7 +44,7 @@ public class TimeTable {
         return mNumShownDayOfWeek;
     }
 
-    public TimeTable(Context context) {
+    public WeeklyTimeTable(Context context) {
         mContext = context;
 
         // TODO: The following codes are test code, Remove later
@@ -111,18 +109,5 @@ public class TimeTable {
 
     public DayOfWeek getDayOfWeekContainsPosition(final int position) {
         return DayOfWeek.getDayOfWeek(position/(mNumSubjectInOneDay+1));
-    }
-
-    public String getDayOfWeekAsString(final DayOfWeek dayOfWeek) {
-        switch (dayOfWeek) {
-            case MONDAY: return mContext.getString(R.string.day_of_week_monday);
-            case TUESDAY: return mContext.getString(R.string.day_of_week_tuesday);
-            case WEDNESDAY: return mContext.getString(R.string.day_of_week_wednesday);
-            case THURSDAY: return mContext.getString(R.string.day_of_week_thursday);
-            case FRIDAY: return mContext.getString(R.string.day_of_week_friday);
-            case SATURDAY: return mContext.getString(R.string.day_of_week_saturday);
-            case SUNDAY: return mContext.getString(R.string.day_of_week_sunday);
-            default: throw new IllegalArgumentException("in getDayOfWeekAsString: unknown type of 'DayOfWeek'");
-        }
     }
 }

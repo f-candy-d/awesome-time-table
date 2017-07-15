@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.d.candy.f.awesometimetable.entity.Subject;
-import com.d.candy.f.awesometimetable.structure.TimeTable;
+import com.d.candy.f.awesometimetable.structure.Subject;
+import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 import java.util.ArrayList;
@@ -68,24 +68,24 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private int mCurrentDayOfWeekPosition;
 
     /**
-     * TimeTable data
+     * WeeklyTimeTable data
      */
-    private final TimeTable mTimeTable;
+    private final WeeklyTimeTable mWeeklyTimeTable;
 
-    public MiniSubjectCardAdapter(TimeTable timeTable) {
-        mTimeTable = timeTable;
+    public MiniSubjectCardAdapter(WeeklyTimeTable weeklyTimeTable) {
+        mWeeklyTimeTable = weeklyTimeTable;
     }
 
     @Override
     public int getItemCount() {
-        return (mTimeTable.getNumSubjectInOneDay()+1)*mTimeTable.getNumSubjectInOneDay();
+        return (mWeeklyTimeTable.getNumSubjectInOneDay()+1)* mWeeklyTimeTable.getNumSubjectInOneDay();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (mTimeTable.isPositionDayOfWeek(position))
+        return (mWeeklyTimeTable.isPositionDayOfWeek(position))
                 ? VIEW_TYPE_HEADER
-                : (mTimeTable.isPositionOccupiedByAnySubject(position))
+                : (mWeeklyTimeTable.isPositionOccupiedByAnySubject(position))
                    ? VIEW_TYPE_SUBJECT
                    : VIEW_TYPE_SPACER;
     }
@@ -131,13 +131,13 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             // On scroll to the top of the screen from the bottom of that
             if (mCurrentDayOfWeekPosition < adpPos) {
-                subjects = mTimeTable.getSubjectsForDayOfWeekPosition(mCurrentDayOfWeekPosition);
+                subjects = mWeeklyTimeTable.getSubjectsForDayOfWeekPosition(mCurrentDayOfWeekPosition);
                 offset = adpPos - mCurrentDayOfWeekPosition - 1;
 
                 // On scroll to the top of the screen from the bottom of that
             } else {
-                int prevDayOfWeekPos = mTimeTable.getPreviousDayOfWeekPosition(mCurrentDayOfWeekPosition);
-                subjects = mTimeTable.getSubjectsForDayOfWeekPosition(prevDayOfWeekPos);
+                int prevDayOfWeekPos = mWeeklyTimeTable.getPreviousDayOfWeekPosition(mCurrentDayOfWeekPosition);
+                subjects = mWeeklyTimeTable.getSubjectsForDayOfWeekPosition(prevDayOfWeekPos);
                 offset = adpPos - prevDayOfWeekPos - 1;
             }
 
@@ -157,8 +157,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if(viewType == VIEW_TYPE_HEADER) {
             mCurrentDayOfWeekPosition = adpPos;
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.mText.setText(mTimeTable.getDayOfWeekAsString(
-                    mTimeTable.getDayOfWeekContainsPosition(adpPos)));
+            headerHolder.mText.setText(mWeeklyTimeTable.getDayOfWeekContainsPosition(adpPos).toString());
         }
     }
 }

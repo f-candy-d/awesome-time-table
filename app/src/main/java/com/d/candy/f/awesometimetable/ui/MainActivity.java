@@ -16,7 +16,7 @@ import android.view.MenuItem;
 
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.manager.SubjectManager;
-import com.d.candy.f.awesometimetable.entity.Location;
+import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Teacher;
 import com.d.candy.f.awesometimetable.utils.LocationJSONParser;
 import com.d.candy.f.awesometimetable.utils.LogHelper;

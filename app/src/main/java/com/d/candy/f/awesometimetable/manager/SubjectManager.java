@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.d.candy.f.awesometimetable.entity.Subject;
+import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 import com.d.candy.f.awesometimetable.utils.SubjectJSONParser;
 

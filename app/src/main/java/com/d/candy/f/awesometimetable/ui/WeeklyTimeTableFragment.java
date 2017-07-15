@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.d.candy.f.awesometimetable.DataStructureFactory;
 import com.d.candy.f.awesometimetable.MiniSubjectCardAdapter;
 import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.structure.TimeTable;
+import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 
 /**
@@ -34,7 +34,7 @@ public class WeeklyTimeTableFragment extends Fragment {
     private LinearLayoutManager mLayoutManager;
     private MiniSubjectCardAdapter mAdapter;
     // Time-Table
-    private TimeTable mTimeTable;
+    private WeeklyTimeTable mWeeklyTimeTable;
 
 
     public WeeklyTimeTableFragment() {
@@ -86,11 +86,11 @@ public class WeeklyTimeTableFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         // adapter
-        mAdapter = new MiniSubjectCardAdapter(mTimeTable);
+        mAdapter = new MiniSubjectCardAdapter(mWeeklyTimeTable);
         recyclerView.setAdapter(mAdapter);
     }
 
     private void initTimeTable() {
-        mTimeTable = DataStructureFactory.makeTimeTable(0, getActivity());
+        mWeeklyTimeTable = DataStructureFactory.makeTimeTable(0, getActivity());
     }
 }

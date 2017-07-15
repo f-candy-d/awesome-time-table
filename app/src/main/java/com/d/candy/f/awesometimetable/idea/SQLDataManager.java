@@ -1,6 +1,6 @@
 package com.d.candy.f.awesometimetable.idea;
 
-import com.d.candy.f.awesometimetable.entity.Entity;
+import com.d.candy.f.awesometimetable.structure.Entity;
 
 /**
  * Created by daichi on 7/14/17.

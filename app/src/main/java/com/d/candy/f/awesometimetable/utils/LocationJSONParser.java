@@ -2,7 +2,7 @@ package com.d.candy.f.awesometimetable.utils;
 
 import android.util.SparseArray;
 
-import com.d.candy.f.awesometimetable.entity.Location;
+import com.d.candy.f.awesometimetable.structure.Location;
 
 import org.json.JSONArray;
 import org.json.JSONException;

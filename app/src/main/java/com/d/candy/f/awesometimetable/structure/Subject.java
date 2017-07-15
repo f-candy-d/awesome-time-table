@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable.entity;
+package com.d.candy.f.awesometimetable.structure;
 
 import android.content.ContentValues;
 
