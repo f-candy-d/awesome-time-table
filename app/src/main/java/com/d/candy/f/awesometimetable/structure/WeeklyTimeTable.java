@@ -133,6 +133,15 @@ public class WeeklyTimeTable {
         mTable.get(dayOfWeek.toInt()).addSubject(subject);
     }
 
+    public void addBlankSubjectTo(DayOfWeek dayOfWeek, int size) {
+        if(!isTimeTableExistOn(dayOfWeek)) {
+            OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek);
+            mTable.put(dayOfWeek.toInt(), oneDayTable);
+        }
+
+        mTable.get(dayOfWeek.toInt()).addBlankSubject(size);
+    }
+
     // TODO: NEW
     public Subject getSubjectAtPositionOn(DayOfWeek dayOfWeek, int position) {
         if(isTimeTableExistOn(dayOfWeek)) {

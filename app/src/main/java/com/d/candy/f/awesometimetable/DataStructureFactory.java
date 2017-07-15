@@ -7,6 +7,8 @@ import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.manager.SubjectManager;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * Created by daichi on 7/15/17.
  */
@@ -16,6 +18,9 @@ public class DataStructureFactory {
     public DataStructureFactory() {}
 
     public static Subject makeSubject(int id) {
+        if(id == DBContract.SubjectEntity.BLANK_SUBJECT_ID) {
+            return new Subject("BLANK", "blank", "blank");
+        }
         SubjectManager sbjManager = SubjectManager.getInstance();
         return sbjManager.findSubjectByID(id);
     }
@@ -37,19 +42,24 @@ public class DataStructureFactory {
 
         table.addSubjectTo(DayOfWeek.TUESDAY, japanese);
         table.addSubjectTo(DayOfWeek.TUESDAY, physics);
+        table.addBlankSubjectTo(DayOfWeek.TUESDAY, 1);
+        table.addBlankSubjectTo(DayOfWeek.TUESDAY, 1);
         table.addSubjectTo(DayOfWeek.TUESDAY, chemistry);
 
         table.addSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
         table.addSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
         table.addSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
+        table.addBlankSubjectTo(DayOfWeek.WEDNESDAY, 1);
         table.addSubjectTo(DayOfWeek.WEDNESDAY, physics);
 
         table.addSubjectTo(DayOfWeek.THURSDAY, japanese);
         table.addSubjectTo(DayOfWeek.THURSDAY, math);
         table.addSubjectTo(DayOfWeek.THURSDAY, math);
         table.addSubjectTo(DayOfWeek.THURSDAY, english);
+        table.addBlankSubjectTo(DayOfWeek.THURSDAY, 1);
 
         table.addSubjectTo(DayOfWeek.FRIDAY, physics);
+        table.addBlankSubjectTo(DayOfWeek.FRIDAY, 4);
 
         return table;
 //        return new WeeklyTimeTable(0);

@@ -92,7 +92,8 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         for (int i = 1; i < mDayOfWeekOrder.length; ++i) {
             mHeaderPositions.put(
                     mDayOfWeekOrder[i].toInt(),
-                    mWeeklyTimeTable.countSubjectOn(mDayOfWeekOrder[i-1]) + 1);
+                    mWeeklyTimeTable.countSubjectOn(
+                            mDayOfWeekOrder[i-1]) + mHeaderPositions.get(mDayOfWeekOrder[i-1].toInt()) + 1);
         }
 
         for (DayOfWeek dayOfWeek : mDayOfWeekOrder) {
