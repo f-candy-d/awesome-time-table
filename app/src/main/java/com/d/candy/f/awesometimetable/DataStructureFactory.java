@@ -15,7 +15,7 @@ public class DataStructureFactory {
 
     public static Subject makeSubject(int id) {
         if(id == DBContract.SubjectEntity.BLANK_SUBJECT_ID) {
-            return new Subject("BLANK", "blank", "blank");
+            return new Subject(id, "BLANK", "blank", "blank", 1);
         }
         SubjectManager sbjManager = SubjectManager.getInstance();
         return sbjManager.findSubjectByID(id);
@@ -29,6 +29,8 @@ public class DataStructureFactory {
         Subject english = DataStructureFactory.makeSubject(4);
         Subject physics = DataStructureFactory.makeSubject(5);
         Subject chemistry = DataStructureFactory.makeSubject(6);
+
+        physics.setSize(3);
 
         table.addSubjectTo(DayOfWeek.MONDAY, math);
         table.addSubjectTo(DayOfWeek.MONDAY, japanese);
@@ -55,7 +57,7 @@ public class DataStructureFactory {
         table.addBlankSubjectTo(DayOfWeek.THURSDAY, 1);
 
         table.addSubjectTo(DayOfWeek.FRIDAY, physics);
-        table.addBlankSubjectTo(DayOfWeek.FRIDAY, 4);
+        table.addBlankSubjectTo(DayOfWeek.FRIDAY, 2);
 
         return table;
     }

@@ -76,12 +76,13 @@ public class OneDayTimeTable {
      * @param size The size of a blank subject
      */
     public void addBlankSubject(final int size) {
-        int blankSbjID = -size;
         if(0 < size) {
+            int blankSbjID = -size;
             if(!mCache.isCached(blankSbjID, EntityType.SUBJECT)) {
                 Subject blank = DataStructureFactory
                         .makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
                 blank.setID(blankSbjID);
+                blank.setSize(size);
                 mCache.cache(blank, true);
             }
 

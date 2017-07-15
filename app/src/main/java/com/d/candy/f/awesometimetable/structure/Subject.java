@@ -15,6 +15,7 @@ public class Subject extends Entity {
     private String mTeacher = null;
     private int mLocationID;
     private int mTeacherID;
+    private int mSize = 1;
 
     public String getName() {
         return mName;
@@ -56,15 +57,21 @@ public class Subject extends Entity {
         mTeacherID = teacherID;
     }
 
+    public int getSize() { return mSize; }
+
+    public void setSize(int size) { mSize = size; }
+
     /**
      * public constructors
      */
     public Subject() {}
 
-    public Subject(String name, String location, String teacher) {
+    public Subject(int id, String name, String location, String teacher, int size) {
+        setID(id);
         mName = name;
         mLocation = location;
         mTeacher = teacher;
+        mSize = size;
     }
 
     @Override

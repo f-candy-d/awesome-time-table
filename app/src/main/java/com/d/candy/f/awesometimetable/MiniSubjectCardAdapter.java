@@ -1,5 +1,6 @@
 package com.d.candy.f.awesometimetable;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
@@ -27,11 +28,14 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      */
     public static class SubjectViewHolder extends RecyclerView.ViewHolder {
 
+        private final LinearLayout mLayout;
         private final TextView mName;
         private final TextView mLocation;
+        private int mSize = 1;
 
         public SubjectViewHolder(View content_root) {
             super(content_root);
+            mLayout = (LinearLayout) content_root.findViewById(R.id.linear_layout_mini_subject_card_container);
             mName = (TextView) content_root.findViewById(R.id.text_mini_subject_card_title);
             mLocation = (TextView) content_root.findViewById(R.id.text_mini_subject_card_location);
         }
@@ -156,9 +160,15 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
             Subject subject = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset);
 
+            // change the height of an item
             SubjectViewHolder sbjHolder = (SubjectViewHolder) holder;
+            ViewGroup.LayoutParams layoutParams = sbjHolder.mLayout.getLayoutParams();
+            layoutParams.height = layoutParams.height/sbjHolder.mSize*subject.getSize();
+            sbjHolder.mLayout.setLayoutParams(layoutParams);
+            sbjHolder.mSize = subject.getSize();
+
             sbjHolder.mName.setText(subject.getName());
-            sbjHolder.mLocation.setText(subject.getLocation());
+//            sbjHolder.mLocation.setText(subject.getLocation());
 
             // Make a Spacer view
         } else if(viewType == VIEW_TYPE_SPACER) {
@@ -166,7 +176,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
             Subject subject = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset);
             SpacerViewHolder spcHolder = (SpacerViewHolder) holder;
-            int size = -1 * subject.getID();
+            int size = subject.getSize();
 
             // change the height of a spacer
             ViewGroup.LayoutParams layoutParams = spcHolder.mLayout.getLayoutParams();
