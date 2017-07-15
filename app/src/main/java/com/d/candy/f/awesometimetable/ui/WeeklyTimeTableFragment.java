@@ -87,6 +87,7 @@ public class WeeklyTimeTableFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         // TODO: test code
+        // The order of shown items
         DayOfWeek[] order = {
                 DayOfWeek.MONDAY,
                 DayOfWeek.TUESDAY,

@@ -8,6 +8,16 @@ import android.content.ContentValues;
 
 abstract public class Entity {
 
+    private int mID;
+
+    public int getID() {
+        return mID;
+    }
+
+    public void setID(final int id) {
+        mID = id;
+    }
+
     /**
      * @return ContentValues object
      */

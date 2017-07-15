@@ -5,6 +5,7 @@ import android.util.SparseArray;
 
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.DataStructureFactory;
+import com.d.candy.f.awesometimetable.utils.EntityCache;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,8 @@ public class WeeklyTimeTable {
      */
     // TODO: on hold
     private int mNumShownDayOfWeek;
+
+    private EntityCache mCache;
 
     public int getNumSubject() {
         return mNumSubject;
@@ -92,6 +95,7 @@ public class WeeklyTimeTable {
         // TODO: NEW
         mID = id;
         mTable = new SparseArray<>();
+        mCache = new EntityCache();
     }
 
     // TODO: remove
@@ -126,7 +130,7 @@ public class WeeklyTimeTable {
     public void addSubjectTo(DayOfWeek dayOfWeek, Subject subject) {
         // If a time table does not exist on 'dayOfWeek', create new one
         if(!isTimeTableExistOn(dayOfWeek)) {
-            OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek);
+            OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek, mCache);
             mTable.put(dayOfWeek.toInt(), oneDayTable);
         }
 
@@ -135,7 +139,7 @@ public class WeeklyTimeTable {
 
     public void addBlankSubjectTo(DayOfWeek dayOfWeek, int size) {
         if(!isTimeTableExistOn(dayOfWeek)) {
-            OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek);
+            OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek, mCache);
             mTable.put(dayOfWeek.toInt(), oneDayTable);
         }
 

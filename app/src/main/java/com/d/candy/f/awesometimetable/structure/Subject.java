@@ -13,7 +13,6 @@ public class Subject extends Entity {
     private String mName = null;
     private String mLocation = null;
     private String mTeacher = null;
-    private int mID;
     private int mLocationID;
     private int mTeacherID;
 
@@ -39,14 +38,6 @@ public class Subject extends Entity {
 
     public void setTeacher(String teacher) {
         mTeacher = teacher;
-    }
-
-    public int getID() {
-        return mID;
-    }
-
-    public void setID(int ID) {
-        mID = ID;
     }
 
     public int getLocationID() {

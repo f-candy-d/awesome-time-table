@@ -5,6 +5,7 @@ import android.util.SparseArray;
 import com.d.candy.f.awesometimetable.DBContract;
 import com.d.candy.f.awesometimetable.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
+import com.d.candy.f.awesometimetable.utils.EntityCache;
 
 import java.util.ArrayList;
 
@@ -17,11 +18,13 @@ public class OneDayTimeTable {
     private DayOfWeek mDayOfWeek;
     private ArrayList<Integer> mTable;
     private SparseArray<Subject> mSubjectCache;
+    private EntityCache mCache;
 
-    public OneDayTimeTable(DayOfWeek dayOfWeek) {
+    public OneDayTimeTable(DayOfWeek dayOfWeek, EntityCache cache) {
         mDayOfWeek = dayOfWeek;
         mTable = new ArrayList<>();
         mSubjectCache = new SparseArray<>();
+        mCache = cache;
     }
 
     /**
@@ -65,7 +68,8 @@ public class OneDayTimeTable {
      */
     public void addSubject(Subject subject) {
         mTable.add(subject.getID());
-        cacheSubject(subject, false);
+//        cacheSubject(subject, false);
+        mCache.cache(subject, false);
     }
 
     /**
@@ -79,11 +83,13 @@ public class OneDayTimeTable {
     public void addBlankSubject(final int size) {
         int blankSbjID = -size;
         if(0 < size) {
-            if(!isSubjectExistInCache(blankSbjID)) {
+//            if(!isSubjectExistInCache(blankSbjID)) {
+            if(!mCache.isCached(blankSbjID, EntityType.SUBJECT)) {
                 Subject blank = DataStructureFactory
                         .makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
                 blank.setID(blankSbjID);
-                cacheSubject(blank, true);
+//                cacheSubject(blank, true);
+                mCache.cache(blank, true);
             }
 
             mTable.add(blankSbjID);
@@ -95,7 +101,8 @@ public class OneDayTimeTable {
     }
 
     public Subject getSubjectAtPosition(int position) {
-        return mSubjectCache.get(mTable.get(position), null);
+//        return mSubjectCache.get(mTable.get(position), null);
+        return mCache.getSubject(mTable.get(position));
     }
 
     public int getSubjectIDAtPosition(int position) {
