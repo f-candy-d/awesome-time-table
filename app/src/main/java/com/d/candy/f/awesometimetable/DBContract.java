@@ -31,6 +31,7 @@ public class DBContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_ROOM_ID = "room_id";
         public static final String CLOUMN_TEACHER_ID = "teacher_id";
+        public static final String COLUMN_LENGTH = "length";
     }
 
     public static class TeacherEntity {

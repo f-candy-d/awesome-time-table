@@ -13,7 +13,7 @@ public class Subject extends Entity {
     private String mName = null;
     private int mLocationID;
     private int mTeacherID;
-    private int mSize = 1;
+    private int mLength = 1;
 
     public String getName() {
         return mName;
@@ -39,20 +39,20 @@ public class Subject extends Entity {
         mTeacherID = teacherID;
     }
 
-    public int getSize() { return mSize; }
+    public int getLength() { return mLength; }
 
-    public void setSize(int size) { mSize = size; }
+    public void setLength(int length) { mLength = length; }
 
     /**
      * public constructors
      */
     public Subject() {}
 
-    public Subject(int id, String name, int locationID, String teacher, int size) {
+    public Subject(int id, String name, int locationID, String teacher, int length) {
         setID(id);
         mName = name;
         mLocationID = locationID;
-        mSize = size;
+        mLength = length;
     }
 
     @Override

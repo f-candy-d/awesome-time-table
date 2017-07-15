@@ -99,7 +99,7 @@ public class OneDayTimeTable {
                 Subject blank = DataStructureFactory
                         .makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
                 blank.setID(blankSbjID);
-                blank.setSize(size);
+                blank.setLength(size);
                 addSubject(blank);
             }
 

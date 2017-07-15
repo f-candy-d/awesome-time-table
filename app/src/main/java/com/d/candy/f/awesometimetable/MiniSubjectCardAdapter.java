@@ -158,9 +158,9 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             // change the height of an item
             SubjectViewHolder sbjHolder = (SubjectViewHolder) holder;
             ViewGroup.LayoutParams layoutParams = sbjHolder.mLayout.getLayoutParams();
-            layoutParams.height = layoutParams.height/sbjHolder.mSize*subject.getSize();
+            layoutParams.height = layoutParams.height/sbjHolder.mSize*subject.getLength();
             sbjHolder.mLayout.setLayoutParams(layoutParams);
-            sbjHolder.mSize = subject.getSize();
+            sbjHolder.mSize = subject.getLength();
 
             sbjHolder.mName.setText(subject.getName());
             sbjHolder.mLocation
@@ -172,7 +172,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
             Subject subject = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset);
             SpacerViewHolder spcHolder = (SpacerViewHolder) holder;
-            int size = subject.getSize();
+            int size = subject.getLength();
 
             // change the height of a spacer
             ViewGroup.LayoutParams layoutParams = spcHolder.mLayout.getLayoutParams();
