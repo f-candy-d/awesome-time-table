@@ -1,5 +1,6 @@
 package com.d.candy.f.awesometimetable.utils;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.d.candy.f.awesometimetable.structure.Entity;
@@ -12,6 +13,7 @@ import com.d.candy.f.awesometimetable.structure.Subject;
 
 public class EntityCache {
 
+    private static final String TAG = LogHelper.makeLogTag(EntityCache.class);
     private SparseArray<Subject> mSubjectCache;
 
     public EntityCache() {
@@ -24,6 +26,7 @@ public class EntityCache {
 
                 case SUBJECT:
                     mSubjectCache.put(entity.getID(), (Subject) entity);
+                    Log.d(TAG, "Cached SUBJECT -> " + ((Subject) entity).getName() + " | id=" + String.valueOf(entity.getID()));
                     break;
             }
         }

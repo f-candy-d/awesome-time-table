@@ -1,6 +1,5 @@
 package com.d.candy.f.awesometimetable.utils;
 
-import com.d.candy.f.awesometimetable.DBContract;
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.TestObject;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
@@ -28,32 +27,40 @@ public class DataStructureFactory {
         Subject physics = DataStructureFactory.makeSubject(5);
         Subject chemistry = DataStructureFactory.makeSubject(6);
 
-        table.addSubjectTo(DayOfWeek.MONDAY, math);
-        table.addSubjectTo(DayOfWeek.MONDAY, japanese);
-        table.addSubjectTo(DayOfWeek.MONDAY, english);
-        table.addSubjectTo(DayOfWeek.MONDAY, physics);
-        table.addSubjectTo(DayOfWeek.MONDAY, chemistry);
+        // Register subjects
+        table.addSubject(math);
+        table.addSubject(japanese);
+        table.addSubject(english);
+        table.addSubject(physics);
+        table.addSubject(chemistry);
 
-        table.addSubjectTo(DayOfWeek.TUESDAY, japanese);
-        table.addSubjectTo(DayOfWeek.TUESDAY, physics);
-        table.addBlankSubjectTo(DayOfWeek.TUESDAY, 1);
-        table.addBlankSubjectTo(DayOfWeek.TUESDAY, 1);
-        table.addSubjectTo(DayOfWeek.TUESDAY, chemistry);
+        // Enroll subjects
+        table.enrollSubjectTo(DayOfWeek.MONDAY, math);
+        table.enrollSubjectTo(DayOfWeek.MONDAY, japanese);
+        table.enrollSubjectTo(DayOfWeek.MONDAY, english);
+        table.enrollSubjectTo(DayOfWeek.MONDAY, physics);
+        table.enrollSubjectTo(DayOfWeek.MONDAY, chemistry);
 
-        table.addSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
-        table.addSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
-        table.addSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
-        table.addBlankSubjectTo(DayOfWeek.WEDNESDAY, 1);
-        table.addSubjectTo(DayOfWeek.WEDNESDAY, physics);
+        table.enrollSubjectTo(DayOfWeek.TUESDAY, japanese);
+        table.enrollSubjectTo(DayOfWeek.TUESDAY, physics);
+        table.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
+        table.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
+        table.enrollSubjectTo(DayOfWeek.TUESDAY, chemistry);
 
-        table.addSubjectTo(DayOfWeek.THURSDAY, japanese);
-        table.addSubjectTo(DayOfWeek.THURSDAY, math);
-        table.addSubjectTo(DayOfWeek.THURSDAY, math);
-        table.addSubjectTo(DayOfWeek.THURSDAY, english);
-        table.addBlankSubjectTo(DayOfWeek.THURSDAY, 1);
+        table.enrollSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
+        table.enrollSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
+        table.enrollSubjectTo(DayOfWeek.WEDNESDAY, chemistry);
+        table.enrollBlankSubjectTo(DayOfWeek.WEDNESDAY, 1);
+        table.enrollSubjectTo(DayOfWeek.WEDNESDAY, physics);
 
-        table.addSubjectTo(DayOfWeek.FRIDAY, physics);
-        table.addBlankSubjectTo(DayOfWeek.FRIDAY, 2);
+        table.enrollSubjectTo(DayOfWeek.THURSDAY, japanese);
+        table.enrollSubjectTo(DayOfWeek.THURSDAY, math);
+        table.enrollSubjectTo(DayOfWeek.THURSDAY, math);
+        table.enrollSubjectTo(DayOfWeek.THURSDAY, english);
+        table.enrollBlankSubjectTo(DayOfWeek.THURSDAY, 1);
+
+        table.enrollSubjectTo(DayOfWeek.FRIDAY, physics);
+        table.enrollBlankSubjectTo(DayOfWeek.FRIDAY, 2);
 
         return table;
     }
