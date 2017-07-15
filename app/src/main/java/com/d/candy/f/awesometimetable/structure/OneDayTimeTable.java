@@ -1,7 +1,5 @@
 package com.d.candy.f.awesometimetable.structure;
 
-import android.util.SparseArray;
-
 import com.d.candy.f.awesometimetable.DBContract;
 import com.d.candy.f.awesometimetable.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
@@ -17,13 +15,11 @@ public class OneDayTimeTable {
 
     private DayOfWeek mDayOfWeek;
     private ArrayList<Integer> mTable;
-    private SparseArray<Subject> mSubjectCache;
     private EntityCache mCache;
 
     public OneDayTimeTable(DayOfWeek dayOfWeek, EntityCache cache) {
         mDayOfWeek = dayOfWeek;
         mTable = new ArrayList<>();
-        mSubjectCache = new SparseArray<>();
         mCache = cache;
     }
 
@@ -68,7 +64,6 @@ public class OneDayTimeTable {
      */
     public void addSubject(Subject subject) {
         mTable.add(subject.getID());
-//        cacheSubject(subject, false);
         mCache.cache(subject, false);
     }
 
@@ -83,12 +78,10 @@ public class OneDayTimeTable {
     public void addBlankSubject(final int size) {
         int blankSbjID = -size;
         if(0 < size) {
-//            if(!isSubjectExistInCache(blankSbjID)) {
             if(!mCache.isCached(blankSbjID, EntityType.SUBJECT)) {
                 Subject blank = DataStructureFactory
                         .makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
                 blank.setID(blankSbjID);
-//                cacheSubject(blank, true);
                 mCache.cache(blank, true);
             }
 
@@ -101,7 +94,6 @@ public class OneDayTimeTable {
     }
 
     public Subject getSubjectAtPosition(int position) {
-//        return mSubjectCache.get(mTable.get(position), null);
         return mCache.getSubject(mTable.get(position));
     }
 
@@ -111,13 +103,4 @@ public class OneDayTimeTable {
 
     public Subject getSubjectAtPeriod(int period) { return null; }
 
-    private boolean isSubjectExistInCache(int id) {
-        return (mSubjectCache.get(id, null) != null);
-    }
-
-    private void cacheSubject(Subject subject, boolean replaceIfExist) {
-        if(replaceIfExist || !isSubjectExistInCache(subject.getID())) {
-            mSubjectCache.put(subject.getID(), subject);
-        }
-    }
 }

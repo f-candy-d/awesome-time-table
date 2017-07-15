@@ -1,13 +1,9 @@
 package com.d.candy.f.awesometimetable;
 
-import android.content.Context;
-
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.manager.SubjectManager;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
-
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by daichi on 7/15/17.
@@ -62,7 +58,6 @@ public class DataStructureFactory {
         table.addBlankSubjectTo(DayOfWeek.FRIDAY, 4);
 
         return table;
-//        return new WeeklyTimeTable(0);
     }
 
     public static EnrollingInfo makeEnrollingInfo(int id) {

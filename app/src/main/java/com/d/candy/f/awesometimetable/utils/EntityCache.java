@@ -18,9 +18,14 @@ public class EntityCache {
         mSubjectCache = new SparseArray<>();
     }
 
-    public void cache(final Subject subject, boolean replaceIfExist) {
-        if(replaceIfExist || !isCached(subject.getID(), EntityType.SUBJECT)) {
-            mSubjectCache.put(subject.getID(), subject);
+    public void cache(final Entity entity, boolean replaceIfExist) {
+        if(replaceIfExist || !isCached(entity.getID(), entity.getEntityType())) {
+            switch (entity.getEntityType()) {
+
+                case SUBJECT:
+                    mSubjectCache.put(entity.getID(), (Subject) entity);
+                    break;
+            }
         }
     }
 
