@@ -7,6 +7,7 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.candy.f.awesometimetable.structure.Subject;
@@ -48,8 +49,12 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public static class SpacerViewHolder extends RecyclerView.ViewHolder {
 
+        private int mSize = 1;
+        LinearLayout mLayout;
+
         public SpacerViewHolder(View content_root) {
             super(content_root);
+            mLayout = (LinearLayout) content_root.findViewById(R.id.linear_layout_spacer);
         }
     }
 
@@ -66,15 +71,9 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final String TAG = LogHelper.makeLogTag(MiniSubjectCardAdapter.class);
 
     /**
-     * The position of the position of a current day-of-week cell
-     */
-    private int mCurrentDayOfWeekPosition;
-
-    /**
      * WeeklyTimeTable data
      */
     private final WeeklyTimeTable mWeeklyTimeTable;
-
     private SparseIntArray mHeaderPositions;
     private DayOfWeek[] mDayOfWeekOrder = null;
 
@@ -92,29 +91,19 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         for (int i = 1; i < mDayOfWeekOrder.length; ++i) {
             mHeaderPositions.put(
                     mDayOfWeekOrder[i].toInt(),
-                    mWeeklyTimeTable.countSubjectOn(
-                            mDayOfWeekOrder[i-1]) + mHeaderPositions.get(mDayOfWeekOrder[i-1].toInt()) + 1);
-        }
-
-        for (DayOfWeek dayOfWeek : mDayOfWeekOrder) {
-            Log.d(TAG, dayOfWeek.toString() + " header position -> " + mHeaderPositions.get(dayOfWeek.toInt()));
+                    mWeeklyTimeTable.countSubjectOn(mDayOfWeekOrder[i-1])
+                            + mHeaderPositions.get(mDayOfWeekOrder[i-1].toInt())
+                            + 1);
         }
     }
 
     @Override
     public int getItemCount() {
-//        return (mWeeklyTimeTable.getNumSubjectInOneDay()+1)* mWeeklyTimeTable.getNumSubjectInOneDay();
         return mWeeklyTimeTable.countSubject() + mDayOfWeekOrder.length;
     }
 
     @Override
     public int getItemViewType(int position) {
-//        return (mWeeklyTimeTable.isPositionDayOfWeek(position))
-//                ? VIEW_TYPE_HEADER
-//                : (mWeeklyTimeTable.isPositionOccupiedByAnySubject(position))
-//                   ? VIEW_TYPE_SUBJECT
-//                   : VIEW_TYPE_SPACER;
-
         if(isPositionHeader(position)) {
             return VIEW_TYPE_HEADER;
         } else {
@@ -163,30 +152,6 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         // Make a mini-subject-card or a spacer-card
         if(viewType == VIEW_TYPE_SUBJECT) {
-//            ArrayList<Subject> subjects;
-//            Subject subject;
-//            // The offset from a day of week adpPos
-//            int offset;
-//
-//            // On scroll to the top of the screen from the bottom of that
-//            if (mCurrentDayOfWeekPosition < adpPos) {
-//                subjects = mWeeklyTimeTable.getSubjectsForDayOfWeekPosition(mCurrentDayOfWeekPosition);
-//                offset = adpPos - mCurrentDayOfWeekPosition - 1;
-//
-//                // On scroll to the top of the screen from the bottom of that
-//            } else {
-//                int prevDayOfWeekPos = mWeeklyTimeTable.getPreviousDayOfWeekPosition(mCurrentDayOfWeekPosition);
-//                subjects = mWeeklyTimeTable.getSubjectsForDayOfWeekPosition(prevDayOfWeekPos);
-//                offset = adpPos - prevDayOfWeekPos - 1;
-//            }
-//
-//            if (0 <= offset && offset < subjects.size()) {
-//                // Set data to the item
-//                SubjectViewHolder sbjHolder = (SubjectViewHolder) holder;
-//                subject = subjects.get(offset);
-//                sbjHolder.mName.setText(subject.getName());
-//                sbjHolder.mLocation.setText(subject.getLocation());
-//            }
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
             Subject subject = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset);
@@ -197,13 +162,21 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             // Make a Spacer view
         } else if(viewType == VIEW_TYPE_SPACER) {
-//            SpacerViewHolder spcHolder = (SpacerViewHolder) holder;
+            DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
+            int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
+            Subject subject = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset);
+            SpacerViewHolder spcHolder = (SpacerViewHolder) holder;
+            int size = -1 * subject.getID();
+
+            // change the height of a spacer
+            ViewGroup.LayoutParams layoutParams = spcHolder.mLayout.getLayoutParams();
+            layoutParams.height = layoutParams.height/spcHolder.mSize*size;
+            spcHolder.mLayout.setLayoutParams(layoutParams);
+            spcHolder.mSize = size;
 
             // Make a Header view
         } else if(viewType == VIEW_TYPE_HEADER) {
-//            mCurrentDayOfWeekPosition = adpPos;
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-//            headerHolder.mText.setText(mWeeklyTimeTable.getDayOfWeekContainsPosition(adpPos).toString());
             headerHolder.mText.setText(getDayOfWeekContainsPosition(adpPos).toString());
         }
     }
@@ -218,12 +191,20 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return false;
     }
 
+    /**
+     * [headerPositionOf'dayOfWeek'] <= 'position' &&
+     * 'position' <= [headerPositionOf'dayOfWeek'] + [NumOfSubjectsOn'dayOfWeek']
+     *
+     * Return a 'dayOfWeek' which meets the requirement above.
+     *
+     * @param position a certain position in RecyclerView
+     * @return A DayOfWeek value
+     */
     private DayOfWeek getDayOfWeekContainsPosition(int position) {
         for (DayOfWeek dayOfWeek : mDayOfWeekOrder) {
             int threshold = mHeaderPositions.get(dayOfWeek.toInt())
                     + mWeeklyTimeTable.countSubjectOn(dayOfWeek);
 
-            Log.d(TAG, dayOfWeek.toString() + " : position= " + String.valueOf(position) + " <= threshold=" + String.valueOf(threshold));
             if(position <= threshold) return dayOfWeek;
         }
 
