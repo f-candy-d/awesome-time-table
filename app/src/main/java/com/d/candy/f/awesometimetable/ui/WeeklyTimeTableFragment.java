@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.candy.f.awesometimetable.DataStructureFactory;
+import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.MiniSubjectCardAdapter;
 import com.d.candy.f.awesometimetable.R;

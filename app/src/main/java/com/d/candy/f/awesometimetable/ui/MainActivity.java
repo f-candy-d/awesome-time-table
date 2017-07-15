@@ -9,18 +9,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.manager.SubjectManager;
-import com.d.candy.f.awesometimetable.structure.Location;
-import com.d.candy.f.awesometimetable.structure.Teacher;
-import com.d.candy.f.awesometimetable.utils.LocationJSONParser;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
-import com.d.candy.f.awesometimetable.utils.TeacherJSONParser;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

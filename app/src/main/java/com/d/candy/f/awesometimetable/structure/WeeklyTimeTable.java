@@ -1,13 +1,9 @@
 package com.d.candy.f.awesometimetable.structure;
 
-import android.content.Context;
 import android.util.SparseArray;
 
 import com.d.candy.f.awesometimetable.DayOfWeek;
-import com.d.candy.f.awesometimetable.DataStructureFactory;
 import com.d.candy.f.awesometimetable.utils.EntityCache;
-
-import java.util.ArrayList;
 
 /**
  * Created by daichi on 7/11/17.

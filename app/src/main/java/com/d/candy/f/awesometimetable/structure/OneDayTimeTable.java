@@ -1,7 +1,7 @@
 package com.d.candy.f.awesometimetable.structure;
 
 import com.d.candy.f.awesometimetable.DBContract;
-import com.d.candy.f.awesometimetable.DataStructureFactory;
+import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.utils.EntityCache;
 

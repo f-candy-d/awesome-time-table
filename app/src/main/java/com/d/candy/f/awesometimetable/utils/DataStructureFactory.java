@@ -1,8 +1,10 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.utils;
 
+import com.d.candy.f.awesometimetable.DBContract;
+import com.d.candy.f.awesometimetable.DayOfWeek;
+import com.d.candy.f.awesometimetable.TestObject;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Subject;
-import com.d.candy.f.awesometimetable.manager.SubjectManager;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 /**
@@ -14,11 +16,6 @@ public class DataStructureFactory {
     public DataStructureFactory() {}
 
     public static Subject makeSubject(int id) {
-        if(id == DBContract.SubjectEntity.BLANK_SUBJECT_ID) {
-            return TestObject.makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
-        }
-//        SubjectManager sbjManager = SubjectManager.getInstance();
-//        return sbjManager.findSubjectByID(id);
         return TestObject.makeSubject(id);
     }
 
