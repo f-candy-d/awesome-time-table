@@ -16,10 +16,16 @@ import com.d.candy.f.awesometimetable.R;
  */
 public class CircularTimeLineMarker extends View {
 
+    public enum Orientation {
+        VERTICAL,
+        HORIZONTAL
+    }
+
     private String mExampleString; // TODO: use a default from R.string...
     private int mTextColor = Color.RED; // TODO: use a default from R.color...
-    private int mBackgroundTint = mTextColor;
-    private int mOutlineColor = mTextColor;
+    private int mPrimaryColor = mTextColor;
+    private int mAccentColor = mTextColor;
+    private int mLineColor = mTextColor;
     private float mFontSize = 0; // TODO: use a default from R.dimen...
 
     private TextPaint mTextPaint;
@@ -27,11 +33,16 @@ public class CircularTimeLineMarker extends View {
     private float mTextHeight;
     private int mRadius = 0;
     private float mOutlineWidth = 0;
+    private float mLineWidth = 0;
 
     private Paint mCircularPaint;
     private Paint mOutlinePaint;
+    private Paint mLinePaint;
 
     private float mRadiusRatioToFont = 1.15f;
+    private float mLineRatioToRadius = 1.3f;
+
+    private Orientation mOrientation = Orientation.VERTICAL;
 
     public CircularTimeLineMarker(Context context) {
         super(context);
@@ -54,16 +65,19 @@ public class CircularTimeLineMarker extends View {
                 attrs, R.styleable.CircularTimeLineMarker, defStyle, 0);
 
         mExampleString = a.getString(
-                R.styleable.CircularTimeLineMarker_exampleString);
+                R.styleable.CircularTimeLineMarker_text);
         mTextColor = a.getColor(
                 R.styleable.CircularTimeLineMarker_textColor,
                 mTextColor);
-        mBackgroundTint = a.getColor(
-                R.styleable.CircularTimeLineMarker_backgroundTint,
-                mBackgroundTint);
-        mOutlineColor = a.getColor(
-                R.styleable.CircularTimeLineMarker_outlineColor,
-                mOutlineColor);
+        mPrimaryColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_circleColor,
+                mPrimaryColor);
+        mAccentColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_circleOutlineColor,
+                mAccentColor);
+        mLineColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_lineColor,
+                mLineColor);
 
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
@@ -71,8 +85,11 @@ public class CircularTimeLineMarker extends View {
                 R.styleable.CircularTimeLineMarker_fontSize,
                 mFontSize);
         mOutlineWidth = a.getDimension(
-                R.styleable.CircularTimeLineMarker_outlineWidth,
+                R.styleable.CircularTimeLineMarker_circleOutlineWidth,
                 mOutlineWidth);
+        mLineWidth = a.getDimension(
+                R.styleable.CircularTimeLineMarker_lineWidth,
+                mLineWidth);
 
         a.recycle();
 
@@ -87,6 +104,9 @@ public class CircularTimeLineMarker extends View {
         mOutlinePaint = new Paint();
         mOutlinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
+        mLinePaint = new Paint();
+        mLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
         // Update TextPaint and text measurements from attributes
         invalidateTextPaintAndMeasurements();
     }
@@ -99,9 +119,12 @@ public class CircularTimeLineMarker extends View {
         Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
         mTextHeight = metrics.descent - metrics.ascent;
 
-        mCircularPaint.setColor(mBackgroundTint);
+        mCircularPaint.setColor(mPrimaryColor);
 
-        mOutlinePaint.setColor(mOutlineColor);
+        mOutlinePaint.setColor(mAccentColor);
+
+        mLinePaint.setColor(mLineColor);
+        mLinePaint.setStrokeWidth(mLineWidth);
 
 //        // Radius of the circle
 //        mRadius = (mTextWidth < mTextHeight)
@@ -122,11 +145,8 @@ public class CircularTimeLineMarker extends View {
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
-//        if(contentWidth < contentHeight) {
-//            mRadius = contentHeight / 2;
-//        } else {
-//            mRadius = contentWidth / 2;
-//        }
+        // Draw the main line
+        canvas.drawLine(paddingLeft+contentWidth/2, paddingTop, paddingLeft+contentWidth/2, getHeight()-paddingBottom, mLinePaint);
 
         // Draw the circle and outline
         float cxPos = paddingLeft + contentWidth/2;
@@ -140,12 +160,12 @@ public class CircularTimeLineMarker extends View {
         float yPos = getHeight()/2 + mTextHeight/2 - metrics.descent;
         canvas.drawText(mExampleString, xPos, yPos, mTextPaint);
 
-        // TODO; guide line
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        paint.setStrokeWidth(2);
-        canvas.drawLine(0, getHeight()/2, getWidth(), getHeight()/2, paint);
-        canvas.drawLine(getWidth()/2, 0, getWidth()/2, getHeight(), paint);
+//        // TODO; guide line
+//        Paint paint = new Paint();
+//        paint.setColor(Color.RED);
+//        paint.setStrokeWidth(2);
+//        canvas.drawLine(0, getHeight()/2, getWidth(), getHeight()/2, paint);
+//        canvas.drawLine(getWidth()/2, 0, getWidth()/2, getHeight(), paint);
 
         // Call super.onDraw() at the last of onDraw() to overwrite the
         // text on the background circle
@@ -174,6 +194,9 @@ public class CircularTimeLineMarker extends View {
             int desiredWidth = (mTextWidth < mTextHeight)
                     ? (int) (mTextHeight * mRadiusRatioToFont)
                     : (int) (mTextWidth * mRadiusRatioToFont);
+            if(mOrientation == Orientation.HORIZONTAL) {
+                desiredWidth *= mLineRatioToRadius;
+            }
             desiredWidth += paddingLeft + paddingRight;
 
             if(widthMode == MeasureSpec.AT_MOST) {
@@ -190,10 +213,13 @@ public class CircularTimeLineMarker extends View {
             int desiredHeight = (mTextWidth < mTextHeight)
                     ? (int) (mTextHeight * mRadiusRatioToFont)
                     : (int) (mTextWidth  * mRadiusRatioToFont);
+            if(mOrientation == Orientation.VERTICAL) {
+                desiredHeight *= mLineRatioToRadius;
+            }
             desiredHeight += paddingBottom + paddingTop;
 
             if(heightMode == MeasureSpec.AT_MOST) {
-                height = Math.min(desiredHeight, widthSize);
+                height = Math.min(desiredHeight, heightSize);
             } else {
                 height = desiredHeight;
             }
