@@ -78,9 +78,12 @@ public class DBContract {
         public static final String TABLE_NAME = "assignment";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TITLE = "title";
-        public static final String COLUMN_DEADLINE = "deadline";
         public static final String COLUMN_ENROLLING_INFO_ID = "enrolling_info_id";
         public static final String COLUMN_NOTE = "note";
         public static final String COLUMN_IS_DONE = "is_done";
+        public static final String COLUMN_DEADLINE_YEAR = "deadline_y";
+        public static final String COLUMN_DEADLINE_MONTH = "deadline_m";
+        public static final String COLUMN_DEADLINE_DAY = "deadline_d";
+        public static final String COLUMN_DEADLINE_DAY_OF_WEEK = "deadline_d_of_w";
     }
 }

@@ -8,5 +8,6 @@ public enum EntityType {
     SUBJECT,
     LOCATION,
     ENROLLING_INFO,
-    TEACHER
+    TEACHER,
+    ASSIGNMENT
 }
