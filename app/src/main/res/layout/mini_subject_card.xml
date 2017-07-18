@@ -9,7 +9,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:orientation="vertical"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         app:textColor="#FFFFFF"
@@ -19,7 +18,11 @@
         app:fontSize="24sp"
         app:text="2"
         app:circleOutlineWidth="0dp"
-        app:lineWidth="8dp"/>
+        app:lineWidth="8dp"
+        app:drawRunningOverLineBegin="true"
+        app:drawRunningOverLineEnd="true"
+        app:orientation="vertical"
+        app:paddingCircle="4dp"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="0dp"

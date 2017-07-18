@@ -15,10 +15,12 @@
         app:textColor="#FFFFFF"
         app:circleColor="@color/colorPrimary"
         app:circleOutlineColor="@color/colorPrimaryDark"
-        app:lineColor="@color/colorPrimaryDark"
+        app:lineColor="@color/colorPrimary"
+        app:outlineColor="@color/colorPrimaryDark"
         app:fontSize="200sp"
         app:text="2"
         app:circleOutlineWidth="20dp"
-        app:lineWidth="35dp"/>
+        app:lineWidth="70dp"
+        app:outlineWidth="20dp"/>
 
 </LinearLayout>

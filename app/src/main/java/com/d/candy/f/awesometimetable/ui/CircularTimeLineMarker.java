@@ -42,25 +42,33 @@ public class CircularTimeLineMarker extends View {
     }
 
     private String mExampleString; // TODO: use a default from R.string...
-    private int mTextColor = Color.RED; // TODO: use a default from R.color...
-    private int mPrimaryColor = mTextColor;
-    private int mAccentColor = mTextColor;
-    private int mLineColor = mTextColor;
+    private int mTextColor = Color.WHITE; // TODO: use a default from R.color...
+    private int mCircleColor = Color.BLUE;
+    private int mCircleOutlineColor = mCircleColor;
+    private int mLineColor = mCircleColor;
+    private int mOutlineColor = mCircleOutlineColor;
     private float mFontSize = 0; // TODO: use a default from R.dimen...
 
     private TextPaint mTextPaint;
     private float mTextWidth;
     private float mTextHeight;
     private int mRadius = 0;
-    private float mOutlineWidth = 0;
+    private float mCircleOutlineWidth = 0;
     private float mLineWidth = 0;
+    private float mOutlineWidth = 0;
 
-    private Paint mCircularPaint;
-    private Paint mOutlinePaint;
+    private Paint mCirclePaint;
+    private Paint mCircleOutlinePaint;
     private Paint mLinePaint;
+    private Paint mOutlinePaint;
 
     private float mRadiusRatioToFont = 1.15f;
     private float mLineRatioToRadius = 1.3f;
+
+    private boolean mDrawRunningOverLineBegin = true;
+    private boolean mDrawRunningOverLineEnd = true;
+
+    private float mPaddingCircle = 0;
 
     private Orientation mOrientation = Orientation.VERTICAL;
 
@@ -92,27 +100,42 @@ public class CircularTimeLineMarker extends View {
         mTextColor = a.getColor(
                 R.styleable.CircularTimeLineMarker_textColor,
                 mTextColor);
-        mPrimaryColor = a.getColor(
+        mCircleColor = a.getColor(
                 R.styleable.CircularTimeLineMarker_circleColor,
-                mPrimaryColor);
-        mAccentColor = a.getColor(
+                mCircleColor);
+        mCircleOutlineColor = a.getColor(
                 R.styleable.CircularTimeLineMarker_circleOutlineColor,
-                mAccentColor);
+                mCircleOutlineColor);
         mLineColor = a.getColor(
                 R.styleable.CircularTimeLineMarker_lineColor,
                 mLineColor);
+        mOutlineColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_outlineColor,
+                mOutlineColor);
+        mDrawRunningOverLineBegin = a.getBoolean(
+                R.styleable.CircularTimeLineMarker_drawRunningOverLineBegin,
+                mDrawRunningOverLineBegin);
+        mDrawRunningOverLineEnd = a.getBoolean(
+                R.styleable.CircularTimeLineMarker_drawRunningOverLineEnd,
+                mDrawRunningOverLineEnd);
 
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
         mFontSize = a.getDimension(
                 R.styleable.CircularTimeLineMarker_fontSize,
                 mFontSize);
-        mOutlineWidth = a.getDimension(
+        mCircleOutlineWidth = a.getDimension(
                 R.styleable.CircularTimeLineMarker_circleOutlineWidth,
-                mOutlineWidth);
+                mCircleOutlineWidth);
         mLineWidth = a.getDimension(
                 R.styleable.CircularTimeLineMarker_lineWidth,
                 mLineWidth);
+        mOutlineWidth = a.getDimension(
+                R.styleable.CircularTimeLineMarker_outlineWidth,
+                mOutlineWidth);
+        mPaddingCircle = a.getDimension(
+                R.styleable.CircularTimeLineMarker_paddingCircle,
+                mPaddingCircle);
 
         a.recycle();
 
@@ -121,14 +144,17 @@ public class CircularTimeLineMarker extends View {
         mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
 
-        mCircularPaint = new Paint();
-        mCircularPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        mCirclePaint = new Paint();
+        mCirclePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-        mOutlinePaint = new Paint();
-        mOutlinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        mCircleOutlinePaint = new Paint();
+        mCircleOutlinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
         mLinePaint = new Paint();
         mLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
+        mOutlinePaint = new Paint();
+        mOutlinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
         // Update TextPaint and text measurements from attributes
         invalidateTextPaintAndMeasurements();
@@ -142,12 +168,18 @@ public class CircularTimeLineMarker extends View {
         Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
         mTextHeight = metrics.descent - metrics.ascent;
 
-        mCircularPaint.setColor(mPrimaryColor);
+        mCirclePaint.setColor(mCircleColor);
 
-        mOutlinePaint.setColor(mAccentColor);
+        mCircleOutlinePaint.setColor(mCircleOutlineColor);
 
         mLinePaint.setColor(mLineColor);
-        mLinePaint.setStrokeWidth(mLineWidth);
+        float actualLineWidth = mLineWidth - mOutlineWidth*2;
+        actualLineWidth = (actualLineWidth < 0f) ? 0f : actualLineWidth;
+        mLinePaint.setStrokeWidth(actualLineWidth);
+
+        mOutlinePaint.setColor(mOutlineColor);
+        float actualOutlineWidth = mLineWidth;
+        mOutlinePaint.setStrokeWidth(actualOutlineWidth);
 
 //        // Radius of the circle
 //        mRadius = (mTextWidth < mTextHeight)
@@ -168,28 +200,43 @@ public class CircularTimeLineMarker extends View {
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
-        // Draw the main line
-        if(mOrientation == Orientation.VERTICAL) {
-            canvas.drawLine(
-                    paddingLeft+contentWidth/2,
-                    paddingTop,
-                    paddingLeft+contentWidth/2,
-                    paddingTop+contentHeight,
-                    mLinePaint);
-        } else {
-            canvas.drawLine(
-                    paddingLeft,
-                    paddingTop+contentHeight/2,
-                    paddingLeft+contentWidth,
-                    paddingTop+contentHeight/2,
-                    mLinePaint);
-        }
-
-        // Draw the circle and outline
+        // Center position of circles
         float cxPos = paddingLeft + contentWidth/2;
         float cyPos = paddingTop + contentHeight/2;
-        canvas.drawCircle(cxPos, cyPos, mRadius, mOutlinePaint);
-        canvas.drawCircle(cxPos, cyPos, mRadius - mOutlineWidth, mCircularPaint);
+
+
+        // Draw the outline and the main line
+        if(mOrientation == Orientation.VERTICAL) {
+            float lx = paddingLeft + contentWidth/2;
+            float ly1 = (mDrawRunningOverLineBegin) ? paddingTop : cyPos;
+            float ly2 = (mDrawRunningOverLineEnd)
+                    ? paddingTop + contentHeight
+                    : cyPos;
+
+            if(mOutlineWidth != 0f) {
+                canvas.drawLine(lx, ly1, lx, ly2, mOutlinePaint);
+            }
+            canvas.drawLine(lx, ly1, lx, ly2, mLinePaint);
+
+        } else {
+            float ly = paddingTop + contentHeight/2;
+            float lx1 = (mDrawRunningOverLineBegin) ? paddingLeft : cxPos;
+            float lx2 = (mDrawRunningOverLineEnd)
+                    ? paddingLeft + contentWidth
+                    : cxPos;
+
+            if(mOutlineWidth != 0f) {
+                canvas.drawLine(lx1, ly, lx2, ly, mOutlinePaint);
+            }
+            canvas.drawLine(lx1, ly, lx2, ly, mLinePaint);
+        }
+
+        // Draw the circle and the outline of it
+        if(mCircleOutlineWidth != 0f) {
+            // Draw outline of the circle
+            canvas.drawCircle(cxPos, cyPos, mRadius, mCircleOutlinePaint);
+        }
+        canvas.drawCircle(cxPos, cyPos, mRadius - mCircleOutlineWidth, mCirclePaint);
 
         // Draw the text.
         Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
@@ -264,8 +311,8 @@ public class CircularTimeLineMarker extends View {
 
         // Measure radius of the circle
         mRadius = (width < height)
-                ? (width-paddingLeft-paddingRight) / 2
-                : (height-paddingBottom-paddingTop) / 2;
+                ? (int) (width-paddingLeft-paddingRight-mPaddingCircle*2) / 2
+                : (int) (height-paddingBottom-paddingTop-mPaddingCircle*2) / 2;
 
 
         setMeasuredDimension(width, height);

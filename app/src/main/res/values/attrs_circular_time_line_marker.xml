@@ -4,13 +4,18 @@
         <attr name="fontSize" format="dimension"/>
         <attr name="circleOutlineWidth" format="dimension"/>
         <attr name="lineWidth" format="dimension"/>
+        <attr name="outlineWidth" format="dimension"/>
         <attr name="textColor" format="color"/>
         <attr name="circleColor" format="color"/>
         <attr name="circleOutlineColor" format="color"/>
         <attr name="lineColor" format="color"/>
+        <attr name="outlineColor" format="color"/>
         <attr name="orientation" format="enum">
             <enum name="vertical" value="0"/>
             <enum name="horizontal" value="1"/>
         </attr>
+        <attr name="drawRunningOverLineBegin" format="boolean"/>
+        <attr name="drawRunningOverLineEnd" format="boolean"/>
+        <attr name="paddingCircle" format="dimension"/>
     </declare-styleable>
 </resources>
