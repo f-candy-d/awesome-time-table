@@ -5,6 +5,7 @@ import com.d.candy.f.awesometimetable.TestObject;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
+import com.d.candy.f.awesometimetable.structure.Teacher;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 /**
@@ -105,4 +106,6 @@ public class DataStructureFactory {
     public static Location makeLocation(int id) {
         return TestObject.makeLocation(id);
     }
+
+    public static Teacher makeTeacher(int id) { return TestObject.makeTeacher(id); }
 }

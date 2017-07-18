@@ -14,7 +14,8 @@ public class DBContract {
         return new String[] {
                 SubjectEntity.TABLE_NAME,
                 TeacherEntity.TABLE_NAME,
-                EnrollingInfoEntity.TABLE_NAME
+                EnrollingInfoEntity.TABLE_NAME,
+                LocationEntity.TABLE_NAME
         };
     }
 
@@ -22,10 +23,12 @@ public class DBContract {
      * Define the table contents here!
      */
     public static class SubjectEntity {
-        // id=1 is used for BLANK-Subject entity
-        public static final int MIN_USABLE_ID = 2;
+        // Use this as the ID of a unspecified subject
+        public static final int NULL_ID = 0;
         // The id used for BLANK-Subject
         public static final int BLANK_SUBJECT_ID = 1;
+        // (MIN_USABLE_ID - 1) is used for BLANK-Subject entity
+        public static final int MIN_USABLE_ID = BLANK_SUBJECT_ID + 1;
         public static final String TABLE_NAME = "subject";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
@@ -39,6 +42,9 @@ public class DBContract {
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_LAB = "lab";
+        public static final String COLUMN_MAIL = "mail";
+        public static final String COLUMN_PHONE = "phone";
+        public static final String COLUMN_SUBJECT_ID = "subject_id";
     }
 
     public static class EnrollingInfoEntity {
@@ -47,5 +53,11 @@ public class DBContract {
         public static final String COLUMN_DAY_OF_WEEK = "day_of_week";
         public static final String COLUMN_PERIOD = "period";
         public static final String COLUMN_SUBJECT_ID = "subject_id";
+    }
+
+    public static class LocationEntity {
+        public static final String TABLE_NAME = "location";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_NAME = "name";
     }
 }

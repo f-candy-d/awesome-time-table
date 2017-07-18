@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
@@ -28,7 +26,7 @@ public class WeeklyTimeTableFragment extends Fragment
         implements MiniSubjectCardAdapter.OnItemClickListener {
 
     public interface InteractionListener {
-        void onLaunchSubjectDetailsActivity(Subject subject);
+        void onLaunchSubjectDetailsViewer(Subject subject);
     }
 
     // TODO: Rename parameter arguments, choose names that match
@@ -124,6 +122,6 @@ public class WeeklyTimeTableFragment extends Fragment
      */
     @Override
     public void onItemClicked(Subject subject) {
-        mInteractionListener.onLaunchSubjectDetailsActivity(subject);
+        mInteractionListener.onLaunchSubjectDetailsViewer(subject);
     }
 }

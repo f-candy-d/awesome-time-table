@@ -48,10 +48,11 @@ public class Subject extends Entity {
      */
     public Subject() {}
 
-    public Subject(int id, String name, int locationID, String teacher, int length) {
+    public Subject(int id, String name, int locationID, int teacherID, int length) {
         setID(id);
         mName = name;
         mLocationID = locationID;
+        mTeacherID = teacherID;
         mLength = length;
     }
 

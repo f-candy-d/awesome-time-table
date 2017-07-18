@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable.ui;
+package com.d.candy.f.awesometimetable;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,17 +13,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.Subject;
+import com.d.candy.f.awesometimetable.ui.SubjectDetailsActivity;
+import com.d.candy.f.awesometimetable.ui.WeeklyTimeTableFragment;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 public class MainActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
-WeeklyTimeTableFragment.InteractionListener {
+        WeeklyTimeTableFragment.InteractionListener {
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
     private int mCheckedItemID = -1;
+
+    /**
+     * Key strings being used in the Intent
+     */
+    public static final String EXTRA_SUBJECT_ID = "subject_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +135,9 @@ WeeklyTimeTableFragment.InteractionListener {
      * Implementation of WeeklyTimeTableFragment.InteractionListener interface
      */
     @Override
-    public void onLaunchSubjectDetailsActivity(Subject subject) {
+    public void onLaunchSubjectDetailsViewer(Subject subject) {
         Intent intent = new Intent(this, SubjectDetailsActivity.class);
-        intent.putExtra("extra_test_message", subject.getName());
+        intent.putExtra(EXTRA_SUBJECT_ID, subject.getID());
         startActivity(intent);
     }
 }

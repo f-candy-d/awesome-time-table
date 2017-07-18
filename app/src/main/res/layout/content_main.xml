@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.d.candy.f.awesometimetable.ui.MainActivity"
+    tools:context="com.d.candy.f.awesometimetable.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <include

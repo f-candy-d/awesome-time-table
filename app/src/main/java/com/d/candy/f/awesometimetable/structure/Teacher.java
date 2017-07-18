@@ -1,16 +1,19 @@
 package com.d.candy.f.awesometimetable.structure;
 
+import android.content.ContentValues;
+
+import com.d.candy.f.awesometimetable.DBContract;
+
 /**
  * Created by daichi on 7/12/17.
  */
 
-public class Teacher {
+public class Teacher extends Entity {
 
     private String mName = null;
-    private String mRoom = null;
+    private String mLab = null;
     private String mMail = null;
     private String mPhone = null;
-    private int mID;
     private int mSubjectID;
 
     public String getName() {
@@ -21,12 +24,12 @@ public class Teacher {
         mName = name;
     }
 
-    public String getRoom() {
-        return mRoom;
+    public String getLab() {
+        return mLab;
     }
 
-    public void setRoom(String room) {
-        mRoom = room;
+    public void setLab(String lab) {
+        mLab = lab;
     }
 
     public String getMail() {
@@ -45,14 +48,6 @@ public class Teacher {
         mPhone = phone;
     }
 
-    public int getID() {
-        return mID;
-    }
-
-    public void setID(int ID) {
-        mID = ID;
-    }
-
     public int getSubjectID() {
         return mSubjectID;
     }
@@ -66,13 +61,28 @@ public class Teacher {
      */
     public Teacher() {}
 
-    public Teacher(String name, String room, String mail, String phone,
-                   int id, int subjectID) {
+    public Teacher(int id, String name, String lab,
+                   String mail, String phone, int subjectID) {
+        setID(id);
         mName = name;
-        mRoom = room;
+        mLab = lab;
         mMail = mail;
         mPhone = phone;
-        mID = id;
         mSubjectID = subjectID;
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.TEACHER;
+    }
+
+    @Override
+    public String getAffiliation() {
+        return DBContract.TeacherEntity.TABLE_NAME;
+    }
+
+    @Override
+    public ContentValues toContentValues() {
+        return null;
     }
 }

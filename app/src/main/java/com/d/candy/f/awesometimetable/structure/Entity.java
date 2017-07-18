@@ -2,11 +2,13 @@ package com.d.candy.f.awesometimetable.structure;
 
 import android.content.ContentValues;
 
+import java.io.Serializable;
+
 /**
  * Created by daichi on 7/14/17.
  */
 
-abstract public class Entity {
+abstract public class Entity implements Serializable {
 
     private int mID;
 

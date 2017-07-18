@@ -7,5 +7,6 @@ package com.d.candy.f.awesometimetable.structure;
 public enum EntityType {
     SUBJECT,
     LOCATION,
-    ENROLLING_INFO
+    ENROLLING_INFO,
+    TEACHER
 }
