@@ -8,22 +8,28 @@
 
     <com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
         app:orientation="vertical"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
         app:textColor="#FFFFFF"
         app:circleColor="@color/colorPrimary"
         app:circleOutlineColor="@color/colorPrimaryDark"
         app:lineColor="@color/colorPrimary"
         app:outlineColor="@color/colorPrimaryDark"
-        app:fontSize="200sp"
+        app:fontSize="60sp"
         app:text="2"
-        app:circleOutlineWidth="20dp"
-        app:lineWidth="70dp"
-        app:outlineWidth="20dp"
-        app:paddingCircle="4dp"
-        app:drawRunningOverLineBegin="false"
-        app:markerGravity="topOrLeft"/>
+        app:circleOutlineWidth="10dp"
+        app:lineWidth="30dp"
+        app:outlineWidth="10dp"
+        app:paddingCircle="0dp"
+        app:drawRunningOverLineStart="false"
+        app:drawRunningOverLineEnd="true"
+        app:markerGravity="start"
+        app:numOfSubMarker="2"
+        app:subMarkerColor="@color/colorPrimaryDark"
+        app:marginMarkerStart="8dp"
+        app:marginMarkerEnd="8dp"
+        app:lineLengthRatioToMarkerSize="5.0"/>
 
 </LinearLayout>

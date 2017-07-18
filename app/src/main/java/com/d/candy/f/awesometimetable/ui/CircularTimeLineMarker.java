@@ -67,46 +67,73 @@ public class CircularTimeLineMarker extends View {
         }
     }
 
-    private String mText; // TODO: use a default from R.string...
-    private int mTextColor = Color.WHITE; // TODO: use a default from R.color...
-    private int mCircleColor = Color.BLUE;
-    private int mCircleOutlineColor = mCircleColor;
-    private int mLineColor = mCircleColor;
-    private int mOutlineColor = mCircleOutlineColor;
-    private float mFontSize = 0; // TODO: use a default from R.dimen...
+    // TODO: Set default values...
+    /**
+     * Text
+     */
+    // attributes
+    private String mText = "1";
+    private float mFontSize = 0;
+    private int mTextColor = Color.WHITE;
 
-    private TextPaint mTextPaint;
+    // runtime
     private float mTextWidth;
     private float mTextHeight;
-    private int mRadius = 0;
-    private float mCircleOutlineWidth = 0;
-    private float mLineWidth = 0;
-    private float mOutlineWidth = 0;
 
-    private Paint mCirclePaint;
-    private Paint mCircleOutlinePaint;
-    private Paint mLinePaint;
-    private Paint mOutlinePaint;
-    private Paint mSubMarkerPaint;
-
-    private float mRadiusRatioToFont = 1.3f;
-    private float mLineRatioToRadius = 1.3f;
-    private float mSubRadiusRatioToRadius = 0.5f;
-
-    private boolean mDrawRunningOverLineBegin = true;
-    private boolean mDrawRunningOverLineEnd = true;
-
-    private float mPaddingCircle = 0;
-
+    /**
+     * Marker
+     */
+    // attributes
+    private int mMarkerColor = Color.BLUE;
+    private int mMarkerOutlineColor = mMarkerColor;
+    private float mMarkerOutlineWidth = 0;
+    private float mMarkerSizeRatioToFont = 1.3f;
+    private float mPaddingMarker = 0;
     private float mMarginMarkerStart = 0;
     private float mMarginMarkerEnd = 0;
-
-    private Orientation mOrientation = Orientation.VERTICAL;
     private MarkerGravity mMarkerGravity = MarkerGravity.TOP_OR_LEFT;
 
+    // runtime
+    private int mMarkerRadius = 0;
+
+    /**
+     * SubMarker
+     */
+    // attributes
+    private float mSubMarkerSizeRatioToMarkerSize = 0.6f;
     private int mNumSubMarker = 0;
+    private int mSubMarkerColor = mMarkerColor;
+
+    // runtime
     private int mSubMarkerRadius = 0;
-    private int mSubMarkerColor = mCircleColor;
+
+    /**
+     * Line
+     */
+    // attributes
+    private int mLineColor = mMarkerColor;
+    private int mOutlineColor = mMarkerOutlineColor;
+    private float mLineWidth = 0;
+    private float mOutlineWidth = 0;
+    private float mLineLengthRatioToMarkerSize = 1.3f;
+    private boolean mDrawRunningOverLineStart = true;
+    private boolean mDrawRunningOverLineEnd = true;
+
+    /**
+     * Paint objects
+     */
+    private TextPaint mTextPaint;
+    private Paint mMarkerPaint;
+    private Paint mMarkerOutlinePaint;
+    private Paint mSubMarkerPaint;
+    private Paint mLinePaint;
+    private Paint mOutlinePaint;
+
+    /**
+     * Whole
+     */
+    // attributes
+    private Orientation mOrientation = Orientation.VERTICAL;
 
     public CircularTimeLineMarker(Context context) {
         super(context);
@@ -124,108 +151,49 @@ public class CircularTimeLineMarker extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.CircularTimeLineMarker, defStyle, 0);
 
-        mText = a.getString(
-                R.styleable.CircularTimeLineMarker_text);
-        mOrientation = Orientation.fromId(a.getInt(
-                R.styleable.CircularTimeLineMarker_orientation,
-                mOrientation.toInt()));
-        mMarkerGravity = MarkerGravity.fromID(a.getInt(
-                R.styleable.CircularTimeLineMarker_markerGravity,
-                mMarkerGravity.toInt()));
-        mTextColor = a.getColor(
-                R.styleable.CircularTimeLineMarker_textColor,
-                mTextColor);
-        mCircleColor = a.getColor(
-                R.styleable.CircularTimeLineMarker_circleColor,
-                mCircleColor);
-        mCircleOutlineColor = a.getColor(
-                R.styleable.CircularTimeLineMarker_circleOutlineColor,
-                mCircleOutlineColor);
-        mLineColor = a.getColor(
-                R.styleable.CircularTimeLineMarker_lineColor,
-                mLineColor);
-        mOutlineColor = a.getColor(
-                R.styleable.CircularTimeLineMarker_outlineColor,
-                mOutlineColor);
-        mSubMarkerColor = a.getColor(
-                R.styleable.CircularTimeLineMarker_subMarkerColor,
-                mSubMarkerColor);
-        mDrawRunningOverLineBegin = a.getBoolean(
-                R.styleable.CircularTimeLineMarker_drawRunningOverLineBegin,
-                mDrawRunningOverLineBegin);
-        mDrawRunningOverLineEnd = a.getBoolean(
-                R.styleable.CircularTimeLineMarker_drawRunningOverLineEnd,
-                mDrawRunningOverLineEnd);
-        mNumSubMarker = a.getInt(
-                R.styleable.CircularTimeLineMarker_numOfSubMarker,
-                mNumSubMarker);
-
-        // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
-        // values that should fall on pixel boundaries.
-        mFontSize = a.getDimension(
-                R.styleable.CircularTimeLineMarker_fontSize,
-                mFontSize);
-        mCircleOutlineWidth = a.getDimension(
-                R.styleable.CircularTimeLineMarker_circleOutlineWidth,
-                mCircleOutlineWidth);
-        mLineWidth = a.getDimension(
-                R.styleable.CircularTimeLineMarker_lineWidth,
-                mLineWidth);
-        mOutlineWidth = a.getDimension(
-                R.styleable.CircularTimeLineMarker_outlineWidth,
-                mOutlineWidth);
-        mPaddingCircle = a.getDimension(
-                R.styleable.CircularTimeLineMarker_paddingCircle,
-                mPaddingCircle);
-        mMarginMarkerStart = a.getDimension(
-                R.styleable.CircularTimeLineMarker_marginMarkerStart,
-                mMarginMarkerStart);
-        mMarginMarkerEnd = a.getDimension(
-                R.styleable.CircularTimeLineMarker_marginMarkerEnd,
-                mMarginMarkerEnd);
-
-        a.recycle();
+        loadAttributes(attrs, defStyle);
 
         // Set up a default TextPaint/Paint object
+        // Text
         mTextPaint = new TextPaint();
         mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
-
-        mCirclePaint = new Paint();
-        mCirclePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-
-        mCircleOutlinePaint = new Paint();
-        mCircleOutlinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-
+        // Marker
+        mMarkerPaint = new Paint();
+        mMarkerPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        // Sub Marker
+        mSubMarkerPaint = new Paint();
+        mSubMarkerPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        // Outline of the Marker
+        mMarkerOutlinePaint = new Paint();
+        mMarkerOutlinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        // Line
         mLinePaint = new Paint();
         mLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-
+        // Outline of the Line
         mOutlinePaint = new Paint();
         mOutlinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-        mSubMarkerPaint = new Paint();
-        mSubMarkerPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-
-        // Update TextPaint and text measurements from attributes
+        // Update TextPaint/Paint object and some measurements from attributes
         invalidateTextPaintAndMeasurements();
+        invalidateMarkerPaintAndMeasurements();
+        invalidateSubMarkerPaintAndMeasurements();
+        invalidateLinePaintAndMeasurements();
     }
 
-    private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(mFontSize);
-        mTextPaint.setColor(mTextColor);
-        mTextWidth = mTextPaint.measureText(mText);
+    private void invalidateMarkerPaintAndMeasurements() {
+        mMarkerPaint.setColor(mMarkerColor);
 
-        Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
-        mTextHeight = metrics.descent - metrics.ascent;
+        mMarkerOutlinePaint.setColor(mMarkerOutlineColor);
 
-        mCirclePaint.setColor(mCircleColor);
+    }
 
-        mCircleOutlinePaint.setColor(mCircleOutlineColor);
+    private void invalidateSubMarkerPaintAndMeasurements() {
+        mSubMarkerPaint.setColor(mSubMarkerColor);
+    }
 
+    private void invalidateLinePaintAndMeasurements() {
         mLinePaint.setColor(mLineColor);
         float actualLineWidth = mLineWidth - mOutlineWidth*2;
         actualLineWidth = (actualLineWidth < 0f) ? 0f : actualLineWidth;
@@ -234,15 +202,107 @@ public class CircularTimeLineMarker extends View {
         mOutlinePaint.setColor(mOutlineColor);
         float actualOutlineWidth = mLineWidth;
         mOutlinePaint.setStrokeWidth(actualOutlineWidth);
+    }
 
-        mSubMarkerPaint.setColor(mSubMarkerColor);
+    private void invalidateTextPaintAndMeasurements() {
+        mTextPaint.setTextSize(mFontSize);
+        mTextPaint.setColor(mTextColor);
+
+        mTextWidth = mTextPaint.measureText(mText);
+
+        Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
+        mTextHeight = metrics.descent - metrics.ascent;
+    }
+
+    private void loadAttributes(AttributeSet attrs, int defStyle) {
+        // Load attributes
+        final TypedArray a = getContext().obtainStyledAttributes(
+                attrs, R.styleable.CircularTimeLineMarker, defStyle, 0);
+
+        // Whole
+        mOrientation = Orientation.fromId(a.getInt(
+                R.styleable.CircularTimeLineMarker_orientation,
+                mOrientation.toInt()));
+
+        // Text
+        mText = a.getString(
+                R.styleable.CircularTimeLineMarker_text);
+        mTextColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_textColor,
+                mTextColor);
+        mFontSize = a.getDimension(
+                R.styleable.CircularTimeLineMarker_fontSize,
+                mFontSize);
+
+        // Marker
+        mMarkerGravity = MarkerGravity.fromID(a.getInt(
+                R.styleable.CircularTimeLineMarker_markerGravity,
+                mMarkerGravity.toInt()));
+        mMarkerColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_circleColor,
+                mMarkerColor);
+        mMarkerOutlineColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_circleOutlineColor,
+                mMarkerOutlineColor);
+        mMarkerOutlineWidth = a.getDimension(
+                R.styleable.CircularTimeLineMarker_circleOutlineWidth,
+                mMarkerOutlineWidth);
+        mPaddingMarker = a.getDimension(
+                R.styleable.CircularTimeLineMarker_paddingCircle,
+                mPaddingMarker);
+        mMarginMarkerStart = a.getDimension(
+                R.styleable.CircularTimeLineMarker_marginMarkerStart,
+                mMarginMarkerStart);
+        mMarginMarkerEnd = a.getDimension(
+                R.styleable.CircularTimeLineMarker_marginMarkerEnd,
+                mMarginMarkerEnd);
+        mMarkerSizeRatioToFont = a.getFloat(
+                R.styleable.CircularTimeLineMarker_markerSizeRatioToFontSize,
+                mMarkerSizeRatioToFont);
+
+
+        // Sub Marker
+        mSubMarkerColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_subMarkerColor,
+                mSubMarkerColor);
+        mNumSubMarker = a.getInt(
+                R.styleable.CircularTimeLineMarker_numOfSubMarker,
+                mNumSubMarker);
+        mSubMarkerSizeRatioToMarkerSize = a.getFloat(
+                R.styleable.CircularTimeLineMarker_subMarkerSizeRatioToMarker,
+                mSubMarkerSizeRatioToMarkerSize);
+
+        // Line
+        mLineColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_lineColor,
+                mLineColor);
+        mOutlineColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_outlineColor,
+                mOutlineColor);
+        mDrawRunningOverLineStart = a.getBoolean(
+                R.styleable.CircularTimeLineMarker_drawRunningOverLineStart,
+                mDrawRunningOverLineStart);
+        mDrawRunningOverLineEnd = a.getBoolean(
+                R.styleable.CircularTimeLineMarker_drawRunningOverLineEnd,
+                mDrawRunningOverLineEnd);
+        mLineWidth = a.getDimension(
+                R.styleable.CircularTimeLineMarker_lineWidth,
+                mLineWidth);
+        mOutlineWidth = a.getDimension(
+                R.styleable.CircularTimeLineMarker_outlineWidth,
+                mOutlineWidth);
+        mLineLengthRatioToMarkerSize = a.getFloat(
+                R.styleable.CircularTimeLineMarker_lineLengthRatioToMarkerSize,
+                mLineLengthRatioToMarkerSize);
+
+        a.recycle();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
 
-        // TODO: consider storing these as member variables to reduce
-        // allocations per draw cycle.
+        super.onDraw(canvas);
+
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
         int paddingRight = getPaddingRight();
@@ -252,76 +312,113 @@ public class CircularTimeLineMarker extends View {
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
         // Center position of the marker
-        float cxPos = paddingLeft + contentWidth/2;
-        float cyPos = paddingTop + mMarginMarkerStart;
-        if(mMarkerGravity == MarkerGravity.TOP_OR_LEFT) {
-            cyPos += mRadius;
-        } else if(mMarkerGravity == MarkerGravity.CENTER) {
-            cyPos += contentHeight/2;
-        } else if(mMarkerGravity == MarkerGravity.BOTTOM_OR_RIGHT) {
-            cyPos += contentHeight - mRadius - mMarginMarkerEnd;
+        float cxPos;
+        float cyPos;
+        if(mOrientation == Orientation.VERTICAL) {
+            cxPos = paddingLeft + contentWidth/2;
+            cyPos = paddingTop + mMarginMarkerStart;
+            if(mMarkerGravity == MarkerGravity.TOP_OR_LEFT) {
+                cyPos += mMarkerRadius;
+            } else if(mMarkerGravity == MarkerGravity.CENTER) {
+                cyPos += contentHeight/2;
+            } else if(mMarkerGravity == MarkerGravity.BOTTOM_OR_RIGHT) {
+                cyPos += contentHeight - mMarkerRadius - mMarginMarkerEnd;
+            }
+
+        } else {
+            cyPos = paddingTop + contentHeight/2;
+            cxPos = paddingLeft + mMarginMarkerStart;
+            if(mMarkerGravity == MarkerGravity.TOP_OR_LEFT) {
+                cxPos += mMarkerRadius;
+            } else if(mMarkerGravity == MarkerGravity.CENTER) {
+                cxPos += contentWidth/2;
+            } else if(mMarkerGravity == MarkerGravity.BOTTOM_OR_RIGHT) {
+                cxPos += contentWidth - mMarkerRadius - mMarginMarkerEnd;
+            }
         }
 
 
-        // Draw the outline and the main line
+        // Draw the Line
         if(mOrientation == Orientation.VERTICAL) {
             float lx = paddingLeft + contentWidth/2;
-            float ly1 = (mDrawRunningOverLineBegin) ? paddingTop : cyPos;
+            float ly1 = (mDrawRunningOverLineStart) ? paddingTop : cyPos;
             float ly2 = (mDrawRunningOverLineEnd)
                     ? paddingTop + contentHeight
                     : cyPos;
+            if(0 < mNumSubMarker) {
+                float drawableAreaSize = contentHeight - mMarginMarkerStart - mMarginMarkerEnd;
+                float diff = drawableAreaSize / (mNumSubMarker + 1);
+                ly2 += diff * mNumSubMarker;
+            }
 
             if(mOutlineWidth != 0f) {
+                // Outline
                 canvas.drawLine(lx, ly1, lx, ly2, mOutlinePaint);
             }
+            // Line
             canvas.drawLine(lx, ly1, lx, ly2, mLinePaint);
 
         } else {
             float ly = paddingTop + contentHeight/2;
-            float lx1 = (mDrawRunningOverLineBegin) ? paddingLeft : cxPos;
+            float lx1 = (mDrawRunningOverLineStart) ? paddingLeft : cxPos;
             float lx2 = (mDrawRunningOverLineEnd)
                     ? paddingLeft + contentWidth
                     : cxPos;
+            if (0 < mNumSubMarker) {
+                float drawableAreaSize = contentWidth- mMarginMarkerStart - mMarginMarkerEnd;
+                float diff = drawableAreaSize / (mNumSubMarker+1);
+                lx2 += diff * mNumSubMarker;
+            }
 
             if(mOutlineWidth != 0f) {
+                // Outline
                 canvas.drawLine(lx1, ly, lx2, ly, mOutlinePaint);
             }
+            // Line
             canvas.drawLine(lx1, ly, lx2, ly, mLinePaint);
         }
 
         // Draw the Marker
-        if(mCircleOutlineWidth != 0f) {
-            // Draw outline of the marker
-            canvas.drawCircle(cxPos, cyPos, mRadius, mCircleOutlinePaint);
+        // Outline of the marker
+        if(mMarkerOutlineWidth != 0f) {
+            canvas.drawCircle(cxPos, cyPos, mMarkerRadius, mMarkerOutlinePaint);
         }
-        canvas.drawCircle(cxPos, cyPos, mRadius - mCircleOutlineWidth, mCirclePaint);
+        // Marker
+        canvas.drawCircle(cxPos, cyPos, mMarkerRadius - mMarkerOutlineWidth, mMarkerPaint);
 
-        // Draw sub-markers
+        // Sub markers
         if(0 < mNumSubMarker) {
-            float drawableAreaSize = contentHeight - mMarginMarkerStart - mMarginMarkerEnd - mRadius;
-            float diff = drawableAreaSize / (mNumSubMarker+1);
+            if (mOrientation == Orientation.VERTICAL) {
+                float drawableAreaSize = contentHeight - mMarginMarkerStart - mMarginMarkerEnd;
+                float diff = drawableAreaSize / (mNumSubMarker + 1);
 
-            for(int i = 1; i <= mNumSubMarker; ++i) {
-                canvas.drawCircle(cxPos, cyPos + diff*i, mSubMarkerRadius, mSubMarkerPaint);
+                for (int i = 1; i <= mNumSubMarker; ++i) {
+                    canvas.drawCircle(cxPos, cyPos + diff * i, mSubMarkerRadius, mSubMarkerPaint);
+                }
+
+            } else {
+                float drawableAreaSize = contentWidth- mMarginMarkerStart - mMarginMarkerEnd;
+                float diff = drawableAreaSize / (mNumSubMarker+1);
+
+                for(int i = 1; i <= mNumSubMarker; ++i) {
+                    canvas.drawCircle(cxPos + diff * i, cyPos, mSubMarkerRadius, mSubMarkerPaint);
+                }
             }
         }
 
-        // Draw the text.
-        Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
-        float xPos = paddingLeft + contentWidth/2;
-        float yPos = cyPos + mTextHeight/2 - metrics.descent;
-        canvas.drawText(mText, xPos, yPos, mTextPaint);
+        // Text
+        if(mOrientation == Orientation.VERTICAL) {
+            Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
+            float xPos = paddingLeft + contentWidth/2;
+            float yPos = cyPos + mTextHeight/2 - metrics.descent;
+            canvas.drawText(mText, xPos, yPos, mTextPaint);
 
-//        // TODO; guide line
-//        Paint paint = new Paint();
-//        paint.setColor(Color.RED);
-//        paint.setStrokeWidth(2);
-//        canvas.drawLine(0, getHeight()/2, getWidth(), getHeight()/2, paint);
-//        canvas.drawLine(getWidth()/2, 0, getWidth()/2, getHeight(), paint);
-
-        // Call super.onDraw() at the last of onDraw() to overwrite the
-        // text on the background circle
-        super.onDraw(canvas);
+        } else {
+            Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
+            float xPos = paddingTop + contentHeight/2;
+            float yPos = cxPos + mTextHeight/2 - metrics.descent;
+            canvas.drawText(mText, xPos, yPos, mTextPaint);
+        }
     }
 
     @Override
@@ -344,10 +441,11 @@ public class CircularTimeLineMarker extends View {
             width = widthSize;
         } else {
             int desiredWidth = (mTextWidth < mTextHeight)
-                    ? (int) (mTextHeight * mRadiusRatioToFont)
-                    : (int) (mTextWidth * mRadiusRatioToFont);
+                    ? (int) (mTextHeight * mMarkerSizeRatioToFont)
+                    : (int) (mTextWidth * mMarkerSizeRatioToFont);
             if(mOrientation == Orientation.HORIZONTAL) {
-                desiredWidth *= mLineRatioToRadius;
+                // Consider the length of the line
+                desiredWidth *= mLineLengthRatioToMarkerSize;
             }
             desiredWidth += paddingLeft + paddingRight;
 
@@ -363,10 +461,11 @@ public class CircularTimeLineMarker extends View {
             height = heightSize;
         } else {
             int desiredHeight = (mTextWidth < mTextHeight)
-                    ? (int) (mTextHeight * mRadiusRatioToFont)
-                    : (int) (mTextWidth  * mRadiusRatioToFont);
+                    ? (int) (mTextHeight * mMarkerSizeRatioToFont)
+                    : (int) (mTextWidth  * mMarkerSizeRatioToFont);
             if(mOrientation == Orientation.VERTICAL) {
-                desiredHeight *= mLineRatioToRadius;
+                // Consider the length of the line
+                desiredHeight *= mLineLengthRatioToMarkerSize;
             }
             desiredHeight += paddingBottom + paddingTop;
 
@@ -378,83 +477,201 @@ public class CircularTimeLineMarker extends View {
         }
 
         // Measure radius of the circle
-        mRadius = (width < height)
-                ? (int) (width-paddingLeft-paddingRight-mPaddingCircle*2) / 2
-                : (int) (height-paddingBottom-paddingTop-mPaddingCircle*2) / 2;
-        mSubMarkerRadius = (int) (mRadius * mSubRadiusRatioToRadius);
+        mMarkerRadius = (width < height)
+                ? (int) (width-paddingLeft-paddingRight- mPaddingMarker *2) / 2
+                : (int) (height-paddingBottom-paddingTop- mPaddingMarker *2) / 2;
+        mSubMarkerRadius = (int) (mMarkerRadius * mSubMarkerSizeRatioToMarkerSize);
 
         setMeasuredDimension(width, height);
     }
 
     /**
-     * Gets the example string attribute value.
-     *
-     * @return The example string attribute value.
+     * Accessor & Mutators for attribute variables
      */
+
     public String getText() {
         return mText;
     }
 
-    /**
-     * Sets the view's example string attribute value. In the example view, this string
-     * is the text to draw.
-     *
-     * @param text The example string attribute value to use.
-     */
     public void setText(String text) {
         mText = text;
         invalidateTextPaintAndMeasurements();
     }
 
-    /**
-     * Gets the example color attribute value.
-     *
-     * @return The example color attribute value.
-     */
-    public int getTextColor() {
-        return mTextColor;
-    }
-
-    /**
-     * Sets the view's example color attribute value. In the example view, this color
-     * is the font color.
-     *
-     * @param textColor The example color attribute value to use.
-     */
-    public void setTextColor(int textColor) {
-        mTextColor = textColor;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example dimension attribute value.
-     *
-     * @return The example dimension attribute value.
-     */
     public float getFontSize() {
         return mFontSize;
     }
 
-    /**
-     * Sets the view's example dimension attribute value. In the example view, this dimension
-     * is the font size.
-     *
-     * @param fontSize The example dimension attribute value to use.
-     */
     public void setFontSize(float fontSize) {
         mFontSize = fontSize;
         invalidateTextPaintAndMeasurements();
     }
 
-    public void setNumSubMarker(int n) {
-        mNumSubMarker = n;
+    public int getTextColor() {
+        return mTextColor;
     }
 
-    public void enableDrawRunningOverLineStart(boolean bool) {
-        mDrawRunningOverLineBegin = bool;
+    public void setTextColor(int textColor) {
+        mTextColor = textColor;
+        invalidateTextPaintAndMeasurements();
     }
 
-    public void enableDrawRunningOverLineEnd(boolean bool) {
-        mDrawRunningOverLineEnd = bool;
+    public int getMarkerColor() {
+        return mMarkerColor;
+    }
+
+    public void setMarkerColor(int markerColor) {
+        mMarkerColor = markerColor;
+        invalidateMarkerPaintAndMeasurements();
+    }
+
+    public int getMarkerOutlineColor() {
+        return mMarkerOutlineColor;
+    }
+
+    public void setMarkerOutlineColor(int markerOutlineColor) {
+        mMarkerOutlineColor = markerOutlineColor;
+        invalidateMarkerPaintAndMeasurements();
+    }
+
+    public float getMarkerOutlineWidth() {
+        return mMarkerOutlineWidth;
+    }
+
+    public void setMarkerOutlineWidth(float markerOutlineWidth) {
+        mMarkerOutlineWidth = markerOutlineWidth;
+    }
+
+    public float getMarkerSizeRatioToFont() {
+        return mMarkerSizeRatioToFont;
+    }
+
+    public void setMarkerSizeRatioToFont(float radiusRatioToFont) {
+        mMarkerSizeRatioToFont = radiusRatioToFont;
+    }
+
+    public float getPaddingMarker() {
+        return mPaddingMarker;
+    }
+
+    public void setPaddingMarker(float paddingMarker) {
+        mPaddingMarker = paddingMarker;
+    }
+
+    public float getMarginMarkerStart() {
+        return mMarginMarkerStart;
+    }
+
+    public void setMarginMarkerStart(float marginMarkerStart) {
+        mMarginMarkerStart = marginMarkerStart;
+    }
+
+    public float getMarginMarkerEnd() {
+        return mMarginMarkerEnd;
+    }
+
+    public void setMarginMarkerEnd(float marginMarkerEnd) {
+        mMarginMarkerEnd = marginMarkerEnd;
+    }
+
+    public MarkerGravity getMarkerGravity() {
+        return mMarkerGravity;
+    }
+
+    public void setMarkerGravity(MarkerGravity markerGravity) {
+        mMarkerGravity = markerGravity;
+    }
+
+    public float getSubMarkerSizeRatioToRadius() {
+        return mSubMarkerSizeRatioToMarkerSize;
+    }
+
+    public void setSubMarkerSizeRatioToRadius(float subMarkerRadiusRatioToRadius) {
+        mSubMarkerSizeRatioToMarkerSize = subMarkerRadiusRatioToRadius;
+    }
+
+    public int getNumSubMarker() {
+        return mNumSubMarker;
+    }
+
+    public void setNumSubMarker(int numSubMarker) {
+        mNumSubMarker = numSubMarker;
+    }
+
+    public int getSubMarkerColor() {
+        return mSubMarkerColor;
+    }
+
+    public void setSubMarkerColor(int subMarkerColor) {
+        mSubMarkerColor = subMarkerColor;
+        invalidateSubMarkerPaintAndMeasurements();
+    }
+
+    public int getLineColor() {
+        return mLineColor;
+    }
+
+    public void setLineColor(int lineColor) {
+        mLineColor = lineColor;
+        invalidateLinePaintAndMeasurements();
+    }
+
+    public int getOutlineColor() {
+        return mOutlineColor;
+    }
+
+    public void setOutlineColor(int outlineColor) {
+        mOutlineColor = outlineColor;
+        invalidateLinePaintAndMeasurements();
+    }
+
+    public float getLineWidth() {
+        return mLineWidth;
+    }
+
+    public void setLineWidth(float lineWidth) {
+        mLineWidth = lineWidth;
+        invalidateLinePaintAndMeasurements();
+    }
+
+    public float getOutlineWidth() {
+        return mOutlineWidth;
+    }
+
+    public void setOutlineWidth(float outlineWidth) {
+        mOutlineWidth = outlineWidth;
+        invalidateLinePaintAndMeasurements();
+    }
+
+    public float getLineLengthRatioToMarkerSize() {
+        return mLineLengthRatioToMarkerSize;
+    }
+
+    public void setLineLengthRatioToMarkerSize(float lineLengthRatioToRadius) {
+        mLineLengthRatioToMarkerSize = lineLengthRatioToRadius;
+    }
+
+    public boolean isDrawRunningOverLineStart() {
+        return mDrawRunningOverLineStart;
+    }
+
+    public void enableDrawRunningOverLineStart(boolean drawRunningOverLineStart) {
+        mDrawRunningOverLineStart = drawRunningOverLineStart;
+    }
+
+    public boolean isDrawRunningOverLineEnd() {
+        return mDrawRunningOverLineEnd;
+    }
+
+    public void enableDrawRunningOverLineEnd(boolean drawRunningOverLineEnd) {
+        mDrawRunningOverLineEnd = drawRunningOverLineEnd;
+    }
+
+    public Orientation getOrientation() {
+        return mOrientation;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        mOrientation = orientation;
     }
 }

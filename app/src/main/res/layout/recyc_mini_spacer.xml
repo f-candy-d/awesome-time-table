@@ -15,7 +15,7 @@
         android:paddingRight="4dp"
         app:circleColor="@color/colorPrimary"
         app:circleOutlineColor="@color/colorPrimaryDark"
-        app:drawRunningOverLineBegin="true"
+        app:drawRunningOverLineStart="true"
         app:drawRunningOverLineEnd="true"
         app:fontSize="14sp"
         app:lineColor="@color/colorPrimary"
@@ -27,7 +27,7 @@
         app:paddingCircle="10dp"
         app:text="1"
         app:textColor="#FFFFFF"
-        app:markerGravity="center"/>
+        app:markerGravity="start"/>
     <View
         android:layout_width="0dp"
         android:layout_height="match_parent"
