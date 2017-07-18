@@ -1,5 +1,7 @@
 package com.d.candy.f.awesometimetable;
 
+import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
+
 /**
  * Created by daichi on 7/14/17.
  */
@@ -15,7 +17,8 @@ public class DBContract {
                 SubjectEntity.TABLE_NAME,
                 TeacherEntity.TABLE_NAME,
                 EnrollingInfoEntity.TABLE_NAME,
-                LocationEntity.TABLE_NAME
+                LocationEntity.TABLE_NAME,
+                AssignmentEntity.TABLE_NAME
         };
     }
 
@@ -23,6 +26,8 @@ public class DBContract {
      * Define the table contents here!
      */
     public static class SubjectEntity {
+        private SubjectEntity() {}
+
         // Use this as the ID of a unspecified subject
         public static final int NULL_ID = 0;
         // The id used for BLANK-Subject
@@ -38,6 +43,8 @@ public class DBContract {
     }
 
     public static class TeacherEntity {
+        private TeacherEntity() {}
+
         public static final String TABLE_NAME = "teacher";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
@@ -48,6 +55,8 @@ public class DBContract {
     }
 
     public static class EnrollingInfoEntity {
+        private EnrollingInfoEntity() {}
+
         public static final String TABLE_NAME = "enrolling_info";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_DAY_OF_WEEK = "day_of_week";
@@ -56,8 +65,22 @@ public class DBContract {
     }
 
     public static class LocationEntity {
+        private LocationEntity() {}
+
         public static final String TABLE_NAME = "location";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
+    }
+
+    public static class AssignmentEntity {
+        private AssignmentEntity() {}
+
+        public static final String TABLE_NAME = "assignment";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_DEADLINE = "deadline";
+        public static final String COLUMN_ENROLLING_INFO_ID = "enrolling_info_id";
+        public static final String COLUMN_NOTE = "note";
+        public static final String COLUMN_IS_DONE = "is_done";
     }
 }
