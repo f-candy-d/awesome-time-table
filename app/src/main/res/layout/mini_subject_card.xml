@@ -34,15 +34,13 @@
         app:circleOutlineColor="@color/colorPrimaryDark"
         app:lineColor="@color/colorPrimary"
         app:outlineColor="@color/colorPrimaryDark"
-        app:fontSize="16sp"
+        app:fontSize="14sp"
         app:text="1"
-        app:circleOutlineWidth="4dp"
-        app:lineWidth="12dp"
-        app:outlineWidth="4dp"
+        app:lineWidth="8dp"
         app:drawRunningOverLineBegin="true"
         app:drawRunningOverLineEnd="true"
         app:orientation="vertical"
-        app:paddingCircle="8dp"
+        app:paddingCircle="10dp"
         app:marginMarkerStart="4dp"
         app:marginMarkerEnd="4dp"/>
 

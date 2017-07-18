@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:id="@+id/linear_layout_spacer">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="72dp"
+              android:id="@+id/linear_layout_spacer">
+
+    <com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        app:textColor="#FFFFFF"
+        app:circleColor="@color/colorPrimary"
+        app:circleOutlineColor="@color/colorPrimaryDark"
+        app:lineColor="@color/colorPrimary"
+        app:outlineColor="@color/colorPrimaryDark"
+        app:fontSize="14sp"
+        app:text="1"
+        app:lineWidth="8dp"
+        app:drawRunningOverLineBegin="true"
+        app:drawRunningOverLineEnd="true"
+        app:orientation="vertical"
+        app:paddingCircle="10dp"
+        app:marginMarkerStart="4dp"
+        app:marginMarkerEnd="4dp"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"/>
 
 </LinearLayout>
