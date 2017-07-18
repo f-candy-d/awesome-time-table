@@ -17,5 +17,12 @@
         <attr name="drawRunningOverLineBegin" format="boolean"/>
         <attr name="drawRunningOverLineEnd" format="boolean"/>
         <attr name="paddingCircle" format="dimension"/>
+        <attr name="markerGravity" format="enum">
+            <enum name="topOrLeft" value="0"/>
+            <enum name="bottomOrRight" value="1"/>
+            <enum name="center" value="2"/>
+        </attr>
+        <attr name="marginMarkerStart" format="dimension"/>
+        <attr name="marginMarkerEnd" format="dimension"/>
     </declare-styleable>
 </resources>

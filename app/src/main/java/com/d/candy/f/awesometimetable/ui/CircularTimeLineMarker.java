@@ -41,7 +41,33 @@ public class CircularTimeLineMarker extends View {
         }
     }
 
-    private String mExampleString; // TODO: use a default from R.string...
+    private enum MarkerGravity {
+        TOP_OR_LEFT(0),
+        BOTTOM_OR_RIGHT(1),
+        CENTER(2);
+
+        int mID;
+
+        MarkerGravity(int id) {
+            mID = id;
+        }
+
+        int toInt() {
+            return mID;
+        }
+
+        static MarkerGravity fromID(int id) {
+            for(MarkerGravity type : values()) {
+                if(type.mID == id) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException(
+                    "id=" + String.valueOf(id) + "is not supported");
+        }
+    }
+
+    private String mText; // TODO: use a default from R.string...
     private int mTextColor = Color.WHITE; // TODO: use a default from R.color...
     private int mCircleColor = Color.BLUE;
     private int mCircleOutlineColor = mCircleColor;
@@ -62,7 +88,7 @@ public class CircularTimeLineMarker extends View {
     private Paint mLinePaint;
     private Paint mOutlinePaint;
 
-    private float mRadiusRatioToFont = 1.15f;
+    private float mRadiusRatioToFont = 1.3f;
     private float mLineRatioToRadius = 1.3f;
 
     private boolean mDrawRunningOverLineBegin = true;
@@ -70,7 +96,11 @@ public class CircularTimeLineMarker extends View {
 
     private float mPaddingCircle = 0;
 
+    private float mMarginMarkerStart = 0;
+    private float mMarginMarkerEnd = 0;
+
     private Orientation mOrientation = Orientation.VERTICAL;
+    private MarkerGravity mMarkerGravity = MarkerGravity.TOP_OR_LEFT;
 
     public CircularTimeLineMarker(Context context) {
         super(context);
@@ -92,11 +122,14 @@ public class CircularTimeLineMarker extends View {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CircularTimeLineMarker, defStyle, 0);
 
-        mExampleString = a.getString(
+        mText = a.getString(
                 R.styleable.CircularTimeLineMarker_text);
         mOrientation = Orientation.fromId(a.getInt(
                 R.styleable.CircularTimeLineMarker_orientation,
-                Orientation.VERTICAL.toInt()));
+                mOrientation.toInt()));
+        mMarkerGravity = MarkerGravity.fromID(a.getInt(
+                R.styleable.CircularTimeLineMarker_markerGravity,
+                mMarkerGravity.toInt()));
         mTextColor = a.getColor(
                 R.styleable.CircularTimeLineMarker_textColor,
                 mTextColor);
@@ -136,6 +169,12 @@ public class CircularTimeLineMarker extends View {
         mPaddingCircle = a.getDimension(
                 R.styleable.CircularTimeLineMarker_paddingCircle,
                 mPaddingCircle);
+        mMarginMarkerStart = a.getDimension(
+                R.styleable.CircularTimeLineMarker_marginMarkerStart,
+                mMarginMarkerStart);
+        mMarginMarkerEnd = a.getDimension(
+                R.styleable.CircularTimeLineMarker_marginMarkerEnd,
+                mMarginMarkerEnd);
 
         a.recycle();
 
@@ -163,7 +202,7 @@ public class CircularTimeLineMarker extends View {
     private void invalidateTextPaintAndMeasurements() {
         mTextPaint.setTextSize(mFontSize);
         mTextPaint.setColor(mTextColor);
-        mTextWidth = mTextPaint.measureText(mExampleString);
+        mTextWidth = mTextPaint.measureText(mText);
 
         Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
         mTextHeight = metrics.descent - metrics.ascent;
@@ -195,9 +234,16 @@ public class CircularTimeLineMarker extends View {
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
-        // Center position of circles
+        // Center position of the marker
         float cxPos = paddingLeft + contentWidth/2;
-        float cyPos = paddingTop + contentHeight/2;
+        float cyPos = paddingTop + mMarginMarkerStart;
+        if(mMarkerGravity == MarkerGravity.TOP_OR_LEFT) {
+            cyPos += mRadius;
+        } else if(mMarkerGravity == MarkerGravity.CENTER) {
+            cyPos += contentHeight/2;
+        } else if(mMarkerGravity == MarkerGravity.BOTTOM_OR_RIGHT) {
+            cyPos += contentHeight - mRadius - mMarginMarkerEnd;
+        }
 
 
         // Draw the outline and the main line
@@ -226,18 +272,18 @@ public class CircularTimeLineMarker extends View {
             canvas.drawLine(lx1, ly, lx2, ly, mLinePaint);
         }
 
-        // Draw the circle and the outline of it
+        // Draw the Marker
         if(mCircleOutlineWidth != 0f) {
-            // Draw outline of the circle
+            // Draw outline of the marker
             canvas.drawCircle(cxPos, cyPos, mRadius, mCircleOutlinePaint);
         }
         canvas.drawCircle(cxPos, cyPos, mRadius - mCircleOutlineWidth, mCirclePaint);
 
         // Draw the text.
         Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
-        float xPos = getWidth()/2;
-        float yPos = getHeight()/2 + mTextHeight/2 - metrics.descent;
-        canvas.drawText(mExampleString, xPos, yPos, mTextPaint);
+        float xPos = paddingLeft + contentWidth/2;
+        float yPos = cyPos + mTextHeight/2 - metrics.descent;
+        canvas.drawText(mText, xPos, yPos, mTextPaint);
 
 //        // TODO; guide line
 //        Paint paint = new Paint();
@@ -318,18 +364,18 @@ public class CircularTimeLineMarker extends View {
      *
      * @return The example string attribute value.
      */
-    public String getExampleString() {
-        return mExampleString;
+    public String getText() {
+        return mText;
     }
 
     /**
      * Sets the view's example string attribute value. In the example view, this string
      * is the text to draw.
      *
-     * @param exampleString The example string attribute value to use.
+     * @param text The example string attribute value to use.
      */
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
+    public void setText(String text) {
+        mText = text;
         invalidateTextPaintAndMeasurements();
     }
 
