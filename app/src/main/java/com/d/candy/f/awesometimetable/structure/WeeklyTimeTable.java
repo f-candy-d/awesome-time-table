@@ -90,7 +90,25 @@ public class WeeklyTimeTable {
         }
     }
 
+    public int getBeginPeriodAtPositionOn(DayOfWeek dayOfWeek, int position) {
+        if(isTimeTableExistOn(dayOfWeek) && position < countSubjectOn(dayOfWeek)) {
+            int period = 1;
+            for (int i = 0; i < position; ++i)
+            {
+                period += getSubjectAtPositionOn(dayOfWeek, i).getLength();
+            }
+
+            return period;
+        }
+        return 0;
+    }
+
     private boolean isTimeTableExistOn(DayOfWeek dayOfWeek) {
         return (mTable.get(dayOfWeek.toInt(), null) != null);
     }
+
+    // TODO: Use this method instead of isTimeTableExistOn(DayOfWeek dayOfWeek)
+//    private OneDayTimeTable isTimeTableExistOn(DayOfWeek dayOfWeek) {
+//        return (mTable.get(dayOfWeek.toInt(), null));
+//    }
 }

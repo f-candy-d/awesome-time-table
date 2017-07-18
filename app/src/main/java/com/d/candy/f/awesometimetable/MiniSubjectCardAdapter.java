@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
+import com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 /**
@@ -26,6 +27,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         private final LinearLayout mLayout;
         private final TextView mName;
         private final TextView mLocation;
+        private final CircularTimeLineMarker mMarker;
         private int mSize = 1;
 
         public SubjectViewHolder(View content_root) {
@@ -33,6 +35,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             mLayout = (LinearLayout) content_root.findViewById(R.id.linear_layout_mini_subject_card_container);
             mName = (TextView) content_root.findViewById(R.id.text_mini_subject_card_title);
             mLocation = (TextView) content_root.findViewById(R.id.text_mini_subject_card_location);
+            mMarker = (CircularTimeLineMarker) content_root.findViewById(R.id.tl_marker_mini_subject_card_period_marker);
         }
     }
 
@@ -49,11 +52,13 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public static class SpacerViewHolder extends RecyclerView.ViewHolder {
 
         private int mSize = 1;
-        LinearLayout mLayout;
+        private LinearLayout mLayout;
+        private CircularTimeLineMarker mMarker;
 
         public SpacerViewHolder(View content_root) {
             super(content_root);
             mLayout = (LinearLayout) content_root.findViewById(R.id.linear_layout_spacer);
+            mMarker = (CircularTimeLineMarker) content_root.findViewById(R.id.tl_marker_mini_spacer_period_marker);
         }
     }
 
@@ -166,6 +171,21 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             sbjHolder.mLocation
                     .setText(mWeeklyTimeTable.getLocation(subject.getLocationID()).getName());
 
+            // Set up the marker
+            sbjHolder.mMarker.setText(String.valueOf(
+                    mWeeklyTimeTable.getBeginPeriodAtPositionOn(dayOfWeek, offset)));
+            sbjHolder.mMarker.setNumSubMarker(subject.getLength() - 1);
+            if(offset == 0) {
+                sbjHolder.mMarker.enableDrawRunningOverLineStart(false);
+            } else {
+                sbjHolder.mMarker.enableDrawRunningOverLineStart(true);
+            }
+            if(offset == mWeeklyTimeTable.countSubjectOn(dayOfWeek) - 1) {
+                sbjHolder.mMarker.enableDrawRunningOverLineEnd(false);
+            } else {
+                sbjHolder.mMarker.enableDrawRunningOverLineEnd(true);
+            }
+
             // Make a Spacer view
         } else if(viewType == VIEW_TYPE_SPACER) {
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
@@ -179,6 +199,15 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             layoutParams.height = layoutParams.height/spcHolder.mSize*size;
             spcHolder.mLayout.setLayoutParams(layoutParams);
             spcHolder.mSize = size;
+
+            // Setup the marker
+            spcHolder.mMarker.setText(String.valueOf(
+                    mWeeklyTimeTable.getBeginPeriodAtPositionOn(dayOfWeek, offset)));
+            if(offset == mWeeklyTimeTable.countSubjectOn(dayOfWeek) - 1) {
+                spcHolder.mMarker.enableDrawRunningOverLineEnd(false);
+            } else {
+                spcHolder.mMarker.enableDrawRunningOverLineEnd(true);
+            }
 
             // Make a Header view
         } else if(viewType == VIEW_TYPE_HEADER) {

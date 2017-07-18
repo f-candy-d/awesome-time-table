@@ -24,5 +24,7 @@
         </attr>
         <attr name="marginMarkerStart" format="dimension"/>
         <attr name="marginMarkerEnd" format="dimension"/>
+        <attr name="numOfSubMarker" format="integer"/>
+        <attr name="subMarkerColor" format="color"/>
     </declare-styleable>
 </resources>

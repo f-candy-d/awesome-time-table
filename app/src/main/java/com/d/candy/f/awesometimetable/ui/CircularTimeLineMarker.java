@@ -87,9 +87,11 @@ public class CircularTimeLineMarker extends View {
     private Paint mCircleOutlinePaint;
     private Paint mLinePaint;
     private Paint mOutlinePaint;
+    private Paint mSubMarkerPaint;
 
     private float mRadiusRatioToFont = 1.3f;
     private float mLineRatioToRadius = 1.3f;
+    private float mSubRadiusRatioToRadius = 0.5f;
 
     private boolean mDrawRunningOverLineBegin = true;
     private boolean mDrawRunningOverLineEnd = true;
@@ -101,6 +103,10 @@ public class CircularTimeLineMarker extends View {
 
     private Orientation mOrientation = Orientation.VERTICAL;
     private MarkerGravity mMarkerGravity = MarkerGravity.TOP_OR_LEFT;
+
+    private int mNumSubMarker = 0;
+    private int mSubMarkerRadius = 0;
+    private int mSubMarkerColor = mCircleColor;
 
     public CircularTimeLineMarker(Context context) {
         super(context);
@@ -145,12 +151,18 @@ public class CircularTimeLineMarker extends View {
         mOutlineColor = a.getColor(
                 R.styleable.CircularTimeLineMarker_outlineColor,
                 mOutlineColor);
+        mSubMarkerColor = a.getColor(
+                R.styleable.CircularTimeLineMarker_subMarkerColor,
+                mSubMarkerColor);
         mDrawRunningOverLineBegin = a.getBoolean(
                 R.styleable.CircularTimeLineMarker_drawRunningOverLineBegin,
                 mDrawRunningOverLineBegin);
         mDrawRunningOverLineEnd = a.getBoolean(
                 R.styleable.CircularTimeLineMarker_drawRunningOverLineEnd,
                 mDrawRunningOverLineEnd);
+        mNumSubMarker = a.getInt(
+                R.styleable.CircularTimeLineMarker_numOfSubMarker,
+                mNumSubMarker);
 
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
@@ -195,6 +207,9 @@ public class CircularTimeLineMarker extends View {
         mOutlinePaint = new Paint();
         mOutlinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
+        mSubMarkerPaint = new Paint();
+        mSubMarkerPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
         // Update TextPaint and text measurements from attributes
         invalidateTextPaintAndMeasurements();
     }
@@ -219,6 +234,8 @@ public class CircularTimeLineMarker extends View {
         mOutlinePaint.setColor(mOutlineColor);
         float actualOutlineWidth = mLineWidth;
         mOutlinePaint.setStrokeWidth(actualOutlineWidth);
+
+        mSubMarkerPaint.setColor(mSubMarkerColor);
     }
 
     @Override
@@ -278,6 +295,16 @@ public class CircularTimeLineMarker extends View {
             canvas.drawCircle(cxPos, cyPos, mRadius, mCircleOutlinePaint);
         }
         canvas.drawCircle(cxPos, cyPos, mRadius - mCircleOutlineWidth, mCirclePaint);
+
+        // Draw sub-markers
+        if(0 < mNumSubMarker) {
+            float drawableAreaSize = contentHeight - mMarginMarkerStart - mMarginMarkerEnd - mRadius;
+            float diff = drawableAreaSize / (mNumSubMarker+1);
+
+            for(int i = 1; i <= mNumSubMarker; ++i) {
+                canvas.drawCircle(cxPos, cyPos + diff*i, mSubMarkerRadius, mSubMarkerPaint);
+            }
+        }
 
         // Draw the text.
         Paint.FontMetrics metrics = mTextPaint.getFontMetrics();
@@ -354,7 +381,7 @@ public class CircularTimeLineMarker extends View {
         mRadius = (width < height)
                 ? (int) (width-paddingLeft-paddingRight-mPaddingCircle*2) / 2
                 : (int) (height-paddingBottom-paddingTop-mPaddingCircle*2) / 2;
-
+        mSubMarkerRadius = (int) (mRadius * mSubRadiusRatioToRadius);
 
         setMeasuredDimension(width, height);
     }
@@ -417,5 +444,17 @@ public class CircularTimeLineMarker extends View {
     public void setFontSize(float fontSize) {
         mFontSize = fontSize;
         invalidateTextPaintAndMeasurements();
+    }
+
+    public void setNumSubMarker(int n) {
+        mNumSubMarker = n;
+    }
+
+    public void enableDrawRunningOverLineStart(boolean bool) {
+        mDrawRunningOverLineBegin = bool;
+    }
+
+    public void enableDrawRunningOverLineEnd(boolean bool) {
+        mDrawRunningOverLineEnd = bool;
     }
 }

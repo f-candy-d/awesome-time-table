@@ -22,6 +22,8 @@
         app:circleOutlineWidth="20dp"
         app:lineWidth="70dp"
         app:outlineWidth="20dp"
-        app:paddingCircle="4dp"/>
+        app:paddingCircle="4dp"
+        app:drawRunningOverLineBegin="false"
+        app:markerGravity="topOrLeft"/>
 
 </LinearLayout>
