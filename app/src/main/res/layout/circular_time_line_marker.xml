@@ -9,6 +9,7 @@
     <com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:orientation="vertical"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         app:textColor="#FFFFFF"

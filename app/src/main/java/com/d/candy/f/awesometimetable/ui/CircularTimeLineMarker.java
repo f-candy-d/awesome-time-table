@@ -16,9 +16,29 @@ import com.d.candy.f.awesometimetable.R;
  */
 public class CircularTimeLineMarker extends View {
 
-    public enum Orientation {
-        VERTICAL,
-        HORIZONTAL
+    private enum Orientation {
+        VERTICAL(0),
+        HORIZONTAL(1);
+
+        int mID;
+
+        Orientation(int id) {
+            mID = id;
+        }
+
+        int toInt() {
+            return mID;
+        }
+
+        static Orientation fromId(int id) {
+            for(Orientation type : values()) {
+                if(type.mID == id) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException(
+                    "id=" + String.valueOf(id) + "is not supported");
+        }
     }
 
     private String mExampleString; // TODO: use a default from R.string...
@@ -66,6 +86,9 @@ public class CircularTimeLineMarker extends View {
 
         mExampleString = a.getString(
                 R.styleable.CircularTimeLineMarker_text);
+        mOrientation = Orientation.fromId(a.getInt(
+                R.styleable.CircularTimeLineMarker_orientation,
+                Orientation.VERTICAL.toInt()));
         mTextColor = a.getColor(
                 R.styleable.CircularTimeLineMarker_textColor,
                 mTextColor);
@@ -146,7 +169,21 @@ public class CircularTimeLineMarker extends View {
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
         // Draw the main line
-        canvas.drawLine(paddingLeft+contentWidth/2, paddingTop, paddingLeft+contentWidth/2, getHeight()-paddingBottom, mLinePaint);
+        if(mOrientation == Orientation.VERTICAL) {
+            canvas.drawLine(
+                    paddingLeft+contentWidth/2,
+                    paddingTop,
+                    paddingLeft+contentWidth/2,
+                    paddingTop+contentHeight,
+                    mLinePaint);
+        } else {
+            canvas.drawLine(
+                    paddingLeft,
+                    paddingTop+contentHeight/2,
+                    paddingLeft+contentWidth,
+                    paddingTop+contentHeight/2,
+                    mLinePaint);
+        }
 
         // Draw the circle and outline
         float cxPos = paddingLeft + contentWidth/2;

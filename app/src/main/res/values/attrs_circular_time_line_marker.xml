@@ -8,5 +8,9 @@
         <attr name="circleColor" format="color"/>
         <attr name="circleOutlineColor" format="color"/>
         <attr name="lineColor" format="color"/>
+        <attr name="orientation" format="enum">
+            <enum name="vertical" value="0"/>
+            <enum name="horizontal" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>
