@@ -42,8 +42,8 @@ public class CircularTimeLineMarker extends View {
     }
 
     private enum MarkerGravity {
-        TOP_OR_LEFT(0),
-        BOTTOM_OR_RIGHT(1),
+        START(0),
+        END(1),
         CENTER(2);
 
         int mID;
@@ -87,11 +87,11 @@ public class CircularTimeLineMarker extends View {
     private int mMarkerColor = Color.BLUE;
     private int mMarkerOutlineColor = mMarkerColor;
     private float mMarkerOutlineWidth = 0;
-    private float mMarkerSizeRatioToFont = 1.3f;
+    private float mMarkerSizeRatioToFont = 1.35f;
     private float mPaddingMarker = 0;
     private float mMarginMarkerStart = 0;
     private float mMarginMarkerEnd = 0;
-    private MarkerGravity mMarkerGravity = MarkerGravity.TOP_OR_LEFT;
+    private MarkerGravity mMarkerGravity = MarkerGravity.START;
 
     // runtime
     private int mMarkerRadius = 0;
@@ -100,7 +100,7 @@ public class CircularTimeLineMarker extends View {
      * SubMarker
      */
     // attributes
-    private float mSubMarkerSizeRatioToMarkerSize = 0.6f;
+    private float mSubMarkerSizeRatioToMarkerSize = 0.55f;
     private int mNumSubMarker = 0;
     private int mSubMarkerColor = mMarkerColor;
 
@@ -317,22 +317,22 @@ public class CircularTimeLineMarker extends View {
         if(mOrientation == Orientation.VERTICAL) {
             cxPos = paddingLeft + contentWidth/2;
             cyPos = paddingTop + mMarginMarkerStart;
-            if(mMarkerGravity == MarkerGravity.TOP_OR_LEFT) {
+            if(mMarkerGravity == MarkerGravity.START) {
                 cyPos += mMarkerRadius;
             } else if(mMarkerGravity == MarkerGravity.CENTER) {
                 cyPos += contentHeight/2;
-            } else if(mMarkerGravity == MarkerGravity.BOTTOM_OR_RIGHT) {
+            } else if(mMarkerGravity == MarkerGravity.END) {
                 cyPos += contentHeight - mMarkerRadius - mMarginMarkerEnd;
             }
 
         } else {
             cyPos = paddingTop + contentHeight/2;
             cxPos = paddingLeft + mMarginMarkerStart;
-            if(mMarkerGravity == MarkerGravity.TOP_OR_LEFT) {
+            if(mMarkerGravity == MarkerGravity.START) {
                 cxPos += mMarkerRadius;
             } else if(mMarkerGravity == MarkerGravity.CENTER) {
                 cxPos += contentWidth/2;
-            } else if(mMarkerGravity == MarkerGravity.BOTTOM_OR_RIGHT) {
+            } else if(mMarkerGravity == MarkerGravity.END) {
                 cxPos += contentWidth - mMarkerRadius - mMarginMarkerEnd;
             }
         }
