@@ -180,11 +180,6 @@ public class CircularTimeLineMarker extends View {
         mOutlinePaint.setColor(mOutlineColor);
         float actualOutlineWidth = mLineWidth;
         mOutlinePaint.setStrokeWidth(actualOutlineWidth);
-
-//        // Radius of the circle
-//        mRadius = (mTextWidth < mTextHeight)
-//                ? (int) (mTextHeight/2 * mRadiusRatioToFont)
-//                : (int) (mTextWidth/2 * mRadiusRatioToFont);
     }
 
     @Override

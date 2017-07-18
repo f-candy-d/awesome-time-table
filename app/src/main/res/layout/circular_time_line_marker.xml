@@ -21,6 +21,7 @@
         app:text="2"
         app:circleOutlineWidth="20dp"
         app:lineWidth="70dp"
-        app:outlineWidth="20dp"/>
+        app:outlineWidth="20dp"
+        app:paddingCircle="4dp"/>
 
 </LinearLayout>
