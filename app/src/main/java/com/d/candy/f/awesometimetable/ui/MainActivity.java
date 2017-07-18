@@ -1,5 +1,6 @@
 package com.d.candy.f.awesometimetable.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,10 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.d.candy.f.awesometimetable.R;
+import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements
+        NavigationView.OnNavigationItemSelectedListener,
+WeeklyTimeTableFragment.InteractionListener {
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
     private int mCheckedItemID = -1;
@@ -50,8 +54,10 @@ public class MainActivity extends AppCompatActivity
         // The following code make a bug that beyond me on orientation change...
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
+        WeeklyTimeTableFragment fragment = WeeklyTimeTableFragment.newInstance(null, null);
+        fragment.setInteractionListener(this);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
+                .replace(R.id.fragment_container, fragment).commit();
         navigationView.setCheckedItem(R.id.nav_table1);
     }
 
@@ -117,5 +123,15 @@ public class MainActivity extends AppCompatActivity
         // To turn back navigation on, enable this code
 //        transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    /**
+     * Implementation of WeeklyTimeTableFragment.InteractionListener interface
+     */
+    @Override
+    public void onLaunchSubjectDetailsActivity(Subject subject) {
+        Intent intent = new Intent(this, SubjectDetailsActivity.class);
+        intent.putExtra("extra_test_message", subject.getName());
+        startActivity(intent);
     }
 }

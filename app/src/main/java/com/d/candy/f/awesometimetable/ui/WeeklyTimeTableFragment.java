@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.d.candy.f.awesometimetable.structure.Location;
+import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.MiniSubjectCardAdapter;
@@ -21,7 +24,13 @@ import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
  * Use the {@link WeeklyTimeTableFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WeeklyTimeTableFragment extends Fragment {
+public class WeeklyTimeTableFragment extends Fragment
+        implements MiniSubjectCardAdapter.OnItemClickListener {
+
+    public interface InteractionListener {
+        void onLaunchSubjectDetailsActivity(Subject subject);
+    }
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,6 +45,8 @@ public class WeeklyTimeTableFragment extends Fragment {
     private MiniSubjectCardAdapter mAdapter;
     // Time-Table
     private WeeklyTimeTable mWeeklyTimeTable;
+    // Callback listener
+    private InteractionListener mInteractionListener = null;
 
 
     public WeeklyTimeTableFragment() {
@@ -96,11 +107,23 @@ public class WeeklyTimeTableFragment extends Fragment {
                 DayOfWeek.FRIDAY
         };
         // adapter
-        mAdapter = new MiniSubjectCardAdapter(mWeeklyTimeTable, order);
+        mAdapter = new MiniSubjectCardAdapter(mWeeklyTimeTable, order, this);
         recyclerView.setAdapter(mAdapter);
     }
 
     private void initTimeTable() {
         mWeeklyTimeTable = DataStructureFactory.makeTimeTable(0);
+    }
+
+    public void setInteractionListener(InteractionListener listener) {
+        mInteractionListener = listener;
+    }
+
+    /**
+     * Implementations of MiniSubjectCardAdapter.OnItemClickListener interface
+     */
+    @Override
+    public void onItemClicked(Subject subject) {
+        mInteractionListener.onLaunchSubjectDetailsActivity(subject);
     }
 }

@@ -56,16 +56,16 @@ public class DataStructureFactory {
         EnrollingInfo infoFri1 = DataStructureFactory.makeEnrollingInfo(16);
 
         // Register entities
-        table.addSubject(math);
-        table.addSubject(japanese);
-        table.addSubject(english);
-        table.addSubject(physics);
-        table.addSubject(chemistry);
+        table.addEntity(math);
+        table.addEntity(japanese);
+        table.addEntity(english);
+        table.addEntity(physics);
+        table.addEntity(chemistry);
 
-        table.addLocation(locA);
-        table.addLocation(locB);
-        table.addLocation(locC);
-        table.addLocation(locD);
+        table.addEntity(locA);
+        table.addEntity(locB);
+        table.addEntity(locC);
+        table.addEntity(locD);
 
         // Enroll subjects
         table.enrollSubjectTo(infoMon1.getDayOfWeek(), infoMon1.getID());

@@ -13,16 +13,15 @@ import java.util.ArrayList;
  * Created by daichi on 7/15/17.
  */
 
-public class OneDayTimeTable {
+public class OneDayTimeTable extends TimeTable {
 
     private DayOfWeek mDayOfWeek;
     private ArrayList<Integer> mTable;
-    private EntityCache mCache;
 
     public OneDayTimeTable(DayOfWeek dayOfWeek, EntityCache cache) {
+        super(cache);
         mDayOfWeek = dayOfWeek;
         mTable = new ArrayList<>();
-        mCache = cache;
     }
 
     /**
@@ -60,20 +59,8 @@ public class OneDayTimeTable {
         return mDayOfWeek;
     }
 
-    /**
-     *
-     * @param subject
-     */
-    public void addSubject(Subject subject) {
-        mCache.cache(subject, false);
-    }
-
-    public void addLocation(Location location) {
-        mCache.cache(location, false);
-    }
-
     public Location getLocation(int id) {
-        return mCache.getLocation(id);
+        return getEntityCache().getLocation(id);
     }
 
     public void enrollSubject(int id) {
@@ -95,16 +82,14 @@ public class OneDayTimeTable {
     public void enrollBlankSubject(final int size) {
         if(0 < size) {
             int blankSbjID = -size;
-            if(!mCache.isCached(blankSbjID, EntityType.SUBJECT)) {
+            if(!getEntityCache().isCached(blankSbjID, EntityType.SUBJECT)) {
                 Subject blank = DataStructureFactory
                         .makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
                 blank.setID(blankSbjID);
                 blank.setLength(size);
-                addSubject(blank);
+                addEntity(blank);
             }
 
-            // TODO: This is enrolling process
-//            mTable.add(blankSbjID);
             enrollSubject(blankSbjID);
 
         } else {
@@ -114,8 +99,7 @@ public class OneDayTimeTable {
     }
 
     public Subject getSubjectAtPosition(int position) {
-        Log.d("QQQ", "id -> " + String.valueOf(mTable.get(position)));
-        return mCache.getSubject(mTable.get(position));
+        return getEntityCache().getSubject(mTable.get(position));
     }
 
     public int getSubjectIDAtPosition(int position) {

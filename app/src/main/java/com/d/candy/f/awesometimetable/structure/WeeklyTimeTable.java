@@ -9,64 +9,58 @@ import com.d.candy.f.awesometimetable.utils.EntityCache;
  * Created by daichi on 7/11/17.
  */
 
-public class WeeklyTimeTable {
+public class WeeklyTimeTable extends TimeTable {
 
     private int mID;
     private SparseArray<OneDayTimeTable> mTable;
-    private EntityCache mCache;
 
     public WeeklyTimeTable(int id) {
         mID = id;
         mTable = new SparseArray<>();
-        mCache = new EntityCache();
+        setEntityCache(new EntityCache());
     }
 
     public void enrollSubjectTo(DayOfWeek dayOfWeek, int id) {
         // If a time table does not exist on 'dayOfWeek', create new one
-        if(!isTimeTableExistOn(dayOfWeek)) {
-            OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek, mCache);
-            mTable.put(dayOfWeek.toInt(), oneDayTable);
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) == null) {
+            oneDayTimeTable = new OneDayTimeTable(dayOfWeek, getEntityCache());
+            mTable.put(dayOfWeek.toInt(), oneDayTimeTable);
         }
 
-        mTable.get(dayOfWeek.toInt()).enrollSubject(id);
+        oneDayTimeTable.enrollSubject(id);
     }
 
     public void enrollSubjectTo(DayOfWeek dayOfWeek, Subject subject) {
         enrollSubjectTo(dayOfWeek, subject.getID());
     }
 
-    public void addSubject(Subject subject) {
-        mCache.cache(subject, false);
-    }
-
-    public void addLocation(Location location) {
-        mCache.cache(location, false);
-    }
-
     public Location getLocation(int id) {
-        return mCache.getLocation(id);
+        return getEntityCache().getLocation(id);
     }
 
     public void enrollBlankSubjectTo(DayOfWeek dayOfWeek, int size) {
-        if(!isTimeTableExistOn(dayOfWeek)) {
-            OneDayTimeTable oneDayTable = new OneDayTimeTable(dayOfWeek, mCache);
-            mTable.put(dayOfWeek.toInt(), oneDayTable);
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) == null) {
+            mTable.put(dayOfWeek.toInt(), oneDayTimeTable);
         }
 
         mTable.get(dayOfWeek.toInt()).enrollBlankSubject(size);
     }
 
     public Subject getSubjectAtPositionOn(DayOfWeek dayOfWeek, int position) {
-        if(isTimeTableExistOn(dayOfWeek)) {
-            return mTable.get(dayOfWeek.toInt()).getSubjectAtPosition(position);
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
+            return oneDayTimeTable.getSubjectAtPosition(position);
         } else {
             return null;
         }
     }
 
     public Subject getSubjectAtPeriodOn(DayOfWeek dayOfWeek, int period) {
-        if(isTimeTableExistOn(dayOfWeek)) {
-            return mTable.get(dayOfWeek.toInt()).getSubjectAtPeriod(period);
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
+            return oneDayTimeTable.getSubjectAtPeriod(period);
         } else {
             return null;
         }
@@ -83,19 +77,22 @@ public class WeeklyTimeTable {
     }
 
     public int countSubjectOn(DayOfWeek dayOfWeek) {
-        if(isTimeTableExistOn(dayOfWeek)) {
-            return mTable.get(dayOfWeek.toInt()).countSubject();
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
+            return oneDayTimeTable.countSubject();
         } else {
             return 0;
         }
     }
 
     public int getBeginPeriodAtPositionOn(DayOfWeek dayOfWeek, int position) {
-        if(isTimeTableExistOn(dayOfWeek) && position < countSubjectOn(dayOfWeek)) {
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null
+                && position < countSubjectOn(dayOfWeek)) {
             int period = 1;
             for (int i = 0; i < position; ++i)
             {
-                period += getSubjectAtPositionOn(dayOfWeek, i).getLength();
+                period += oneDayTimeTable.getSubjectAtPosition(i).getLength();
             }
 
             return period;
@@ -103,12 +100,7 @@ public class WeeklyTimeTable {
         return 0;
     }
 
-    private boolean isTimeTableExistOn(DayOfWeek dayOfWeek) {
-        return (mTable.get(dayOfWeek.toInt(), null) != null);
+    private OneDayTimeTable isTimeTableExistOn(DayOfWeek dayOfWeek) {
+        return (mTable.get(dayOfWeek.toInt(), null));
     }
-
-    // TODO: Use this method instead of isTimeTableExistOn(DayOfWeek dayOfWeek)
-//    private OneDayTimeTable isTimeTableExistOn(DayOfWeek dayOfWeek) {
-//        return (mTable.get(dayOfWeek.toInt(), null));
-//    }
 }

@@ -24,6 +24,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      */
     public static class SubjectViewHolder extends RecyclerView.ViewHolder {
 
+        private final View mContentRoot;
         private final LinearLayout mLayout;
         private final TextView mName;
         private final TextView mLocation;
@@ -32,10 +33,21 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         public SubjectViewHolder(View content_root) {
             super(content_root);
+            mContentRoot = content_root;
             mLayout = (LinearLayout) content_root.findViewById(R.id.linear_layout_mini_subject_card_container);
             mName = (TextView) content_root.findViewById(R.id.text_mini_subject_card_title);
             mLocation = (TextView) content_root.findViewById(R.id.text_mini_subject_card_location);
             mMarker = (CircularTimeLineMarker) content_root.findViewById(R.id.tl_marker_mini_subject_card_period_marker);
+        }
+
+        public void bind(final Subject subject, final OnItemClickListener onItemClickListener) {
+            // Setup onItemClick listener
+            mContentRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClicked(subject);
+                }
+            });
         }
     }
 
@@ -63,6 +75,13 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     /**
+     * OnItemClickListener Interface
+     */
+    public interface OnItemClickListener {
+        void onItemClicked(Subject subject);
+    }
+
+    /**
      * ViewTypes
      */
     private static final int VIEW_TYPE_SUBJECT = 0;
@@ -81,9 +100,14 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private SparseIntArray mHeaderPositions;
     private DayOfWeek[] mDayOfWeekOrder = null;
 
-    public MiniSubjectCardAdapter(WeeklyTimeTable weeklyTimeTable, DayOfWeek[] dayOfWeekOrder) {
+    private OnItemClickListener mOnItemClickListener = null;
+
+    public MiniSubjectCardAdapter(
+            WeeklyTimeTable weeklyTimeTable, DayOfWeek[] dayOfWeekOrder, OnItemClickListener itemClickListener) {
+
         mWeeklyTimeTable = weeklyTimeTable;
         mDayOfWeekOrder = dayOfWeekOrder;
+        mOnItemClickListener = itemClickListener;
 
         if(dayOfWeekOrder == null) {
             throw new NullPointerException("'dayOfWeekOrder is null object");
@@ -185,6 +209,8 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 sbjHolder.mMarker.enableDrawRunningOverLineEnd(true);
             }
+
+            sbjHolder.bind(subject, mOnItemClickListener);
 
             // Make a Spacer view
         } else if(viewType == VIEW_TYPE_SPACER) {
