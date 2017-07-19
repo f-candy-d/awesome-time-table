@@ -2,6 +2,7 @@ package com.d.candy.f.awesometimetable.utils;
 
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.TestObject;
+import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
@@ -69,31 +70,31 @@ public class DataStructureFactory {
         table.addEntity(locD);
 
         // Enroll subjects
-        table.enrollSubjectTo(infoMon1.getDayOfWeek(), infoMon1.getID());
-        table.enrollSubjectTo(infoMon3.getDayOfWeek(), infoMon3.getID());
-        table.enrollSubjectTo(infoMon4.getDayOfWeek(), infoMon4.getID());
-        table.enrollSubjectTo(infoMon5.getDayOfWeek(), infoMon5.getID());
-        table.enrollSubjectTo(infoMon7.getDayOfWeek(), infoMon7.getID());
+        table.enrollSubjectTo(infoMon1);
+        table.enrollSubjectTo(infoMon3);
+        table.enrollSubjectTo(infoMon4);
+        table.enrollSubjectTo(infoMon5);
+        table.enrollSubjectTo(infoMon7);
 
-        table.enrollSubjectTo(infoTue1.getDayOfWeek(), infoTue1.getID());
-        table.enrollSubjectTo(infoTue2.getDayOfWeek(), infoTue2.getID());
+        table.enrollSubjectTo(infoTue1);
+        table.enrollSubjectTo(infoTue2);
         table.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
         table.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
-        table.enrollSubjectTo(infoTue6.getDayOfWeek(), infoTue6.getID());
+        table.enrollSubjectTo(infoTue6);
 
-        table.enrollSubjectTo(infoWed1.getDayOfWeek(), infoWed1.getID());
-        table.enrollSubjectTo(infoWed2.getDayOfWeek(), infoWed2.getID());
-        table.enrollSubjectTo(infoWed3.getDayOfWeek(), infoWed3.getID());
-        table.enrollSubjectTo(infoWed4.getDayOfWeek(), infoWed4.getID());
+        table.enrollSubjectTo(infoWed1);
+        table.enrollSubjectTo(infoWed2);
+        table.enrollSubjectTo(infoWed3);
+        table.enrollSubjectTo(infoWed4);
         table.enrollBlankSubjectTo(DayOfWeek.WEDNESDAY, 1);
 
-        table.enrollSubjectTo(infoThu1.getDayOfWeek(), infoThu1.getID());
-        table.enrollSubjectTo(infoThu2.getDayOfWeek(), infoThu2.getID());
-        table.enrollSubjectTo(infoThu4.getDayOfWeek(), infoThu4.getID());
-        table.enrollSubjectTo(infoThu6.getDayOfWeek(), infoThu6.getID());
+        table.enrollSubjectTo(infoThu1);
+        table.enrollSubjectTo(infoThu2);
+        table.enrollSubjectTo(infoThu4);
+        table.enrollSubjectTo(infoThu6);
         table.enrollBlankSubjectTo(DayOfWeek.THURSDAY, 1);
 
-        table.enrollSubjectTo(infoFri1.getDayOfWeek(), infoFri1.getID());
+        table.enrollSubjectTo(infoFri1);
         table.enrollBlankSubjectTo(DayOfWeek.FRIDAY, 2);
 
         return table;
@@ -108,4 +109,8 @@ public class DataStructureFactory {
     }
 
     public static Teacher makeTeacher(int id) { return TestObject.makeTeacher(id); }
+
+    public static Assignment makeAssignment(int id) {
+        return TestObject.makeAssignment(id);
+    }
 }

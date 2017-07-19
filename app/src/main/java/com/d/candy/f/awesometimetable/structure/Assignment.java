@@ -55,17 +55,18 @@ public class Assignment extends Entity {
     public Assignment() {}
 
     public Assignment(
-            String title, String note, int enrollingInfoID,
+            int id, String title, String note, int enrollingInfoID,
             int deadlineYear, int deadlineMonth, int deadlineDay,
-            DayOfWeek deadlineDayOfweek, boolean isDone) {
+            DayOfWeek deadlineDayOfWeek, boolean isDone) {
 
+        setID(id);
         mTitle = title;
         mNote = note;
         mEnrollingInfoID = enrollingInfoID;
         mDeadlineYear = deadlineYear;
         mDeadlineMonth = deadlineMonth;
         mDeadlineDay = deadlineDay;
-        mDeadlineDayOfWeek = deadlineDayOfweek;
+        mDeadlineDayOfWeek = deadlineDayOfWeek;
         mIsDone = isDone;
     }
 

@@ -3,6 +3,8 @@ package com.d.candy.f.awesometimetable.utils;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.d.candy.f.awesometimetable.structure.Assignment;
+import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.structure.Location;
@@ -19,6 +21,8 @@ public class EntityCache {
     private SparseArray<Subject> mSubjectCache = null;
     private SparseArray<Location> mLocationCache = null;
     private SparseArray<Teacher> mTeacherCache = null;
+    private SparseArray<EnrollingInfo> mEnrollingInfoCache = null;
+    private SparseArray<Assignment> mAssignmentCache = null;
 
     public EntityCache() {}
 
@@ -50,6 +54,24 @@ public class EntityCache {
                     }
                     mTeacherCache.put(entity.getID(), (Teacher) entity);
                     Log.d(TAG, "Cached TEACHER -> " + ((Teacher) entity).getName() + " | id=" + String.valueOf(entity.getID()));
+                    break;
+                }
+
+                case ENROLLING_INFO: {
+                    if(mEnrollingInfoCache == null) {
+                        mEnrollingInfoCache = new SparseArray<>();
+                    }
+                    mEnrollingInfoCache.put(entity.getID(), (EnrollingInfo) entity);
+                    Log.d(TAG, "Cached ENROLLING_INFO -> id=" + String.valueOf(entity.getID()));
+                    break;
+                }
+
+                case ASSIGNMENT: {
+                    if(mAssignmentCache == null) {
+                        mAssignmentCache = new SparseArray<>();
+                    }
+                    mAssignmentCache.put(entity.getID(), (Assignment) entity);
+                    Log.d(TAG, "Cached ASSIGNMENT -> " + ((Assignment) entity).getTitle() + " | id=" + String.valueOf(entity.getID()));
                     break;
                 }
             }
@@ -84,6 +106,22 @@ public class EntityCache {
                 }
             }
 
+            case ENROLLING_INFO: {
+                if(mEnrollingInfoCache == null) {
+                    return false;
+                } else {
+                    return (mEnrollingInfoCache.get(id, null) != null);
+                }
+            }
+
+            case ASSIGNMENT: {
+                if(mAssignmentCache == null) {
+                    return false;
+                } else {
+                    return (mAssignmentCache.get(id, null) != null);
+                }
+            }
+
             default:
                 return false;
         }
@@ -106,6 +144,20 @@ public class EntityCache {
     public Teacher getTeacher(int id) {
         if (mTeacherCache != null) {
             return mTeacherCache.get(id, null);
+        }
+        return null;
+    }
+
+    public EnrollingInfo getEnrollingInfo(int id) {
+        if(mEnrollingInfoCache != null) {
+            return mEnrollingInfoCache.get(id, null);
+        }
+        return null;
+    }
+
+    public Assignment getAssignment(int id) {
+        if (mAssignmentCache != null) {
+            return mAssignmentCache.get(id, null);
         }
         return null;
     }

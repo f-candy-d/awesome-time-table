@@ -28,9 +28,11 @@ public class EnrollingInfo extends Entity {
         return mDayOfWeek;
     }
 
-    public int getID() {
+    public int getSubjectID() {
         return mSubjectID;
     }
+
+    public int getPeriod() { return mPeriod; }
 
     @Override
     public String getAffiliation() {

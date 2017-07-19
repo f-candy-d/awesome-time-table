@@ -63,12 +63,27 @@ public class OneDayTimeTable extends TimeTable {
         return getEntityCache().getLocation(id);
     }
 
-    public void enrollSubject(int id) {
-        mTable.add(id);
+//    public void enrollSubject(int id) {
+//        mTable.add(id);
+//    }
+
+    public void enrollSubject(EnrollingInfo enrollingInfo) {
+        enrollSubject(enrollingInfo, null);
     }
 
-    public void enrollSubject(Subject subject) {
-        enrollSubject(subject.getID());
+    public void enrollSubject(EnrollingInfo enrollingInfo, Subject subject) {
+        if(subject != null && enrollingInfo.getSubjectID() != subject.getID()) {
+            throw new IllegalArgumentException(
+                    "enrolling-info's subject id and subject's it does not match");
+        }
+
+        if(enrollingInfo.getID() != DBContract.EnrollingInfoEntity.NULL_ID) {
+            addEntity(enrollingInfo);
+        }
+        if(subject != null && subject.getID() != DBContract.SubjectEntity.NULL_ID) {
+            addEntity(subject);
+        }
+        mTable.add(enrollingInfo.getSubjectID());
     }
 
     /**
@@ -90,7 +105,11 @@ public class OneDayTimeTable extends TimeTable {
                 addEntity(blank);
             }
 
-            enrollSubject(blankSbjID);
+            // Enroll a blank subject as a spacer
+            EnrollingInfo enrollingInfo = new EnrollingInfo(
+                    DBContract.EnrollingInfoEntity.NULL_ID, null, mTable.size(), blankSbjID);
+//            enrollSubject(blankSbjID);
+            enrollSubject(enrollingInfo);
 
         } else {
             throw new IllegalArgumentException(

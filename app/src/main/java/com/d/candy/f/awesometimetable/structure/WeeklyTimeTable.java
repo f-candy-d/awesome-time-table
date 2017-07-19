@@ -20,19 +20,30 @@ public class WeeklyTimeTable extends TimeTable {
         setEntityCache(new EntityCache());
     }
 
-    public void enrollSubjectTo(DayOfWeek dayOfWeek, int id) {
+//    public void enrollSubjectTo(DayOfWeek dayOfWeek, int id) {
+//        // If a time table does not exist on 'dayOfWeek', create new one
+//        OneDayTimeTable oneDayTimeTable;
+//        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) == null) {
+//            oneDayTimeTable = new OneDayTimeTable(dayOfWeek, getEntityCache());
+//            mTable.put(dayOfWeek.toInt(), oneDayTimeTable);
+//        }
+//
+//        oneDayTimeTable.enrollSubject(id);
+//    }
+
+    public void enrollSubjectTo(EnrollingInfo enrollingInfo, Subject subject) {
         // If a time table does not exist on 'dayOfWeek', create new one
         OneDayTimeTable oneDayTimeTable;
-        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) == null) {
-            oneDayTimeTable = new OneDayTimeTable(dayOfWeek, getEntityCache());
-            mTable.put(dayOfWeek.toInt(), oneDayTimeTable);
+        if((oneDayTimeTable = isTimeTableExistOn(enrollingInfo.getDayOfWeek())) == null) {
+            oneDayTimeTable = new OneDayTimeTable(enrollingInfo.getDayOfWeek(), getEntityCache());
+            mTable.put(enrollingInfo.getDayOfWeek().toInt(), oneDayTimeTable);
         }
 
-        oneDayTimeTable.enrollSubject(id);
+        oneDayTimeTable.enrollSubject(enrollingInfo, subject);
     }
 
-    public void enrollSubjectTo(DayOfWeek dayOfWeek, Subject subject) {
-        enrollSubjectTo(dayOfWeek, subject.getID());
+    public void enrollSubjectTo(EnrollingInfo enrollingInfo) {
+        enrollSubjectTo(enrollingInfo, null);
     }
 
     public Location getLocation(int id) {

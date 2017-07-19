@@ -57,6 +57,8 @@ public class DBContract {
     public static class EnrollingInfoEntity {
         private EnrollingInfoEntity() {}
 
+        // Use this as the ID of a unspecified subject
+        public static final int NULL_ID = 0;
         public static final String TABLE_NAME = "enrolling_info";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_DAY_OF_WEEK = "day_of_week";

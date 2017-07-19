@@ -1,5 +1,6 @@
 package com.d.candy.f.awesometimetable;
 
+import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
@@ -119,6 +120,25 @@ public class TestObject {
             case 4:
                 return new Teacher(id, "Warren Buffett", "Axis-48A",
                         "disny-micky@gmail.com", "599-233-2222", 6);
+            default:
+                throw new IllegalArgumentException("id=" + String.valueOf(id) + " is not supported");
+        }
+    }
+
+    public static Assignment makeAssignment(int id) {
+        switch (id) {
+            case 0:
+                return new Assignment(id, "Textbook p.4 Q.2 [1]", "Use a A4 paper.", 3,
+                        2017, 7, 19, DayOfWeek.MONDAY, false);
+
+            case 1:
+                return new Assignment(id, "Read 'Land Of Lisp from p.100 to p.380",
+                        null, 10, 2017, 7, 25, DayOfWeek.FRIDAY, true);
+
+            case 2:
+                return new Assignment(id, "Make the Facebook using php",
+                        "Do NOT ask Mark Zuckerberg for help!", 8, 2018, 8, 4,
+                        DayOfWeek.WEDNESDAY, false);
             default:
                 throw new IllegalArgumentException("id=" + String.valueOf(id) + " is not supported");
         }
