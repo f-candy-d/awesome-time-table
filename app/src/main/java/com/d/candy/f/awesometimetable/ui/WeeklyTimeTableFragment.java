@@ -76,6 +76,9 @@ public class WeeklyTimeTableFragment extends Fragment
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // The container Activity of this fragment must implements InteractionListener interface
+        setInteractionListener((InteractionListener)getActivity());
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class OneDayTimeTable extends TimeTable {
 
     private DayOfWeek mDayOfWeek;
-    private ArrayList<Integer> mTable;
+    private ArrayList<EnrollingInfo> mTable;
 
     public OneDayTimeTable(DayOfWeek dayOfWeek, EntityCache cache) {
         super(cache);
@@ -43,11 +43,12 @@ public class OneDayTimeTable extends TimeTable {
      */
     public int countSubjectCorrectly() {
         int count = 0;
-        for(Integer id : mTable) {
+        for(EnrollingInfo info : mTable) {
             // If this returns FALSE, it means that
             // 'id' is used for a BLANK-Subject entity
-            if(DBContract.SubjectEntity.MIN_USABLE_ID <= id) ++count;
+            if(DBContract.SubjectEntity.MIN_USABLE_ID <= info.getSubjectID()) ++count;
         }
+
         return count;
     }
 
@@ -63,10 +64,6 @@ public class OneDayTimeTable extends TimeTable {
         return getEntityCache().getLocation(id);
     }
 
-//    public void enrollSubject(int id) {
-//        mTable.add(id);
-//    }
-
     public void enrollSubject(EnrollingInfo enrollingInfo) {
         enrollSubject(enrollingInfo, null);
     }
@@ -74,16 +71,13 @@ public class OneDayTimeTable extends TimeTable {
     public void enrollSubject(EnrollingInfo enrollingInfo, Subject subject) {
         if(subject != null && enrollingInfo.getSubjectID() != subject.getID()) {
             throw new IllegalArgumentException(
-                    "enrolling-info's subject id and subject's it does not match");
+                    "enrolling-info's subject id and subject's one does not match");
         }
 
-        if(enrollingInfo.getID() != DBContract.EnrollingInfoEntity.NULL_ID) {
-            addEntity(enrollingInfo);
-        }
         if(subject != null && subject.getID() != DBContract.SubjectEntity.NULL_ID) {
             addEntity(subject);
         }
-        mTable.add(enrollingInfo.getSubjectID());
+        mTable.add(enrollingInfo);
     }
 
     /**
@@ -108,7 +102,6 @@ public class OneDayTimeTable extends TimeTable {
             // Enroll a blank subject as a spacer
             EnrollingInfo enrollingInfo = new EnrollingInfo(
                     DBContract.EnrollingInfoEntity.NULL_ID, null, mTable.size(), blankSbjID);
-//            enrollSubject(blankSbjID);
             enrollSubject(enrollingInfo);
 
         } else {
@@ -118,13 +111,17 @@ public class OneDayTimeTable extends TimeTable {
     }
 
     public Subject getSubjectAtPosition(int position) {
-        return getEntityCache().getSubject(mTable.get(position));
+        return getEntityCache().getSubject(mTable.get(position).getSubjectID());
     }
 
     public int getSubjectIDAtPosition(int position) {
-        return mTable.get(position);
+        return mTable.get(position).getSubjectID();
     }
 
     public Subject getSubjectAtPeriod(int period) { return null; }
+
+    public EnrollingInfo getEnrollingInfoAtPosition(int position) {
+        return mTable.get(position);
+    }
 
 }

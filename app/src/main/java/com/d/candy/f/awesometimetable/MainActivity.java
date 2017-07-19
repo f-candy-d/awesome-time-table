@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
         WeeklyTimeTableFragment fragment = WeeklyTimeTableFragment.newInstance(null, null);
-        fragment.setInteractionListener(this);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment).commit();
         navigationView.setCheckedItem(R.id.nav_table1);

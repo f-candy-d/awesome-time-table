@@ -20,17 +20,6 @@ public class WeeklyTimeTable extends TimeTable {
         setEntityCache(new EntityCache());
     }
 
-//    public void enrollSubjectTo(DayOfWeek dayOfWeek, int id) {
-//        // If a time table does not exist on 'dayOfWeek', create new one
-//        OneDayTimeTable oneDayTimeTable;
-//        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) == null) {
-//            oneDayTimeTable = new OneDayTimeTable(dayOfWeek, getEntityCache());
-//            mTable.put(dayOfWeek.toInt(), oneDayTimeTable);
-//        }
-//
-//        oneDayTimeTable.enrollSubject(id);
-//    }
-
     public void enrollSubjectTo(EnrollingInfo enrollingInfo, Subject subject) {
         // If a time table does not exist on 'dayOfWeek', create new one
         OneDayTimeTable oneDayTimeTable;
@@ -53,10 +42,11 @@ public class WeeklyTimeTable extends TimeTable {
     public void enrollBlankSubjectTo(DayOfWeek dayOfWeek, int size) {
         OneDayTimeTable oneDayTimeTable;
         if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) == null) {
+            oneDayTimeTable = new OneDayTimeTable(dayOfWeek, getEntityCache());
             mTable.put(dayOfWeek.toInt(), oneDayTimeTable);
         }
 
-        mTable.get(dayOfWeek.toInt()).enrollBlankSubject(size);
+        oneDayTimeTable.enrollBlankSubject(size);
     }
 
     public Subject getSubjectAtPositionOn(DayOfWeek dayOfWeek, int position) {
