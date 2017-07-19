@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.structure.Location;
@@ -137,6 +138,42 @@ public class MyVH {
             mLabName.setText("Lab : " + teacher.getLab());
             mMail.setText("Mail : " + teacher.getMail());
             mPhoneNumber.setText("Phone : " + teacher.getPhone());
+        }
+    }
+
+    public static class AssignmentCardViewHolder
+            extends BaseViewHolder {
+
+        private TextView mTitle;
+        private TextView mNote;
+        private TextView mIsDone;
+        private TextView mDeadline;
+        private TextView mDeadLineDayOfWeek;
+
+        public AssignmentCardViewHolder(View view) {
+            super(view);
+
+            mTitle = (TextView) view.findViewById(R.id.text_assignment_card_title);
+            mNote = (TextView) view.findViewById(R.id.text_assignment_card_note);
+            mIsDone = (TextView) view.findViewById(R.id.text_assignment_card_is_done);
+            mDeadline = (TextView) view.findViewById(R.id.text_assignment_card_deadline_m_d_y);
+            mDeadLineDayOfWeek = (TextView) view.findViewById(R.id.text_assignment_card_deadline_d_of_w);
+        }
+
+        @Override
+        protected void bind(Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(entity, itemClickListener);
+            isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.ASSIGNMENT);
+
+            Assignment assignment = (Assignment) entity;
+            mTitle.setText(assignment.getTitle());
+            mNote.setText(assignment.getNote());
+            mIsDone.setText("IS DONE => " + String.valueOf(assignment.isDone()));
+            mDeadline.setText(
+                    String.valueOf(assignment.getDeadlineMonth()) + " / "
+                            + String.valueOf(assignment.getDeadlineDay()) + " / "
+                            + String.valueOf(assignment.getDeadlineYear()));
+            mDeadLineDayOfWeek.setText(assignment.getDeadlineDayOfWeek().toString());
         }
     }
 }

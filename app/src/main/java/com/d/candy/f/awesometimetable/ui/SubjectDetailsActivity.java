@@ -10,11 +10,14 @@ import android.util.Log;
 import com.d.candy.f.awesometimetable.DBContract;
 import com.d.candy.f.awesometimetable.MainActivity;
 import com.d.candy.f.awesometimetable.R;
+import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.Teacher;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
+
+import java.util.ArrayList;
 
 public class SubjectDetailsActivity extends AppCompatActivity
 implements SubjectDetailsFragment.InteractionListener {
@@ -57,8 +60,16 @@ implements SubjectDetailsFragment.InteractionListener {
     private void displayInfo() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         SubjectDetailsFragment fragment = SubjectDetailsFragment
-                .newInstance(mSubject, mLocation, mTeacher);
+                .newInstance(mSubject, mLocation, mTeacher, mEnrollingInfo);
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
+    }
+
+    /**
+     * The implementation of SubjectDetailsFragment.InteractionListener
+     */
+    @Override
+    public ArrayList<Assignment> onRequireAssignments(EnrollingInfo enrollingInfo) {
+        return DataStructureFactory.makeAssignmetListForEnrollingInfo(enrollingInfo);
     }
 }

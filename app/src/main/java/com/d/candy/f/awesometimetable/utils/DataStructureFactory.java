@@ -9,6 +9,8 @@ import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.Teacher;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
+import java.util.ArrayList;
+
 /**
  * Created by daichi on 7/15/17.
  */
@@ -112,5 +114,18 @@ public class DataStructureFactory {
 
     public static Assignment makeAssignment(int id) {
         return TestObject.makeAssignment(id);
+    }
+
+    public static ArrayList<Assignment> makeAssignmetListForEnrollingInfo(EnrollingInfo enrollingInfo) {
+        ArrayList<Assignment> arrayList = new ArrayList<>();
+        if(enrollingInfo.getID() == 3) {
+            arrayList.add(makeAssignment(0));
+        } else if(enrollingInfo.getID() == 10) {
+            arrayList.add(makeAssignment(1));
+        } else if (enrollingInfo.getID() == 8) {
+            arrayList.add(makeAssignment(2));
+        }
+
+        return arrayList;
     }
 }

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.SubjectDetailsCardAdapter;
+import com.d.candy.f.awesometimetable.structure.Assignment;
+import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
@@ -28,7 +30,7 @@ public class SubjectDetailsFragment extends Fragment {
 
     // A container activity of fragment must implements this interface!
     public interface InteractionListener {
-
+        ArrayList<Assignment> onRequireAssignments(EnrollingInfo enrollingInfo);
     }
 
     // TODO: Rename parameter arguments, choose names that match
@@ -36,10 +38,14 @@ public class SubjectDetailsFragment extends Fragment {
     private static final String ARG_SUBJECT = "subject";
     private static final String ARG_LOCATION = "location";
     private static final String ARG_TEACHER = "teacher";
+    private static final String ARG_ENROLLING_INFO = "enrolling_info";
 
     private Subject mSubject = null;
     private Location mLocation = null;
     private Teacher mTeacher = null;
+    private EnrollingInfo mEnrollingInfo = null;
+
+    private InteractionListener mInteractionListener = null;
 
     public SubjectDetailsFragment() {
         // Required empty public constructor
@@ -54,12 +60,13 @@ public class SubjectDetailsFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static SubjectDetailsFragment newInstance(
-            Subject subject, Location location, Teacher teacher) {
+            Subject subject, Location location, Teacher teacher, EnrollingInfo enrollingInfo) {
         SubjectDetailsFragment fragment = new SubjectDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_SUBJECT, subject);
         args.putSerializable(ARG_LOCATION, location);
         args.putSerializable(ARG_TEACHER, teacher);
+        args.putSerializable(ARG_ENROLLING_INFO, enrollingInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,7 +78,11 @@ public class SubjectDetailsFragment extends Fragment {
             mSubject = (Subject) getArguments().getSerializable(ARG_SUBJECT);
             mLocation = (Location) getArguments().getSerializable(ARG_LOCATION);
             mTeacher = (Teacher) getArguments().getSerializable(ARG_TEACHER);
+            mEnrollingInfo = (EnrollingInfo) getArguments().getSerializable(ARG_ENROLLING_INFO);
         }
+
+        // The container Activity of this fragment must implements InteractionListener interface
+        mInteractionListener = (InteractionListener) getActivity();
     }
 
     @Override
@@ -91,10 +102,15 @@ public class SubjectDetailsFragment extends Fragment {
 
     // TODO: this is the test code
     private SubjectDetailsCardAdapter getTestAdapter() {
-        ArrayList<Entity> entities = new ArrayList<>(3);
+        ArrayList<Entity> entities = new ArrayList<>();
         entities.add(mSubject);
         entities.add(mLocation);
         entities.add(mTeacher);
+
+        for (Assignment assignment : mInteractionListener.onRequireAssignments(mEnrollingInfo))
+        {
+            entities.add(assignment);
+        }
 
         return new SubjectDetailsCardAdapter(entities);
     }
