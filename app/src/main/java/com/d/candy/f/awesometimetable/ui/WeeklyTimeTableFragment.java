@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
@@ -26,7 +27,7 @@ public class WeeklyTimeTableFragment extends Fragment
         implements MiniSubjectCardAdapter.OnItemClickListener {
 
     public interface InteractionListener {
-        void onLaunchSubjectDetailsViewer(Subject subject);
+        void onLaunchSubjectDetailsViewer(EnrollingInfo enrollingInfo);
     }
 
     // TODO: Rename parameter arguments, choose names that match
@@ -124,7 +125,7 @@ public class WeeklyTimeTableFragment extends Fragment
      * Implementations of MiniSubjectCardAdapter.OnItemClickListener interface
      */
     @Override
-    public void onItemClicked(Subject subject) {
-        mInteractionListener.onLaunchSubjectDetailsViewer(subject);
+    public void onItemClicked(EnrollingInfo enrollingInfo) {
+        mInteractionListener.onLaunchSubjectDetailsViewer(enrollingInfo);
     }
 }

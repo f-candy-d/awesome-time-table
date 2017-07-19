@@ -35,27 +35,27 @@ public class DataStructureFactory {
         Location locC = DataStructureFactory.makeLocation(2);
         Location locD = DataStructureFactory.makeLocation(3);
 
-        EnrollingInfo infoMon1 = DataStructureFactory.makeEnrollingInfo(0);
-        EnrollingInfo infoMon3 = DataStructureFactory.makeEnrollingInfo(1);
-        EnrollingInfo infoMon4 = DataStructureFactory.makeEnrollingInfo(2);
-        EnrollingInfo infoMon5 = DataStructureFactory.makeEnrollingInfo(3);
-        EnrollingInfo infoMon7 = DataStructureFactory.makeEnrollingInfo(4);
+        EnrollingInfo infoMon1 = DataStructureFactory.makeEnrollingInfo(1);
+        EnrollingInfo infoMon3 = DataStructureFactory.makeEnrollingInfo(2);
+        EnrollingInfo infoMon4 = DataStructureFactory.makeEnrollingInfo(3);
+        EnrollingInfo infoMon5 = DataStructureFactory.makeEnrollingInfo(4);
+        EnrollingInfo infoMon7 = DataStructureFactory.makeEnrollingInfo(5);
 
-        EnrollingInfo infoTue1 = DataStructureFactory.makeEnrollingInfo(5);
-        EnrollingInfo infoTue2 = DataStructureFactory.makeEnrollingInfo(6);
-        EnrollingInfo infoTue6 = DataStructureFactory.makeEnrollingInfo(7);
+        EnrollingInfo infoTue1 = DataStructureFactory.makeEnrollingInfo(6);
+        EnrollingInfo infoTue2 = DataStructureFactory.makeEnrollingInfo(7);
+        EnrollingInfo infoTue6 = DataStructureFactory.makeEnrollingInfo(8);
 
-        EnrollingInfo infoWed1 = DataStructureFactory.makeEnrollingInfo(8);
-        EnrollingInfo infoWed2 = DataStructureFactory.makeEnrollingInfo(9);
-        EnrollingInfo infoWed3 = DataStructureFactory.makeEnrollingInfo(10);
-        EnrollingInfo infoWed4 = DataStructureFactory.makeEnrollingInfo(11);
+        EnrollingInfo infoWed1 = DataStructureFactory.makeEnrollingInfo(9);
+        EnrollingInfo infoWed2 = DataStructureFactory.makeEnrollingInfo(10);
+        EnrollingInfo infoWed3 = DataStructureFactory.makeEnrollingInfo(11);
+        EnrollingInfo infoWed4 = DataStructureFactory.makeEnrollingInfo(12);
 
-        EnrollingInfo infoThu1 = DataStructureFactory.makeEnrollingInfo(12);
-        EnrollingInfo infoThu2 = DataStructureFactory.makeEnrollingInfo(13);
-        EnrollingInfo infoThu4 = DataStructureFactory.makeEnrollingInfo(14);
-        EnrollingInfo infoThu6 = DataStructureFactory.makeEnrollingInfo(15);
+        EnrollingInfo infoThu1 = DataStructureFactory.makeEnrollingInfo(13);
+        EnrollingInfo infoThu2 = DataStructureFactory.makeEnrollingInfo(14);
+        EnrollingInfo infoThu4 = DataStructureFactory.makeEnrollingInfo(15);
+        EnrollingInfo infoThu6 = DataStructureFactory.makeEnrollingInfo(16);
 
-        EnrollingInfo infoFri1 = DataStructureFactory.makeEnrollingInfo(16);
+        EnrollingInfo infoFri1 = DataStructureFactory.makeEnrollingInfo(17);
 
         // Register entities
         table.addEntity(math);

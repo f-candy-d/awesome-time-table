@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker;
@@ -40,12 +41,12 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             mMarker = (CircularTimeLineMarker) content_root.findViewById(R.id.tl_marker_mini_subject_card_period_marker);
         }
 
-        public void bind(final Subject subject, final OnItemClickListener onItemClickListener) {
+        public void bind(final EnrollingInfo enrollingInfo, final OnItemClickListener onItemClickListener) {
             // Setup onItemClick listener
             mContentRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClicked(subject);
+                    onItemClickListener.onItemClicked(enrollingInfo);
                 }
             });
         }
@@ -78,7 +79,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      * OnItemClickListener Interface
      */
     public interface OnItemClickListener {
-        void onItemClicked(Subject subject);
+        void onItemClicked(EnrollingInfo enrollingInfo);
     }
 
     /**
@@ -210,7 +211,9 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 sbjHolder.mMarker.enableDrawRunningOverLineEnd(true);
             }
 
-            sbjHolder.bind(subject, mOnItemClickListener);
+            sbjHolder.bind(
+                    mWeeklyTimeTable.getEnrollingInfoAtPositionOn(dayOfWeek, offset),
+                    mOnItemClickListener);
 
             // Make a Spacer view
         } else if(viewType == VIEW_TYPE_SPACER) {

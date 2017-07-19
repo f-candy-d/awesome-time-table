@@ -104,4 +104,12 @@ public class WeeklyTimeTable extends TimeTable {
     private OneDayTimeTable isTimeTableExistOn(DayOfWeek dayOfWeek) {
         return (mTable.get(dayOfWeek.toInt(), null));
     }
+
+    public EnrollingInfo getEnrollingInfoAtPositionOn(DayOfWeek dayOfWeek, int position) {
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
+            return oneDayTimeTable.getEnrollingInfoAtPosition(position);
+        }
+        return null;
+    }
 }

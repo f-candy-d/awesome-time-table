@@ -10,10 +10,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.d.candy.f.awesometimetable.structure.Subject;
+import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.ui.SubjectDetailsActivity;
 import com.d.candy.f.awesometimetable.ui.WeeklyTimeTableFragment;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Key strings being used in the Intent
      */
-    public static final String EXTRA_SUBJECT_ID = "subject_id";
+    public static final String EXTRA_ENROLLING_INFO_ID = "enrolling_info_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,9 +135,11 @@ public class MainActivity extends AppCompatActivity
      * Implementation of WeeklyTimeTableFragment.InteractionListener interface
      */
     @Override
-    public void onLaunchSubjectDetailsViewer(Subject subject) {
+    public void onLaunchSubjectDetailsViewer(EnrollingInfo enrollingInfo) {
         Intent intent = new Intent(this, SubjectDetailsActivity.class);
-        intent.putExtra(EXTRA_SUBJECT_ID, subject.getID());
+        intent.putExtra(EXTRA_ENROLLING_INFO_ID, enrollingInfo.getID());
+        Log.d(TAG, "enrollingInfo.getID()=" + String.valueOf(enrollingInfo.getID()));
         startActivity(intent);
+
     }
 }
