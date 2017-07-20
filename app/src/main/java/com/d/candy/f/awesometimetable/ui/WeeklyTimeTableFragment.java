@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.d.candy.f.awesometimetable.RecyclerViewScrollObserver;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
@@ -24,16 +26,19 @@ import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
  * create an instance of this fragment.
  */
 public class WeeklyTimeTableFragment extends Fragment
-        implements MiniSubjectCardAdapter.OnItemClickListener {
+        implements MiniSubjectCardAdapter.OnItemClickListener,
+        RecyclerViewScrollObserver.MessageListener {
 
     public interface InteractionListener {
         WeeklyTimeTable onRequireTimeTableData();
         void onLaunchSubjectDetailsViewer(EnrollingInfo enrollingInfo);
+        void onListViewScrolled(RecyclerViewScrollObserver.ScrollDirection direction);
     }
 
     // RecyclerView
     private LinearLayoutManager mLayoutManager;
     private MiniSubjectCardAdapter mAdapter;
+    private RecyclerViewScrollObserver mScrollObserver;
     // Time-Table
     private WeeklyTimeTable mWeeklyTimeTable;
     // Callback listener
@@ -101,6 +106,10 @@ public class WeeklyTimeTableFragment extends Fragment
         // adapter
         mAdapter = new MiniSubjectCardAdapter(mWeeklyTimeTable, order, this);
         recyclerView.setAdapter(mAdapter);
+
+        // Scroll observer
+        mScrollObserver = new RecyclerViewScrollObserver(recyclerView);
+        mScrollObserver.setMessageListener(this);
     }
 
     private void initTimeTable() {
@@ -117,5 +126,16 @@ public class WeeklyTimeTableFragment extends Fragment
     @Override
     public void onItemClicked(EnrollingInfo enrollingInfo) {
         mInteractionListener.onLaunchSubjectDetailsViewer(enrollingInfo);
+    }
+
+    /**
+     * Implementations of RecyclerViewScrollObserver.MessageListener interface
+     */
+    @Override
+    public void onScrollDirectionChanged(
+            RecyclerViewScrollObserver.ScrollDirection newDirection,
+            RecyclerViewScrollObserver.ScrollDirection oldDirection) {
+        Log.d("WWWW", "RecyclerView scroll direction changed => " + newDirection.toString());
+        mInteractionListener.onListViewScrolled(newDirection);
     }
 }

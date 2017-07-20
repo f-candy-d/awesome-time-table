@@ -29,7 +29,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
     private int mCheckedItemID = -1;
+    private AHBottomNavigation mBottomNavigation;
 
     /**
      * Key strings being used in the Intent
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_table1);
 
         // Setup BottomNavigationBar
-        initBottomNavigaionBar();
+        initBottomNavigationBar();
     }
 
     @Override
@@ -158,8 +158,8 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    private void initBottomNavigaionBar() {
-        AHBottomNavigation bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation_bar);
+    private void initBottomNavigationBar() {
+        mBottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation_bar);
 
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(
@@ -170,65 +170,65 @@ public class MainActivity extends AppCompatActivity
                 "tab3", R.drawable.ic_menu_slideshow, R.color.colorPrimaryDark);
 
         // Add items
-        bottomNavigation.addItem(item1);
-        bottomNavigation.addItem(item2);
-        bottomNavigation.addItem(item3);
+        mBottomNavigation.addItem(item1);
+        mBottomNavigation.addItem(item2);
+        mBottomNavigation.addItem(item3);
 
 // Set background color
-        bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FEFEFE"));
+        mBottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FEFEFE"));
 
 // Disable the translation inside the CoordinatorLayout
-        bottomNavigation.setBehaviorTranslationEnabled(false);
+        mBottomNavigation.setBehaviorTranslationEnabled(false);
 
 // Enable the translation of the FloatingActionButton
-//        bottomNavigation.manageFloatingActionButtonBehavior(floatingActionButton);
+//        mBottomNavigation.manageFloatingActionButtonBehavior(floatingActionButton);
 
 // Change colors
-        bottomNavigation.setAccentColor(Color.parseColor("#F63D2B"));
-        bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
+        mBottomNavigation.setAccentColor(Color.parseColor("#F63D2B"));
+        mBottomNavigation.setInactiveColor(Color.parseColor("#747474"));
 
 // Force to tint the drawable (useful for font with icon for example)
-        bottomNavigation.setForceTint(true);
+        mBottomNavigation.setForceTint(true);
 
 // Display color under navigation bar (API 21+)
 // Don't forget these lines in your style-v21
 // <item name="android:windowTranslucentNavigation">true</item>
 // <item name="android:fitsSystemWindows">true</item>
-//        bottomNavigation.setTranslucentNavigationEnabled(true);
+//        mBottomNavigation.setTranslucentNavigationEnabled(true);
 
 // Manage titles
-        bottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
-        bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-        bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
+        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
+        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
 
 // Use colored navigation with circle reveal effect
-        bottomNavigation.setColored(true);
+        mBottomNavigation.setColored(true);
 
 // Set current item programmatically
-        bottomNavigation.setCurrentItem(1);
+        mBottomNavigation.setCurrentItem(1);
 
 // Customize notification (title, background, typeface)
-        bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
+        mBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
 
 // Add or remove notification for each item
-        bottomNavigation.setNotification("1", 2);
+        mBottomNavigation.setNotification("1", 2);
 // OR
         AHNotification notification = new AHNotification.Builder()
                 .setText("1")
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.cardview_light_background))
                 .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
                 .build();
-        bottomNavigation.setNotification(notification, 1);
+        mBottomNavigation.setNotification(notification, 1);
 
 // Set listeners
-        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+        mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 // Do something cool here...
                 return true;
             }
         });
-        bottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
+        mBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
             @Override public void onPositionChange(int y) {
                 // Manage the new y position
             }
@@ -243,6 +243,17 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, SubjectDetailsActivity.class);
         intent.putExtra(EXTRA_ENROLLING_INFO_ID, enrollingInfo.getID());
         startActivity(intent);
+    }
+
+    @Override
+    public void onListViewScrolled(RecyclerViewScrollObserver.ScrollDirection direction) {
+        if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_UP
+                && mBottomNavigation.isHidden()) {
+            mBottomNavigation.restoreBottomNavigation(true);
+        } else if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_DOWN
+                && mBottomNavigation.isShown()) {
+            mBottomNavigation.hideBottomNavigation(true);
+        }
     }
 
     @Override
