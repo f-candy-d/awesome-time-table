@@ -139,6 +139,11 @@ public class TestObject {
                 return new Assignment(id, "Make the Facebook using php",
                         "Do NOT ask Mark Zuckerberg for help!", 8, 2018, 8, 4,
                         DayOfWeek.WEDNESDAY, false);
+
+            case 3:
+                return new Assignment(id, "Hack my PC in 100 seconds!",
+                        "My name is IRON MAN, thank you...", 8, 2017, 7 , 20,
+                        DayOfWeek.WEDNESDAY, true);
             default:
                 throw new IllegalArgumentException("id=" + String.valueOf(id) + " is not supported");
         }

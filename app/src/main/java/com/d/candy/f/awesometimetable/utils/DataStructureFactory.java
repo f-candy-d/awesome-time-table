@@ -116,16 +116,16 @@ public class DataStructureFactory {
         return TestObject.makeAssignment(id);
     }
 
-    public static ArrayList<Assignment> makeAssignmetListForEnrollingInfo(EnrollingInfo enrollingInfo) {
-        ArrayList<Assignment> arrayList = new ArrayList<>();
+    public static Assignment[] makeAssignmentListForEnrollingInfo(EnrollingInfo enrollingInfo) {
+
         if(enrollingInfo.getID() == 3) {
-            arrayList.add(makeAssignment(0));
+            return new Assignment[] {makeAssignment(0)};
         } else if(enrollingInfo.getID() == 10) {
-            arrayList.add(makeAssignment(1));
+            return new Assignment[] {makeAssignment(1)};
         } else if (enrollingInfo.getID() == 8) {
-            arrayList.add(makeAssignment(2));
+            return new Assignment[] { makeAssignment(2), makeAssignment(3) };
         }
 
-        return arrayList;
+        return new Assignment[0];
     }
 }
