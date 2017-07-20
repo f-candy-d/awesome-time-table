@@ -1,14 +1,20 @@
 package com.d.candy.f.awesometimetable.ui;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.SubjectDetailsCardAdapter;
 import com.d.candy.f.awesometimetable.structure.Assignment;

@@ -163,11 +163,11 @@ public class MainActivity extends AppCompatActivity
 
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(
-                "tab1", R.drawable.ic_menu_camera, R.color.colorPrimary);
+                R.string.app_name, R.drawable.ic_menu_camera, R.color.colorPrimary);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(
-                "tab2", R.drawable.ic_menu_gallery, R.color.colorAccent);
+                R.string.action_settings, R.drawable.ic_menu_gallery, R.color.colorAccent);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(
-                "tab3", R.drawable.ic_menu_slideshow, R.color.colorPrimaryDark);
+                R.string.day_of_week_friday, R.drawable.ic_menu_slideshow, R.color.md_teal_500);
 
         // Add items
         mBottomNavigation.addItem(item1);
@@ -175,48 +175,50 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigation.addItem(item3);
 
 // Set background color
-        mBottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FEFEFE"));
+//        mBottomNavigation.setDefaultBackgroundColor(
+//                getResources().getColor(R.color.md_green_500));
 
 // Disable the translation inside the CoordinatorLayout
-        mBottomNavigation.setBehaviorTranslationEnabled(false);
+//        mBottomNavigation.setBehaviorTranslationEnabled(false);
+
 
 // Enable the translation of the FloatingActionButton
 //        mBottomNavigation.manageFloatingActionButtonBehavior(floatingActionButton);
 
 // Change colors
-        mBottomNavigation.setAccentColor(Color.parseColor("#F63D2B"));
-        mBottomNavigation.setInactiveColor(Color.parseColor("#747474"));
+        mBottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
+        mBottomNavigation.setInactiveColor(getResources().getColor(R.color.colorBottomNavigationInactive));
 
 // Force to tint the drawable (useful for font with icon for example)
-        mBottomNavigation.setForceTint(true);
+//        mBottomNavigation.setForceTint(true);
 
 // Display color under navigation bar (API 21+)
 // Don't forget these lines in your style-v21
 // <item name="android:windowTranslucentNavigation">true</item>
 // <item name="android:fitsSystemWindows">true</item>
-//        mBottomNavigation.setTranslucentNavigationEnabled(true);
+//        mBottomNavigation.setTranslucentNavigationEnabled(false);
 
 // Manage titles
-        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
-        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+//        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
+//        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
         mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
 
 // Use colored navigation with circle reveal effect
-        mBottomNavigation.setColored(true);
+//        mBottomNavigation.setColored(true);
 
 // Set current item programmatically
-        mBottomNavigation.setCurrentItem(1);
+        mBottomNavigation.setCurrentItem(0);
 
 // Customize notification (title, background, typeface)
-        mBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
+//        mBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
 
 // Add or remove notification for each item
-        mBottomNavigation.setNotification("1", 2);
+//        mBottomNavigation.setNotification("1", 2);
 // OR
         AHNotification notification = new AHNotification.Builder()
                 .setText("1")
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.cardview_light_background))
-                .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
+                .setTextColor(ContextCompat.getColor(this, R.color.cardview_dark_background))
                 .build();
         mBottomNavigation.setNotification(notification, 1);
 
@@ -247,10 +249,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListViewScrolled(RecyclerViewScrollObserver.ScrollDirection direction) {
-        if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_UP
+        if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_DOWN
                 && mBottomNavigation.isHidden()) {
             mBottomNavigation.restoreBottomNavigation(true);
-        } else if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_DOWN
+        } else if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_UP
                 && mBottomNavigation.isShown()) {
             mBottomNavigation.hideBottomNavigation(true);
         }

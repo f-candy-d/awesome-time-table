@@ -18,6 +18,7 @@ import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.MiniSubjectCardAdapter;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
+import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 
 /**
@@ -35,6 +36,7 @@ public class WeeklyTimeTableFragment extends Fragment
         void onListViewScrolled(RecyclerViewScrollObserver.ScrollDirection direction);
     }
 
+    private static final String TAG = LogHelper.makeLogTag(WeeklyTimeTableFragment.class);
     // RecyclerView
     private LinearLayoutManager mLayoutManager;
     private MiniSubjectCardAdapter mAdapter;
@@ -110,6 +112,8 @@ public class WeeklyTimeTableFragment extends Fragment
         // Scroll observer
         mScrollObserver = new RecyclerViewScrollObserver(recyclerView);
         mScrollObserver.setMessageListener(this);
+        // I think '40' is good so far
+        mScrollObserver.setIgnorableScrollDistance(40);
     }
 
     private void initTimeTable() {
@@ -135,7 +139,7 @@ public class WeeklyTimeTableFragment extends Fragment
     public void onScrollDirectionChanged(
             RecyclerViewScrollObserver.ScrollDirection newDirection,
             RecyclerViewScrollObserver.ScrollDirection oldDirection) {
-        Log.d("WWWW", "RecyclerView scroll direction changed => " + newDirection.toString());
+        Log.d(TAG, "RecyclerView scroll direction changed => " + newDirection.toString());
         mInteractionListener.onListViewScrolled(newDirection);
     }
 }

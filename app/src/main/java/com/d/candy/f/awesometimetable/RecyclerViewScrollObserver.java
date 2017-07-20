@@ -1,6 +1,9 @@
 package com.d.candy.f.awesometimetable;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
+import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 /**
  * Created by daichi on 7/20/17.
@@ -18,10 +21,11 @@ public class RecyclerViewScrollObserver {
         void onScrollDirectionChanged(ScrollDirection newDirection, ScrollDirection oldDirection);
     }
 
+    private static final String TAG = LogHelper.makeLogTag(RecyclerViewScrollObserver.class);
     private final RecyclerView mRecyclerView;
     private ScrollDirection mDirection = ScrollDirection.SCROLL_IDLE;
     private MessageListener mMessageListener = null;
-    private int mOldDy = 0;
+    private int mIgnorableScrollDistance = 0;
 
 
     public RecyclerViewScrollObserver(RecyclerView recyclerView) {
@@ -38,6 +42,15 @@ public class RecyclerViewScrollObserver {
         mMessageListener = messageListener;
     }
 
+    public void setIgnorableScrollDistance(int distance) {
+        if(distance < 0) {
+            throw new IllegalArgumentException(
+                    "'distance' must be a positive number or 0!");
+        }
+
+        mIgnorableScrollDistance = distance;
+    }
+
     private void initOnScrollListener() {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -47,18 +60,17 @@ public class RecyclerViewScrollObserver {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-                observeScroll(dx, dy);
+                checkScrollDirectionChange(dy);
             }
         });
     }
 
-    private void observeScroll(final int dx, final int dy) {
-        ScrollDirection direction = ScrollDirection.SCROLL_IDLE;
-        if (dy > 0) {
-            direction = ScrollDirection.SCROLL_DOWN;
-        } else if (0 > dy) {
+    private void checkScrollDirectionChange(final int dy) {
+        ScrollDirection direction = mDirection;
+        if (dy > 0 && dy > mIgnorableScrollDistance) {
             direction = ScrollDirection.SCROLL_UP;
+        } else if (0 > dy && -dy > mIgnorableScrollDistance) {
+            direction = ScrollDirection.SCROLL_DOWN;
         }
 
         if (mDirection != direction) {
