@@ -128,4 +128,14 @@ public class DataStructureFactory {
 
         return new Assignment[0];
     }
+
+    public static ArrayList<Assignment> makeAllAssignments() {
+        ArrayList<Assignment> assignments = new ArrayList<>();
+        assignments.add(makeAssignment(0));
+        assignments.add(makeAssignment(1));
+        assignments.add(makeAssignment(2));
+        assignments.add(makeAssignment(3));
+
+        return assignments;
+    }
 }

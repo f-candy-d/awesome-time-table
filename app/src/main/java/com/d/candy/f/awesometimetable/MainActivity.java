@@ -47,6 +47,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView.OnNavigationItemSelectedListener,
         EntityCardListViewerFragment.OnInteractionListener {
 
+    /**
+     * Fragment types
+     */
+    private static final int FRAGMENT_WEEKLY_TIMETABLE = 0;
+    private static final int FRAGMENT_ONE_DAY_TIMETABLE = 1;
+    private static final int FRAGMENT_ASSIGNMENTS = 2;
+    private static final int FRAGMENT_NOTIFICATIONS = 3;
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
     private int mCheckedItemID;
@@ -100,17 +107,17 @@ public class MainActivity extends AppCompatActivity
         // Add fragments to the ViewPager
         EntityCardListViewerFragment fragment = EntityCardListViewerFragment.newInstance();
         fragment.setTimeTable(mTimeTable);
-        fragment.setID(0);
+        fragment.setID(FRAGMENT_WEEKLY_TIMETABLE);
         fragments.add(fragment);
 
         EntityCardListViewerFragment fragment1 = EntityCardListViewerFragment.newInstance();
         fragment1.setTimeTable(mTimeTable);
-        fragment1.setID(0);
+        fragment1.setID(FRAGMENT_ASSIGNMENTS);
         fragments.add(fragment1);
 
         EntityCardListViewerFragment fragment2 = EntityCardListViewerFragment.newInstance();
         fragment2.setTimeTable(mTimeTable);
-        fragment2.setID(0);
+        fragment2.setID(FRAGMENT_WEEKLY_TIMETABLE);
         fragments.add(fragment2);
 
         mViewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager_main);
@@ -285,29 +292,35 @@ public class MainActivity extends AppCompatActivity
         mTimeTable = DataStructureFactory.makeTimeTable(0);
     }
 
+    /**
+     * Implementation of EntityCardListViewerFragment.OnInteractionListener interface
+     */
     @Override
     public EntityCardAdapter getListAdapter(final EntityCardListViewerFragment fragment) {
-        if (fragment.getID() == 0) {
-            // TODO: test code
-            // The order of shown items
-            DayOfWeek[] order = {
-                    DayOfWeek.MONDAY,
-                    DayOfWeek.TUESDAY,
-                    DayOfWeek.WEDNESDAY,
-                    DayOfWeek.THURSDAY,
-                    DayOfWeek.FRIDAY
-            };
+        switch (fragment.getID()) {
 
-            return new SubjectCardAndHeaderAdapter(mTimeTable, order);
+            case FRAGMENT_WEEKLY_TIMETABLE: {
+                // TODO: test code
+                // The order of shown items
+                DayOfWeek[] order = {
+                        DayOfWeek.MONDAY,
+                        DayOfWeek.TUESDAY,
+                        DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY,
+                        DayOfWeek.FRIDAY
+                };
+
+                return new SubjectCardAndHeaderAdapter(mTimeTable, order);
+            }
+
+            case FRAGMENT_ASSIGNMENTS: {
+                return new AssignmentCardAdapter(
+                        DataStructureFactory.makeAllAssignments());
+            }
         }
 
         return null;
     }
-
-    /**
-     * Implementation of EntityCardListViewerFragment.OnInteractionListener interface
-     */
-
 
     @Override
     public void onListScrolled(RecyclerViewScrollObserver.ScrollDirection direction) {
@@ -322,7 +335,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListItemClicked(int position) {
-        if (mCurrentFragment.getID() == 0) {
+        if (mCurrentFragment.getID() == FRAGMENT_WEEKLY_TIMETABLE) {
             // TODO; test code
             SubjectCardAndHeaderAdapter sAhAdapter =
                     (SubjectCardAndHeaderAdapter) mCurrentFragment.getListAdapter();
