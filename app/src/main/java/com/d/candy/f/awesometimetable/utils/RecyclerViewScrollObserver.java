@@ -1,9 +1,6 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.utils;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-
-import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 /**
  * Created by daichi on 7/20/17.

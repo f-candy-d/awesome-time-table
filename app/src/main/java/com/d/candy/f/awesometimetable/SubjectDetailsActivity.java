@@ -5,23 +5,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.d.candy.f.awesometimetable.DBContract;
-import com.d.candy.f.awesometimetable.MainActivity;
-import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.RecyclerViewScrollObserver;
-import com.d.candy.f.awesometimetable.EntityCardAdapter;
-import com.d.candy.f.awesometimetable.SubjectAndRelationsCardAdapter;
-import com.d.candy.f.awesometimetable.SubjectDetailsCardAdapter;
 import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Entity;
-import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.Teacher;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
-import com.d.candy.f.awesometimetable.utils.BundleBuilder;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
+import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,7 +80,7 @@ implements EntityCardListViewerFragment.OnInteractionListener {
     }
 
     @Override
-    public EntityCardAdapter getListAdapter() {
+    public EntityCardAdapter getListAdapter(final EntityCardListViewerFragment fragment) {
         ArrayList<Entity> entities = new ArrayList<>();
         entities.add(mSubject);
         entities.add(mLocation);

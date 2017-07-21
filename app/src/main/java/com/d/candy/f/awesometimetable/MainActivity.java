@@ -31,13 +31,16 @@ import android.view.MenuItem;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
-import com.d.candy.f.awesometimetable.useless.SubjectCardAndHeaderAdapter;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
+import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity
     // UI
     private AHBottomNavigation mBottomNavigation;
     private EntityCardListViewerFragment mCurrentFragment;
+    private TableViewerPagerAdapter mViewerPagerAdapter;
+    private AHBottomNavigationViewPager mViewPager;
 
     // Data
     private WeeklyTimeTable mTimeTable;
@@ -90,15 +95,39 @@ public class MainActivity extends AppCompatActivity
         // Init data
         initTimeTable();
 
+        // ViewPager
+        ArrayList<EntityCardListViewerFragment> fragments = new ArrayList<>();
+        // Add fragments to the ViewPager
+        EntityCardListViewerFragment fragment = EntityCardListViewerFragment.newInstance();
+        fragment.setTimeTable(mTimeTable);
+        fragment.setID(0);
+        fragments.add(fragment);
+
+        EntityCardListViewerFragment fragment1 = EntityCardListViewerFragment.newInstance();
+        fragment1.setTimeTable(mTimeTable);
+        fragment1.setID(0);
+        fragments.add(fragment1);
+
+        EntityCardListViewerFragment fragment2 = EntityCardListViewerFragment.newInstance();
+        fragment2.setTimeTable(mTimeTable);
+        fragment2.setID(0);
+        fragments.add(fragment2);
+
+        mViewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager_main);
+        mViewPager.setOffscreenPageLimit(3);
+        mViewerPagerAdapter = new TableViewerPagerAdapter(getSupportFragmentManager(), fragments);
+        mViewPager.setAdapter(mViewerPagerAdapter);
+        mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
+
         // The following code make a bug that beyond me on orientation change...
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
         // TODO: This is Test Code
-        mCurrentFragment = EntityCardListViewerFragment.newInstance();
-        mCurrentFragment.setTimeTable(mTimeTable);
-        mCurrentFragment.setID(0);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, mCurrentFragment).commit();
+//        mCurrentFragment = EntityCardListViewerFragment.newInstance();
+//        mCurrentFragment.setTimeTable(mTimeTable);
+//        mCurrentFragment.setID(0);
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container, mCurrentFragment).commit();
 
         // Set the initial position of the NavigationView
         navigationView.setCheckedItem(R.id.nav_table1);
@@ -229,23 +258,17 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
-                // Do something cool here...
-//                AHBottomNavigationItem item = mBottomNavigation.getItem(position);
-//                if(wasSelected) {
-//                    if(position == 0) {
-//                        if (mCurrentFragmentType == ContentFragmentType.WEEKLY_TIME_TABLE) {
-//                            item.setDrawable(R.drawable.ic_view_day);
-//                            item.setTitle("Day");
-//                        } else if(mCurrentFragmentType == ContentFragmentType.ONE_DAY_TIME_TABLE) {
-//                            item.setDrawable(R.drawable.ic_view_week);
-//                            item.setTitle("Week");
-//                        }
-//
-//                    }
-//
-//                } else {
-//                    if (position == 0) {
-//                }
+                if (mCurrentFragment == null) {
+                    mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
+                }
+
+                if (wasSelected) {
+                    mCurrentFragment.refresh();
+                    return true;
+                }
+                // Switch fragments
+                mViewPager.setCurrentItem(position, false);
+                mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
 
                 return true;
             }
@@ -262,12 +285,9 @@ public class MainActivity extends AppCompatActivity
         mTimeTable = DataStructureFactory.makeTimeTable(0);
     }
 
-    /**
-     * Implementation of EntityCardListViewerFragment.OnInteractionListener interface
-     */
     @Override
-    public EntityCardAdapter getListAdapter() {
-        if (mCurrentFragment.getID() == 0) {
+    public EntityCardAdapter getListAdapter(final EntityCardListViewerFragment fragment) {
+        if (fragment.getID() == 0) {
             // TODO: test code
             // The order of shown items
             DayOfWeek[] order = {
@@ -283,6 +303,11 @@ public class MainActivity extends AppCompatActivity
 
         return null;
     }
+
+    /**
+     * Implementation of EntityCardListViewerFragment.OnInteractionListener interface
+     */
+
 
     @Override
     public void onListScrolled(RecyclerViewScrollObserver.ScrollDirection direction) {

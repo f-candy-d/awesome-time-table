@@ -9,9 +9,14 @@
     tools:context="com.d.candy.f.awesometimetable.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <include
-        layout="@layout/fragment_container"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+    <!--<include-->
+        <!--layout="@layout/fragment_container"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"/>-->
+
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager
+        android:id="@+id/view_pager_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

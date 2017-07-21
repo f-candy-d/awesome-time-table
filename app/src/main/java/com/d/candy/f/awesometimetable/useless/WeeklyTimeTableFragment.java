@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.candy.f.awesometimetable.RecyclerViewScrollObserver;
+import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.R;

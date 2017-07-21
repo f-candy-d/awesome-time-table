@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.d.candy.f.awesometimetable.structure.MyVH;
 import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.RecyclerViewScrollObserver;
+import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
 import com.d.candy.f.awesometimetable.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
@@ -38,7 +38,7 @@ public class EntityCardListViewerFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnInteractionListener {
-        EntityCardAdapter getListAdapter();
+        EntityCardAdapter getListAdapter(final EntityCardListViewerFragment fragment);
         void onListScrolled(final RecyclerViewScrollObserver.ScrollDirection direction);
         void onListItemClicked(final int position);
     }
@@ -85,6 +85,8 @@ public class EntityCardListViewerFragment extends Fragment
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        init();
     }
 
     @Override
@@ -94,7 +96,6 @@ public class EntityCardListViewerFragment extends Fragment
         View root = inflater.inflate(R.layout.fragment_entity_card_list_viewer, container, false);
 
         // Initialization
-        init();
         initUI(root);
 
         return root;
@@ -159,7 +160,7 @@ public class EntityCardListViewerFragment extends Fragment
     }
 
     private void init() {
-        mListAdapter = mListener.getListAdapter();
+        mListAdapter = mListener.getListAdapter(this);
         if (mListAdapter == null) {
             throw new NullPointerException();
         }

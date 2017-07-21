@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.SubjectDetailsCardAdapter;
 import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Entity;

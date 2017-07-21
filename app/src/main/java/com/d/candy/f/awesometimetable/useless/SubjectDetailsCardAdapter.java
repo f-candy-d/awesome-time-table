@@ -1,10 +1,11 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.useless;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.MyVH;
 
