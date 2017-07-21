@@ -23,7 +23,7 @@ public class MyVH {
         private View mRoot = null;
 
         public interface OnItemClickListener {
-            void onItemClick();
+            void onItemClick(int position);
         }
 
         public BaseViewHolder(View view) {
@@ -37,13 +37,14 @@ public class MyVH {
          * @param entity
          * @param itemClickListener
          */
-        protected void bind(Entity entity, final OnItemClickListener itemClickListener) {
+        protected void bind(final int position, Entity entity,
+                            final OnItemClickListener itemClickListener) {
             // Set OnClickListener to an item view
             if (itemClickListener != null) {
                 mRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        itemClickListener.onItemClick();
+                        itemClickListener.onItemClick(position);
                     }
                 });
             }
@@ -79,8 +80,8 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(Entity entity, OnItemClickListener itemClickListener) {
-            super.bind(entity, itemClickListener);
+        protected void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(position, entity, itemClickListener);
             isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.SUBJECT);
 
             Subject subject = (Subject) entity;
@@ -102,8 +103,8 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(Entity entity, OnItemClickListener itemClickListener) {
-            super.bind(entity, itemClickListener);
+        protected void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(position, entity, itemClickListener);
             isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.LOCATION);
 
             Location location = (Location) entity;
@@ -129,8 +130,8 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(Entity entity, OnItemClickListener itemClickListener) {
-            super.bind(entity, itemClickListener);
+        protected void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(position, entity, itemClickListener);
             isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.TEACHER);
 
             Teacher teacher = (Teacher) entity;
@@ -161,8 +162,8 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(Entity entity, OnItemClickListener itemClickListener) {
-            super.bind(entity, itemClickListener);
+        protected void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(position, entity, itemClickListener);
             isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.ASSIGNMENT);
 
             Assignment assignment = (Assignment) entity;

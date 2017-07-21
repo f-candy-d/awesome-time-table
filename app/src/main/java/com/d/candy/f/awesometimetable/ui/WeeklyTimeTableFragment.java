@@ -1,6 +1,7 @@
 package com.d.candy.f.awesometimetable.ui;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,9 +75,13 @@ public class WeeklyTimeTableFragment extends Fragment
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
+    }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         // The container Activity of this fragment must implements InteractionListener interface
-        setInteractionListener((InteractionListener)getActivity());
+        setInteractionListener((InteractionListener) activity);
     }
 
     @Override

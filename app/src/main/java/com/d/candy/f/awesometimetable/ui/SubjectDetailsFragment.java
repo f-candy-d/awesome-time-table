@@ -1,6 +1,7 @@
 package com.d.candy.f.awesometimetable.ui;
 
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -75,9 +76,6 @@ public class SubjectDetailsFragment extends Fragment {
             mAssignments = new ArrayList<>(
                     Arrays.asList((Assignment[]) getArguments().getSerializable(EntityType.ASSIGNMENT.toString())));
         }
-
-        // The container Activity of this fragment must implements InteractionListener interface
-        mInteractionListener = (InteractionListener) getActivity();
     }
 
     @Override
@@ -93,6 +91,13 @@ public class SubjectDetailsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return root;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // The container Activity of this fragment must implements InteractionListener interface
+        mInteractionListener = (InteractionListener) activity;
     }
 
     // TODO: this is the test code

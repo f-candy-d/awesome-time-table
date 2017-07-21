@@ -18,7 +18,6 @@
 package com.d.candy.f.awesometimetable;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -47,9 +46,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView.OnNavigationItemSelectedListener,
         WeeklyTimeTableFragment.InteractionListener {
 
+
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
     private int mCheckedItemID = -1;
+    // UI
     private AHBottomNavigation mBottomNavigation;
+
+    // Data
+    private WeeklyTimeTable mTimeTable;
 
     /**
      * Key strings being used in the Intent
@@ -92,6 +96,9 @@ public class MainActivity extends AppCompatActivity
 
         // Setup BottomNavigationBar
         initBottomNavigationBar();
+
+        // Init data
+        initTimeTable();
     }
 
     @Override
@@ -163,11 +170,11 @@ public class MainActivity extends AppCompatActivity
 
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(
-                R.string.app_name, R.drawable.ic_menu_camera, R.color.colorPrimary);
+                "Week", R.drawable.ic_view_week, R.color.colorPrimary);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(
-                R.string.action_settings, R.drawable.ic_menu_gallery, R.color.colorAccent);
+                "Assignments", R.drawable.ic_assignment, R.color.colorAccent);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(
-                R.string.day_of_week_friday, R.drawable.ic_menu_slideshow, R.color.md_teal_500);
+                "Notification", R.drawable.ic_notifications_active, R.color.md_teal_500);
 
         // Add items
         mBottomNavigation.addItem(item1);
@@ -199,9 +206,9 @@ public class MainActivity extends AppCompatActivity
 //        mBottomNavigation.setTranslucentNavigationEnabled(false);
 
 // Manage titles
-//        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
+        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
 //        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
+//        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
 
 // Use colored navigation with circle reveal effect
 //        mBottomNavigation.setColored(true);
@@ -227,6 +234,23 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 // Do something cool here...
+//                AHBottomNavigationItem item = mBottomNavigation.getItem(position);
+//                if(wasSelected) {
+//                    if(position == 0) {
+//                        if (mCurrentFragmentType == ContentFragmentType.WEEKLY_TIME_TABLE) {
+//                            item.setDrawable(R.drawable.ic_view_day);
+//                            item.setTitle("Day");
+//                        } else if(mCurrentFragmentType == ContentFragmentType.ONE_DAY_TIME_TABLE) {
+//                            item.setDrawable(R.drawable.ic_view_week);
+//                            item.setTitle("Week");
+//                        }
+//
+//                    }
+//
+//                } else {
+//                    if (position == 0) {
+//                }
+
                 return true;
             }
         });
@@ -235,6 +259,11 @@ public class MainActivity extends AppCompatActivity
                 // Manage the new y position
             }
         });
+    }
+
+    private void initTimeTable() {
+        // TODO; This is TEST code
+        mTimeTable = DataStructureFactory.makeTimeTable(0);
     }
 
     /**
@@ -260,6 +289,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public WeeklyTimeTable onRequireTimeTableData() {
-        return DataStructureFactory.makeTimeTable(0);
+        return mTimeTable;
     }
 }
