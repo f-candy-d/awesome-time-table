@@ -26,6 +26,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -41,6 +42,7 @@ import com.d.candy.f.awesometimetable.utils.LogHelper;
 import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -138,7 +140,6 @@ public class MainActivity extends AppCompatActivity
 
         // Set the initial position of the NavigationView
         navigationView.setCheckedItem(R.id.nav_table1);
-        mCheckedItemID = R.id.nav_table1;
     }
 
     @Override
@@ -347,4 +348,22 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+//    private void test(int year, int month, int day, int eE, int hour, int min) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(year, month, day, hour, min);
+//        long milli = calendar.getTimeInMillis();
+//        Log.d(TAG, String.valueOf(year) + "/" + String.valueOf(month)+"/"+String.valueOf(day)
+//                +"/"+String.valueOf(hour)+":"+String.valueOf(min)+" ("+String.valueOf(eE)+") => " +  String.valueOf(milli));
+//        Calendar calendar1 = Calendar.getInstance();
+//        calendar1.setTimeInMillis(milli);
+//        int y = calendar1.get(Calendar.YEAR);
+//        int m = calendar1.get(Calendar.MONTH);
+//        int d = calendar1.get(Calendar.DATE);
+//        int ee = calendar1.get(Calendar.DAY_OF_WEEK);
+//        int h = calendar1.get(Calendar.HOUR);
+//        int mim = calendar1.get(Calendar.MINUTE);
+//        Log.d(TAG, String.valueOf(milli) + " => " + String.valueOf(y) + "/" + String.valueOf(m)+"/"+String.valueOf(d)
+//                +"/"+String.valueOf(h)+":"+String.valueOf(mim)+" ("+String.valueOf(ee)+")");
+//    }
 }

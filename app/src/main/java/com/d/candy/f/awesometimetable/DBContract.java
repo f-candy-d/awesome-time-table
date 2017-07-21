@@ -101,5 +101,6 @@ public class DBContract {
         public static final String COL_CATEGORY_ID = "category_type";
         public static final String COL_DATETIME_START = "datetime_start";
         public static final String COL_DATETIME_END = "datetime_end";
+        public static final String COL_IS_DONE = "is_done";
     }
 }
