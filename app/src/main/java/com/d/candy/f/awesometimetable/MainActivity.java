@@ -28,7 +28,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -39,19 +38,18 @@ import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
 import com.d.candy.f.awesometimetable.ui.SubjectDetailsActivity;
-import com.d.candy.f.awesometimetable.ui.WeeklyTimeTableFragment;
+import com.d.candy.f.awesometimetable.useless.WeeklyTimeTableFragment;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 
 public class MainActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
-        WeeklyTimeTableFragment.InteractionListener,
         EntityCardListViewerFragment.OnInteractionListener {
 
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
-    private int mCheckedItemID = -1;
+    private int mCheckedItemID;
     // UI
     private AHBottomNavigation mBottomNavigation;
     private EntityCardListViewerFragment mCurrentFragment;
@@ -89,7 +87,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Start with WeeklyTimeTableFragment
         // The following code make a bug that beyond me on orientation change...
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
@@ -101,6 +98,7 @@ public class MainActivity extends AppCompatActivity
 
         // Set the initial position of the NavigationView
         navigationView.setCheckedItem(R.id.nav_table1);
+        mCheckedItemID = R.id.nav_table1;
 
         // Setup BottomNavigationBar
         initBottomNavigationBar();
@@ -148,7 +146,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_table1 && id != mCheckedItemID) {
-            switchFragments(new WeeklyTimeTableFragment());
+            mCurrentFragment.refresh();
         } else if (id == R.id.nav_table2 && id != mCheckedItemID) {
 
         } else if (id == R.id.nav_subjects) {
@@ -163,14 +161,6 @@ public class MainActivity extends AppCompatActivity
         // update
         mCheckedItemID = id;
         return true;
-    }
-
-    private void switchFragments(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        // To turn back navigation on, enable this code
-//        transaction.addToBackStack(null);
-        transaction.commit();
     }
 
     private void initBottomNavigationBar() {
@@ -272,32 +262,6 @@ public class MainActivity extends AppCompatActivity
     private void initTimeTable() {
         // TODO; This is TEST code
         mTimeTable = DataStructureFactory.makeTimeTable(0);
-    }
-
-    /**
-     * Implementation of WeeklyTimeTableFragment.InteractionListener interface
-     */
-    @Override
-    public void onLaunchSubjectDetailsViewer(EnrollingInfo enrollingInfo) {
-        Intent intent = new Intent(this, SubjectDetailsActivity.class);
-        intent.putExtra(EXTRA_ENROLLING_INFO_ID, enrollingInfo.getID());
-        startActivity(intent);
-    }
-
-    @Override
-    public void onListViewScrolled(RecyclerViewScrollObserver.ScrollDirection direction) {
-        if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_DOWN
-                && mBottomNavigation.isHidden()) {
-            mBottomNavigation.restoreBottomNavigation(true);
-        } else if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_UP
-                && mBottomNavigation.isShown()) {
-            mBottomNavigation.hideBottomNavigation(true);
-        }
-    }
-
-    @Override
-    public WeeklyTimeTable onRequireTimeTableData() {
-        return mTimeTable;
     }
 
     /**

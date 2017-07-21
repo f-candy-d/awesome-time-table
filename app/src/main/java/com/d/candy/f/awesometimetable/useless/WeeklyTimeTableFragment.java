@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable.ui;
+package com.d.candy.f.awesometimetable.useless;
 
 
 import android.app.Activity;
@@ -13,10 +13,7 @@ import android.view.ViewGroup;
 
 import com.d.candy.f.awesometimetable.RecyclerViewScrollObserver;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
-import com.d.candy.f.awesometimetable.structure.Subject;
-import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.DayOfWeek;
-import com.d.candy.f.awesometimetable.MiniSubjectCardAdapter;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.utils.LogHelper;

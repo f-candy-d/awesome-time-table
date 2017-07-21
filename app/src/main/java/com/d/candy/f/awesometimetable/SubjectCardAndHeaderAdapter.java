@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
+import com.d.candy.f.awesometimetable.structure.Location;
+import com.d.candy.f.awesometimetable.structure.MyVH;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker;
@@ -106,10 +108,8 @@ public class SubjectCardAndHeaderAdapter extends SubjectCardAdapter {
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
             Subject subject = getTimeTable().getSubjectAtOrderOn(dayOfWeek, offset);
             MyVH.MiniSubjectCardHolder vh = (MyVH.MiniSubjectCardHolder) holder;
-
-            vh.bind(adpPos, subject, getOnItemClickListener());
-            // Set extra data
-            vh.setLocationName(getTimeTable().getLocation(subject.getLocationID()).getName());
+            Location location = getTimeTable().getLocation(subject.getLocationID());
+            vh.bind(adpPos, subject, location, getOnItemClickListener());
 
             // Set up the marker
             CircularTimeLineMarker marker = vh.getTimeLineMarker();
@@ -146,9 +146,9 @@ public class SubjectCardAndHeaderAdapter extends SubjectCardAdapter {
             }
 
 
-        } else if (viewType == VIEW_TYPE_HEADER){
+        } else if (viewType == VIEW_TYPE_HEADER) {
             MyVH.HeaderViewHolder vh = (MyVH.HeaderViewHolder) holder;
-            vh.setTitle(getDayOfWeekContainsPosition(adpPos).toString());
+            vh.bind(position, getDayOfWeekContainsPosition(adpPos).toString(), null);
         }
     }
 

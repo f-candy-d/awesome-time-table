@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.structure;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Entity;
@@ -41,7 +42,7 @@ public class MyVH {
          * @param entity
          * @param itemClickListener
          */
-        protected void bind(final int position, Entity entity,
+        public void bind(final int position, Entity entity,
                             final OnItemClickListener itemClickListener) {
             // Set OnClickListener to an item view
             if (itemClickListener != null) {
@@ -84,7 +85,7 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
+        public void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
             super.bind(position, entity, itemClickListener);
             isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.SUBJECT);
 
@@ -107,7 +108,7 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
+        public void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
             super.bind(position, entity, itemClickListener);
             isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.LOCATION);
 
@@ -134,7 +135,7 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
+        public void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
             super.bind(position, entity, itemClickListener);
             isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.TEACHER);
 
@@ -166,7 +167,7 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
+        public void bind(final int position, Entity entity, OnItemClickListener itemClickListener) {
             super.bind(position, entity, itemClickListener);
             isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.ASSIGNMENT);
 
@@ -184,7 +185,6 @@ public class MyVH {
 
     public static class MiniSubjectCardHolder extends BaseViewHolder {
 
-        private final View mContentRoot;
         private final LinearLayout mLayout;
         private final TextView mName;
         private final TextView mLocation;
@@ -194,23 +194,16 @@ public class MyVH {
         public MiniSubjectCardHolder(View view) {
             super(view);
 
-            mContentRoot = view;
             mLayout = (LinearLayout) view.findViewById(R.id.linear_layout_mini_subject_card_container);
             mName = (TextView) view.findViewById(R.id.text_mini_subject_card_title);
             mLocation = (TextView) view.findViewById(R.id.text_mini_subject_card_location);
             mMarker = (CircularTimeLineMarker) view.findViewById(R.id.tl_marker_mini_subject_card_period_marker);
         }
 
-        @Override
-        protected void bind(int position, Entity entity, OnItemClickListener itemClickListener) {
-            super.bind(position, entity, itemClickListener);
-
-            if (entity.getEntityType() != EntityType.SUBJECT) {
-                throw new IllegalArgumentException();
-            }
+        public void bind(int position, Subject subject, Location location, OnItemClickListener itemClickListener) {
+            super.bind(position, null, itemClickListener);
 
             // change the height of an item
-            Subject subject = (Subject) entity;
             ViewGroup.LayoutParams layoutParams = mLayout.getLayoutParams();
             layoutParams.height = layoutParams.height/mSize*subject.getLength();
             mLayout.setLayoutParams(layoutParams);
@@ -218,10 +211,7 @@ public class MyVH {
 
             // Set data
             mName.setText(subject.getName());
-        }
-
-        public void setLocationName(String locationName) {
-            mLocation.setText(locationName);
+            mLocation.setText(location.getName());
         }
 
         public final CircularTimeLineMarker getTimeLineMarker() {
@@ -239,13 +229,9 @@ public class MyVH {
             mText = (TextView) view.findViewById(R.id.text_recyc_mini_header_text);
         }
 
-        @Override
-        protected void bind(int position, Entity entity, OnItemClickListener itemClickListener) {
-            super.bind(position, entity, itemClickListener);
-        }
-
-        public void setTitle(String title) {
-            mText.setText(title);
+        public void bind(int position, String headerTitle, OnItemClickListener itemClickListener) {
+            super.bind(position, null, itemClickListener);
+            mText.setText(headerTitle);
         }
     }
 
@@ -263,13 +249,10 @@ public class MyVH {
         }
 
         @Override
-        protected void bind(int position, Entity entity, OnItemClickListener itemClickListener) {
+        public void bind(int position, Entity entity, OnItemClickListener itemClickListener) {
             super.bind(position, entity, itemClickListener);
+            isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.SUBJECT);
 
-
-            if (entity.getEntityType() != EntityType.SUBJECT) {
-                throw new IllegalArgumentException();
-            }
             // change the height of a spacer
             Subject subject = (Subject) entity;
             ViewGroup.LayoutParams layoutParams = mLayout.getLayoutParams();

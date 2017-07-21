@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.useless;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseIntArray;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.d.candy.f.awesometimetable.DBContract;
+import com.d.candy.f.awesometimetable.DayOfWeek;
+import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;

@@ -1,7 +1,6 @@
 package com.d.candy.f.awesometimetable.ui;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.candy.f.awesometimetable.MyVH;
+import com.d.candy.f.awesometimetable.structure.MyVH;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.RecyclerViewScrollObserver;
 import com.d.candy.f.awesometimetable.SubjectCardAdapter;
@@ -55,6 +54,7 @@ public class EntityCardListViewerFragment extends Fragment
 
     private OnInteractionListener mListener;
     private SubjectCardAdapter mListAdapter;
+    private RecyclerView mRecyclerView;
     private WeeklyTimeTable mTimeTable;
     private int mID;
 
@@ -122,8 +122,8 @@ public class EntityCardListViewerFragment extends Fragment
     /**
      * If delegate == true, list-item-click event will be passed to a host Activity
      * via {@link OnInteractionListener} interface ({@link OnInteractionListener#onListItemClicked(int)}).
-     * If delegate == false, it will be passed via {@link com.d.candy.f.awesometimetable.MyVH.BaseViewHolder.OnItemClickListener}
-     * interface ({@link com.d.candy.f.awesometimetable.MyVH.BaseViewHolder.OnItemClickListener#onItemClick(int)}).
+     * If delegate == false, it will be passed via {@link MyVH.BaseViewHolder.OnItemClickListener}
+     * interface ({@link MyVH.BaseViewHolder.OnItemClickListener#onItemClick(int)}).
      * In this case, we have to set a host activity as a the listener of MyVH.BaseViewHolder.OnItemClickListener in
      * {@link SubjectCardAdapter#setOnItemClickListener(MyVH.BaseViewHolder.OnItemClickListener)} or
      * {@link SubjectCardAdapter#SubjectCardAdapter(WeeklyTimeTable, MyVH.BaseViewHolder.OnItemClickListener)}.
@@ -150,6 +150,10 @@ public class EntityCardListViewerFragment extends Fragment
         return mListAdapter;
     }
 
+    public void refresh() {
+        mRecyclerView.smoothScrollToPosition(0);
+    }
+
     private void init() {
         mListAdapter = mListener.getListAdapter();
         if (mListAdapter == null) {
@@ -161,12 +165,12 @@ public class EntityCardListViewerFragment extends Fragment
 
     private void initUI(View root) {
         // RecyclerView
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recyc_subject_card_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.recyc_subject_card_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(layoutManager);
 
         // Adapter
-        recyclerView.setAdapter(mListAdapter);
+        mRecyclerView.setAdapter(mListAdapter);
         // If you want to handle OnItemClick event from the adapter by yourself,
         // set OnItemClickListener before onCreate() of this fragment is called
         if(mListAdapter.isOnItemClickListenerNull()) {
@@ -174,7 +178,7 @@ public class EntityCardListViewerFragment extends Fragment
         }
 
         // Scroll observer
-        RecyclerViewScrollObserver scrollObserver = new RecyclerViewScrollObserver(recyclerView);
+        RecyclerViewScrollObserver scrollObserver = new RecyclerViewScrollObserver(mRecyclerView);
         scrollObserver.setMessageListener(this);
         // I think '40' is good so far...
         scrollObserver.setIgnorableScrollDistance(40);
