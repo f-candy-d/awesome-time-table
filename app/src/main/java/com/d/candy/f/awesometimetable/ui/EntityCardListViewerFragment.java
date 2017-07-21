@@ -56,6 +56,7 @@ public class EntityCardListViewerFragment extends Fragment
     private OnInteractionListener mListener;
     private SubjectCardAdapter mListAdapter;
     private WeeklyTimeTable mTimeTable;
+    private int mID;
 
     public EntityCardListViewerFragment() {
         // Required empty public constructor
@@ -65,12 +66,10 @@ public class EntityCardListViewerFragment extends Fragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment EntityCardListViewerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EntityCardListViewerFragment newInstance(String param1, String param2) {
+    public static EntityCardListViewerFragment newInstance() {
         EntityCardListViewerFragment fragment = new EntityCardListViewerFragment();
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
@@ -120,12 +119,31 @@ public class EntityCardListViewerFragment extends Fragment
         mTimeTable = null;
     }
 
-    public void delegateAdapterMessageListener(boolean yes) {
-        if (yes) {
+    /**
+     * If delegate == true, list-item-click event will be passed to a host Activity
+     * via {@link OnInteractionListener} interface ({@link OnInteractionListener#onListItemClicked(int)}).
+     * If delegate == false, it will be passed via {@link com.d.candy.f.awesometimetable.MyVH.BaseViewHolder.OnItemClickListener}
+     * interface ({@link com.d.candy.f.awesometimetable.MyVH.BaseViewHolder.OnItemClickListener#onItemClick(int)}).
+     * In this case, we have to set a host activity as a the listener of MyVH.BaseViewHolder.OnItemClickListener in
+     * {@link SubjectCardAdapter#setOnItemClickListener(MyVH.BaseViewHolder.OnItemClickListener)} or
+     * {@link SubjectCardAdapter#SubjectCardAdapter(WeeklyTimeTable, MyVH.BaseViewHolder.OnItemClickListener)}.
+     *
+     * @param delegate
+     */
+    public void delegateAdapterMessageListener(boolean delegate) {
+        if (delegate) {
             mListAdapter.setOnItemClickListener(this);
         } else {
             mListAdapter.setOnItemClickListener(null);
         }
+    }
+
+    public void setID(int id) {
+        mID = id;
+    }
+
+    public int getID() {
+        return mID;
     }
 
     private void init() {

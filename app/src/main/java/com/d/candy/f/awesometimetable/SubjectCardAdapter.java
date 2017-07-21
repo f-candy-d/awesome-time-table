@@ -16,6 +16,10 @@ abstract public class SubjectCardAdapter extends RecyclerView.Adapter<MyVH.BaseV
     @NonNull private WeeklyTimeTable mTimeTable;
     @Nullable private MyVH.BaseViewHolder.OnItemClickListener mOnItemClickListener = null;
 
+    public SubjectCardAdapter(@NonNull final WeeklyTimeTable timeTable) {
+        this(timeTable, null);
+    }
+
     public SubjectCardAdapter(@NonNull final WeeklyTimeTable timeTable,
                               @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
         // noinspection ConstantConditions

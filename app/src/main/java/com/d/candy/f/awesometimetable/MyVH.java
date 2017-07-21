@@ -2,14 +2,18 @@ package com.d.candy.f.awesometimetable;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.candy.f.awesometimetable.structure.Assignment;
+import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.Teacher;
+import com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker;
 
 /**
  * Created by daichi on 7/19/17.
@@ -177,4 +181,106 @@ public class MyVH {
             mDeadLineDayOfWeek.setText(assignment.getDeadlineDayOfWeek().toString());
         }
     }
+
+    public static class MiniSubjectCardHolder extends BaseViewHolder {
+
+        private final View mContentRoot;
+        private final LinearLayout mLayout;
+        private final TextView mName;
+        private final TextView mLocation;
+        private final CircularTimeLineMarker mMarker;
+        private int mSize = 1;
+
+        public MiniSubjectCardHolder(View view) {
+            super(view);
+
+            mContentRoot = view;
+            mLayout = (LinearLayout) view.findViewById(R.id.linear_layout_mini_subject_card_container);
+            mName = (TextView) view.findViewById(R.id.text_mini_subject_card_title);
+            mLocation = (TextView) view.findViewById(R.id.text_mini_subject_card_location);
+            mMarker = (CircularTimeLineMarker) view.findViewById(R.id.tl_marker_mini_subject_card_period_marker);
+        }
+
+        @Override
+        protected void bind(int position, Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(position, entity, itemClickListener);
+
+            if (entity.getEntityType() != EntityType.SUBJECT) {
+                throw new IllegalArgumentException();
+            }
+
+            // change the height of an item
+            Subject subject = (Subject) entity;
+            ViewGroup.LayoutParams layoutParams = mLayout.getLayoutParams();
+            layoutParams.height = layoutParams.height/mSize*subject.getLength();
+            mLayout.setLayoutParams(layoutParams);
+            mSize = subject.getLength();
+
+            // Set data
+            mName.setText(subject.getName());
+        }
+
+        public void setLocationName(String locationName) {
+            mLocation.setText(locationName);
+        }
+
+        public final CircularTimeLineMarker getTimeLineMarker() {
+            return mMarker;
+        }
+    }
+
+    public static class HeaderViewHolder extends BaseViewHolder {
+
+        private final TextView mText;
+
+        public HeaderViewHolder(View view) {
+            super(view);
+
+            mText = (TextView) view.findViewById(R.id.text_recyc_mini_header_text);
+        }
+
+        @Override
+        protected void bind(int position, Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(position, entity, itemClickListener);
+        }
+
+        public void setTitle(String title) {
+            mText.setText(title);
+        }
+    }
+
+    public static class SpacerViewHolder extends BaseViewHolder {
+
+        private int mSize = 1;
+        private LinearLayout mLayout;
+        private CircularTimeLineMarker mMarker;
+
+        public SpacerViewHolder(View view) {
+            super(view);
+
+            mLayout = (LinearLayout) view.findViewById(R.id.linear_layout_spacer);
+            mMarker = (CircularTimeLineMarker) view.findViewById(R.id.tl_marker_mini_spacer_period_marker);
+        }
+
+        @Override
+        protected void bind(int position, Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(position, entity, itemClickListener);
+
+
+            if (entity.getEntityType() != EntityType.SUBJECT) {
+                throw new IllegalArgumentException();
+            }
+            // change the height of a spacer
+            Subject subject = (Subject) entity;
+            ViewGroup.LayoutParams layoutParams = mLayout.getLayoutParams();
+            layoutParams.height = layoutParams.height/mSize*subject.getLength();
+            mLayout.setLayoutParams(layoutParams);
+            mSize = subject.getLength();
+        }
+
+        public final CircularTimeLineMarker getTimeLineMarker() {
+            return mMarker;
+        }
+    }
+
 }

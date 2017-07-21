@@ -78,16 +78,16 @@ public class SubjectDetailsCardAdapter
 
         if (viewType == VIEW_TYPE_SUBJECT) {
             MyVH.SubjectCardViewHolder vh = (MyVH.SubjectCardViewHolder) holder;
-            vh.bind(mEntities.get(adpPos), null);
+            vh.bind(adpPos, mEntities.get(adpPos), null);
         } else if (viewType == VIEW_TYPE_LOCATION) {
             MyVH.LocationCardViewHolder vh = (MyVH.LocationCardViewHolder) holder;
-            vh.bind(mEntities.get(adpPos), null);
+            vh.bind(adpPos, mEntities.get(adpPos), null);
         } else if (viewType == VIEW_TYPE_TEACHER) {
             MyVH.TeacherCardViewHolder vh = (MyVH.TeacherCardViewHolder) holder;
-            vh.bind(mEntities.get(adpPos), null);
+            vh.bind(adpPos, mEntities.get(adpPos), null);
         } else if(viewType == VIEW_TYPE_ASSIGNMENT) {
             MyVH.AssignmentCardViewHolder vh = (MyVH.AssignmentCardViewHolder) holder;
-            vh.bind(mEntities.get(adpPos), null);
+            vh.bind(adpPos, mEntities.get(adpPos), null);
         }
     }
 }

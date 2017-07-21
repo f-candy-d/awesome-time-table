@@ -28,6 +28,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,6 +37,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
+import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
 import com.d.candy.f.awesometimetable.ui.SubjectDetailsActivity;
 import com.d.candy.f.awesometimetable.ui.WeeklyTimeTableFragment;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
@@ -44,13 +46,15 @@ import com.d.candy.f.awesometimetable.utils.LogHelper;
 public class MainActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
-        WeeklyTimeTableFragment.InteractionListener {
+        WeeklyTimeTableFragment.InteractionListener,
+        EntityCardListViewerFragment.OnInteractionListener {
 
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
     private int mCheckedItemID = -1;
     // UI
     private AHBottomNavigation mBottomNavigation;
+    private EntityCardListViewerFragment mCurrentFragment;
 
     // Data
     private WeeklyTimeTable mTimeTable;
@@ -89,9 +93,16 @@ public class MainActivity extends AppCompatActivity
         // The following code make a bug that beyond me on orientation change...
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
-        WeeklyTimeTableFragment fragment = WeeklyTimeTableFragment.newInstance();
+        // TODO: This is Test Code
+//        WeeklyTimeTableFragment fragment = WeeklyTimeTableFragment.newInstance();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container, fragment).commit();
+        mCurrentFragment = EntityCardListViewerFragment.newInstance();
+        mCurrentFragment.setID(0);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment).commit();
+                .replace(R.id.fragment_container, mCurrentFragment).commit();
+
+        // Set the initial position of the NavigationView
         navigationView.setCheckedItem(R.id.nav_table1);
 
         // Setup BottomNavigationBar
@@ -290,5 +301,37 @@ public class MainActivity extends AppCompatActivity
     @Override
     public WeeklyTimeTable onRequireTimeTableData() {
         return mTimeTable;
+    }
+
+    /**
+     * Implementation of EntityCardListViewerFragment.OnInteractionListener interface
+     */
+    @Override
+    public SubjectCardAdapter getListAdapter() {
+        if (mCurrentFragment.getID() == 0) {
+            // TODO: test code
+            // The order of shown items
+            DayOfWeek[] order = {
+                    DayOfWeek.MONDAY,
+                    DayOfWeek.TUESDAY,
+                    DayOfWeek.WEDNESDAY,
+                    DayOfWeek.THURSDAY,
+                    DayOfWeek.FRIDAY
+            };
+
+            return new SubjectCardAndHeaderAdapter(mTimeTable, order);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onListScrolled(RecyclerViewScrollObserver.ScrollDirection direction) {
+        Log.d(TAG, "onListScrolled");
+    }
+
+    @Override
+    public void onListItemClicked(int position) {
+        Log.d(TAG, "onListItemClicked");
     }
 }
