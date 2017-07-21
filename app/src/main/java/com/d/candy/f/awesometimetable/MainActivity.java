@@ -94,9 +94,6 @@ public class MainActivity extends AppCompatActivity
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
         // TODO: This is Test Code
-//        WeeklyTimeTableFragment fragment = WeeklyTimeTableFragment.newInstance();
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container, fragment).commit();
         mCurrentFragment = EntityCardListViewerFragment.newInstance();
         mCurrentFragment.setID(0);
         getSupportFragmentManager().beginTransaction()
@@ -327,11 +324,27 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListScrolled(RecyclerViewScrollObserver.ScrollDirection direction) {
-        Log.d(TAG, "onListScrolled");
+        if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_DOWN
+                && mBottomNavigation.isHidden()) {
+            mBottomNavigation.restoreBottomNavigation(true);
+        } else if (direction == RecyclerViewScrollObserver.ScrollDirection.SCROLL_UP
+                && mBottomNavigation.isShown()) {
+            mBottomNavigation.hideBottomNavigation(true);
+        }
     }
 
     @Override
     public void onListItemClicked(int position) {
-        Log.d(TAG, "onListItemClicked");
+        if (mCurrentFragment.getID() == 0) {
+            // TODO; test code
+            SubjectCardAndHeaderAdapter sAhAdapter =
+                    (SubjectCardAndHeaderAdapter) mCurrentFragment.getListAdapter();
+            EnrollingInfo enrollingInfo = sAhAdapter.getEnrollingInfoAtPosition(position);
+            if (enrollingInfo != null) {
+                Intent intent = new Intent(this, SubjectDetailsActivity.class);
+                intent.putExtra(EXTRA_ENROLLING_INFO_ID, enrollingInfo.getID());
+                startActivity(intent);
+            }
+        }
     }
 }

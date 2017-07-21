@@ -138,7 +138,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else {
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(position);
             int offset = position - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
-            int id = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset).getID();
+            int id = mWeeklyTimeTable.getSubjectAtOrderOn(dayOfWeek, offset).getID();
             if(DBContract.SubjectEntity.MIN_USABLE_ID <= id) {
                 return VIEW_TYPE_SUBJECT;
             } else {
@@ -183,7 +183,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if(viewType == VIEW_TYPE_SUBJECT) {
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
-            Subject subject = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset);
+            Subject subject = mWeeklyTimeTable.getSubjectAtOrderOn(dayOfWeek, offset);
 
             // change the height of an item
             SubjectViewHolder sbjHolder = (SubjectViewHolder) holder;
@@ -198,7 +198,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             // Set up the marker
             sbjHolder.mMarker.setText(String.valueOf(
-                    mWeeklyTimeTable.getBeginPeriodAtPositionOn(dayOfWeek, offset)));
+                    mWeeklyTimeTable.getBeginPeriodAtOrderOn(dayOfWeek, offset)));
             sbjHolder.mMarker.setNumSubMarker(subject.getLength() - 1);
             if(offset == 0) {
                 sbjHolder.mMarker.enableDrawRunningOverLineStart(false);
@@ -212,14 +212,14 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             sbjHolder.bind(
-                    mWeeklyTimeTable.getEnrollingInfoAtPositionOn(dayOfWeek, offset),
+                    mWeeklyTimeTable.getEnrollingInfoAtOrderOn(dayOfWeek, offset),
                     mOnItemClickListener);
 
             // Make a Spacer view
         } else if(viewType == VIEW_TYPE_SPACER) {
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
-            Subject subject = mWeeklyTimeTable.getSubjectAtPositionOn(dayOfWeek, offset);
+            Subject subject = mWeeklyTimeTable.getSubjectAtOrderOn(dayOfWeek, offset);
             SpacerViewHolder spcHolder = (SpacerViewHolder) holder;
             int size = subject.getLength();
 
@@ -231,7 +231,7 @@ public class MiniSubjectCardAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             // Setup the marker
             spcHolder.mMarker.setText(String.valueOf(
-                    mWeeklyTimeTable.getBeginPeriodAtPositionOn(dayOfWeek, offset)));
+                    mWeeklyTimeTable.getBeginPeriodAtOrderOn(dayOfWeek, offset)));
             if(offset == mWeeklyTimeTable.countSubjectOn(dayOfWeek) - 1) {
                 spcHolder.mMarker.enableDrawRunningOverLineEnd(false);
             } else {

@@ -49,10 +49,10 @@ public class WeeklyTimeTable extends TimeTable {
         oneDayTimeTable.enrollBlankSubject(size);
     }
 
-    public Subject getSubjectAtPositionOn(DayOfWeek dayOfWeek, int position) {
+    public Subject getSubjectAtOrderOn(DayOfWeek dayOfWeek, int order) {
         OneDayTimeTable oneDayTimeTable;
         if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
-            return oneDayTimeTable.getSubjectAtPosition(position);
+            return oneDayTimeTable.getSubjectAtOrder(order);
         } else {
             return null;
         }
@@ -86,14 +86,14 @@ public class WeeklyTimeTable extends TimeTable {
         }
     }
 
-    public int getBeginPeriodAtPositionOn(DayOfWeek dayOfWeek, int position) {
+    public int getBeginPeriodAtOrderOn(DayOfWeek dayOfWeek, int order) {
         OneDayTimeTable oneDayTimeTable;
         if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null
-                && position < countSubjectOn(dayOfWeek)) {
+                && order < countSubjectOn(dayOfWeek)) {
             int period = 1;
-            for (int i = 0; i < position; ++i)
+            for (int i = 0; i < order; ++i)
             {
-                period += oneDayTimeTable.getSubjectAtPosition(i).getLength();
+                period += oneDayTimeTable.getSubjectAtOrder(i).getLength();
             }
 
             return period;
@@ -105,10 +105,10 @@ public class WeeklyTimeTable extends TimeTable {
         return (mTable.get(dayOfWeek.toInt(), null));
     }
 
-    public EnrollingInfo getEnrollingInfoAtPositionOn(DayOfWeek dayOfWeek, int position) {
+    public EnrollingInfo getEnrollingInfoAtOrderOn(DayOfWeek dayOfWeek, int order) {
         OneDayTimeTable oneDayTimeTable;
         if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
-            return oneDayTimeTable.getEnrollingInfoAtPosition(position);
+            return oneDayTimeTable.getEnrollingInfoAtOrder(order);
         }
         return null;
     }

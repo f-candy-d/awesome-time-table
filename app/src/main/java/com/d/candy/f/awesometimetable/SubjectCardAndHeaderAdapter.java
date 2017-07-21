@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker;
@@ -59,7 +60,7 @@ public class SubjectCardAndHeaderAdapter extends SubjectCardAdapter {
         } else {
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(position);
             int offset = position - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
-            int id = getTimeTable().getSubjectAtPositionOn(dayOfWeek, offset).getID();
+            int id = getTimeTable().getSubjectAtOrderOn(dayOfWeek, offset).getID();
             if(DBContract.SubjectEntity.MIN_USABLE_ID <= id) {
                 return VIEW_TYPE_SUBJECT;
             } else {
@@ -103,7 +104,7 @@ public class SubjectCardAndHeaderAdapter extends SubjectCardAdapter {
         if (viewType == VIEW_TYPE_SUBJECT) {
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
-            Subject subject = getTimeTable().getSubjectAtPositionOn(dayOfWeek, offset);
+            Subject subject = getTimeTable().getSubjectAtOrderOn(dayOfWeek, offset);
             MyVH.MiniSubjectCardHolder vh = (MyVH.MiniSubjectCardHolder) holder;
 
             vh.bind(adpPos, subject, getOnItemClickListener());
@@ -113,7 +114,7 @@ public class SubjectCardAndHeaderAdapter extends SubjectCardAdapter {
             // Set up the marker
             CircularTimeLineMarker marker = vh.getTimeLineMarker();
             marker.setText(String.valueOf(
-                    getTimeTable().getBeginPeriodAtPositionOn(dayOfWeek, offset)));
+                    getTimeTable().getBeginPeriodAtOrderOn(dayOfWeek, offset)));
             marker.setNumSubMarker(subject.getLength() - 1);
             if(offset == 0) {
                 marker.enableDrawRunningOverLineStart(false);
@@ -130,14 +131,14 @@ public class SubjectCardAndHeaderAdapter extends SubjectCardAdapter {
         } else if (viewType == VIEW_TYPE_SPACER) {
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
-            Subject subject = getTimeTable().getSubjectAtPositionOn(dayOfWeek, offset);
+            Subject subject = getTimeTable().getSubjectAtOrderOn(dayOfWeek, offset);
             MyVH.SpacerViewHolder vh = (MyVH.SpacerViewHolder) holder;
             vh.bind(adpPos, subject, getOnItemClickListener());
 
             // Setup the marker
             CircularTimeLineMarker marker = vh.getTimeLineMarker();
             marker.setText(String.valueOf(
-                    getTimeTable().getBeginPeriodAtPositionOn(dayOfWeek, offset)));
+                    getTimeTable().getBeginPeriodAtOrderOn(dayOfWeek, offset)));
             if(offset == getTimeTable().countSubjectOn(dayOfWeek) - 1) {
                 marker.enableDrawRunningOverLineEnd(false);
             } else {
@@ -149,6 +150,13 @@ public class SubjectCardAndHeaderAdapter extends SubjectCardAdapter {
             MyVH.HeaderViewHolder vh = (MyVH.HeaderViewHolder) holder;
             vh.setTitle(getDayOfWeekContainsPosition(adpPos).toString());
         }
+    }
+
+    public EnrollingInfo getEnrollingInfoAtPosition(final int position) {
+        DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(position);
+        int offset = position - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
+
+        return getTimeTable().getEnrollingInfoAtOrderOn(dayOfWeek, offset);
     }
 
     private void init() {

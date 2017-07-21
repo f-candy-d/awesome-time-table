@@ -146,6 +146,10 @@ public class EntityCardListViewerFragment extends Fragment
         return mID;
     }
 
+    public final SubjectCardAdapter getListAdapter() {
+        return mListAdapter;
+    }
+
     private void init() {
         mListAdapter = mListener.getListAdapter();
         if (mListAdapter == null) {

@@ -110,18 +110,18 @@ public class OneDayTimeTable extends TimeTable {
         }
     }
 
-    public Subject getSubjectAtPosition(int position) {
-        return getEntityCache().getSubject(mTable.get(position).getSubjectID());
+    public Subject getSubjectAtOrder(int order) {
+        return getEntityCache().getSubject(mTable.get(order).getSubjectID());
     }
 
-    public int getSubjectIDAtPosition(int position) {
-        return mTable.get(position).getSubjectID();
+    public int getSubjectIDAtOrder(int order) {
+        return mTable.get(order).getSubjectID();
     }
 
     public Subject getSubjectAtPeriod(int period) { return null; }
 
-    public EnrollingInfo getEnrollingInfoAtPosition(int position) {
-        return mTable.get(position);
+    public EnrollingInfo getEnrollingInfoAtOrder(int order) {
+        return mTable.get(order);
     }
 
 }
