@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.d.candy.f.awesometimetable.structure.MyVH;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.RecyclerViewScrollObserver;
-import com.d.candy.f.awesometimetable.SubjectCardAdapter;
+import com.d.candy.f.awesometimetable.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 /**
@@ -38,7 +38,7 @@ public class EntityCardListViewerFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnInteractionListener {
-        SubjectCardAdapter getListAdapter();
+        EntityCardAdapter getListAdapter();
         void onListScrolled(final RecyclerViewScrollObserver.ScrollDirection direction);
         void onListItemClicked(final int position);
     }
@@ -53,7 +53,7 @@ public class EntityCardListViewerFragment extends Fragment
 //    private String mParam2;
 
     private OnInteractionListener mListener;
-    private SubjectCardAdapter mListAdapter;
+    private EntityCardAdapter mListAdapter;
     private RecyclerView mRecyclerView;
     private WeeklyTimeTable mTimeTable;
     private int mID;
@@ -125,8 +125,8 @@ public class EntityCardListViewerFragment extends Fragment
      * If delegate == false, it will be passed via {@link MyVH.BaseViewHolder.OnItemClickListener}
      * interface ({@link MyVH.BaseViewHolder.OnItemClickListener#onItemClick(int)}).
      * In this case, we have to set a host activity as a the listener of MyVH.BaseViewHolder.OnItemClickListener in
-     * {@link SubjectCardAdapter#setOnItemClickListener(MyVH.BaseViewHolder.OnItemClickListener)} or
-     * {@link SubjectCardAdapter#SubjectCardAdapter(WeeklyTimeTable, MyVH.BaseViewHolder.OnItemClickListener)}.
+     * {@link EntityCardAdapter#setOnItemClickListener(MyVH.BaseViewHolder.OnItemClickListener)} or
+     * {@link EntityCardAdapter#EntityCardAdapter(MyVH.BaseViewHolder.OnItemClickListener)}.
      *
      * @param delegate
      */
@@ -146,7 +146,7 @@ public class EntityCardListViewerFragment extends Fragment
         return mID;
     }
 
-    public final SubjectCardAdapter getListAdapter() {
+    public final EntityCardAdapter getListAdapter() {
         return mListAdapter;
     }
 
@@ -154,13 +154,15 @@ public class EntityCardListViewerFragment extends Fragment
         mRecyclerView.smoothScrollToPosition(0);
     }
 
+    public void setTimeTable(final WeeklyTimeTable timeTable) {
+        mTimeTable = timeTable;
+    }
+
     private void init() {
         mListAdapter = mListener.getListAdapter();
         if (mListAdapter == null) {
             throw new NullPointerException();
         }
-
-        mTimeTable = mListAdapter.getTimeTable();
     }
 
     private void initUI(View root) {
@@ -196,7 +198,7 @@ public class EntityCardListViewerFragment extends Fragment
     }
 
     /**
-     * Implementation of SubjectCardAdapter.OnItemClickListener interface
+     * Implementation of EntityCardAdapter.OnItemClickListener interface
      */
     @Override
     public void onItemClick(int position) {

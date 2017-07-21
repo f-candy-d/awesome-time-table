@@ -19,8 +19,6 @@ package com.d.candy.f.awesometimetable;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -37,8 +35,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
-import com.d.candy.f.awesometimetable.ui.SubjectDetailsActivity;
-import com.d.candy.f.awesometimetable.useless.WeeklyTimeTableFragment;
+import com.d.candy.f.awesometimetable.useless.SubjectCardAndHeaderAdapter;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 
@@ -87,11 +84,18 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Setup BottomNavigationBar
+        initBottomNavigationBar();
+
+        // Init data
+        initTimeTable();
+
         // The following code make a bug that beyond me on orientation change...
 //        getSupportFragmentManager().beginTransaction()
 //                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
         // TODO: This is Test Code
         mCurrentFragment = EntityCardListViewerFragment.newInstance();
+        mCurrentFragment.setTimeTable(mTimeTable);
         mCurrentFragment.setID(0);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, mCurrentFragment).commit();
@@ -99,12 +103,6 @@ public class MainActivity extends AppCompatActivity
         // Set the initial position of the NavigationView
         navigationView.setCheckedItem(R.id.nav_table1);
         mCheckedItemID = R.id.nav_table1;
-
-        // Setup BottomNavigationBar
-        initBottomNavigationBar();
-
-        // Init data
-        initTimeTable();
     }
 
     @Override
@@ -268,7 +266,7 @@ public class MainActivity extends AppCompatActivity
      * Implementation of EntityCardListViewerFragment.OnInteractionListener interface
      */
     @Override
-    public SubjectCardAdapter getListAdapter() {
+    public EntityCardAdapter getListAdapter() {
         if (mCurrentFragment.getID() == 0) {
             // TODO: test code
             // The order of shown items

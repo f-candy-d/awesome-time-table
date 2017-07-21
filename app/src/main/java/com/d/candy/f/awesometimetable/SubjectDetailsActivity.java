@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable.ui;
+package com.d.candy.f.awesometimetable;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
@@ -8,21 +8,32 @@ import android.os.Bundle;
 import com.d.candy.f.awesometimetable.DBContract;
 import com.d.candy.f.awesometimetable.MainActivity;
 import com.d.candy.f.awesometimetable.R;
+import com.d.candy.f.awesometimetable.RecyclerViewScrollObserver;
+import com.d.candy.f.awesometimetable.EntityCardAdapter;
+import com.d.candy.f.awesometimetable.SubjectAndRelationsCardAdapter;
+import com.d.candy.f.awesometimetable.SubjectDetailsCardAdapter;
+import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
+import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.structure.Location;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.Teacher;
+import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
 import com.d.candy.f.awesometimetable.utils.BundleBuilder;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class SubjectDetailsActivity extends AppCompatActivity
-implements SubjectDetailsFragment.InteractionListener {
+implements EntityCardListViewerFragment.OnInteractionListener {
 
     private EnrollingInfo mEnrollingInfo = null;
     private Subject mSubject = null;
     private Location mLocation = null;
     private Teacher mTeacher = null;
+    private ArrayList<Assignment> mAssignments = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +58,8 @@ implements SubjectDetailsFragment.InteractionListener {
             mSubject = DataStructureFactory.makeSubject(mEnrollingInfo.getSubjectID());
             mLocation = DataStructureFactory.makeLocation(mSubject.getLocationID());
             mTeacher = DataStructureFactory.makeTeacher(mSubject.getTeacherID());
-
+            mAssignments = new ArrayList<>(
+                    Arrays.asList(DataStructureFactory.makeAssignmentListForEnrollingInfo(mEnrollingInfo)));
         } else {
             // 'id' is null-id
             throw new IllegalArgumentException(
@@ -57,21 +69,36 @@ implements SubjectDetailsFragment.InteractionListener {
 
     private void displayInfo() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new BundleBuilder()
-                .put(EntityType.SUBJECT.toString(), mSubject)
-                .put(EntityType.LOCATION.toString(), mLocation)
-                .put(EntityType.TEACHER.toString(), mTeacher)
-                .put(EntityType.ENROLLING_INFO.toString(), mEnrollingInfo)
-                .put(EntityType.ASSIGNMENT.toString(), DataStructureFactory.makeAssignmentListForEnrollingInfo(mEnrollingInfo))
-                .build();
-
-        SubjectDetailsFragment fragment = SubjectDetailsFragment
-                .newInstance(bundle);
+        EntityCardListViewerFragment fragment = EntityCardListViewerFragment.newInstance();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
     }
 
     /**
-     * The implementation of SubjectDetailsFragment.InteractionListener
+     * The implementation of EntityCardListViewerFragment.OnInteractionListener
      */
+    @Override
+    public void onListItemClicked(int position) {
+
+    }
+
+    @Override
+    public void onListScrolled(RecyclerViewScrollObserver.ScrollDirection direction) {
+
+    }
+
+    @Override
+    public EntityCardAdapter getListAdapter() {
+        ArrayList<Entity> entities = new ArrayList<>();
+        entities.add(mSubject);
+        entities.add(mLocation);
+        entities.add(mTeacher);
+
+        for (Assignment assignment : mAssignments)
+        {
+            entities.add(assignment);
+        }
+
+        return new SubjectAndRelationsCardAdapter(entities);
+    }
 }
