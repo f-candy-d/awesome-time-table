@@ -17,11 +17,14 @@
 
 package com.d.candy.f.awesometimetable;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +33,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.OvershootInterpolator;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     private static final int FRAGMENT_NOTIFICATIONS = 3;
 
     private static final int VIEWPAGER_OFFSCREEN_LIMIT = 3;
+    private static final long FAB_ANIM_DURATION = 270L;
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
     private int mCheckedItemID;
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     private EntityCardListViewerFragment mCurrentFragment;
     private TableViewerPagerAdapter mViewerPagerAdapter;
     private AHBottomNavigationViewPager mViewPager;
+    private FloatingActionButton mFab;
 
     // Data
     private WeeklyTimeTable mTimeTable;
@@ -107,6 +114,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        initFAB();
         // Setup BottomNavigationBar
         initBottomNavigationBar();
 
@@ -203,7 +211,7 @@ public class MainActivity extends AppCompatActivity
 
 
 // Enable the translation of the FloatingActionButton
-//        mBottomNavigation.manageFloatingActionButtonBehavior(floatingActionButton);
+        mBottomNavigation.manageFloatingActionButtonBehavior(mFab);
 
 // Change colors
         mBottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
@@ -246,10 +254,32 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
+
+                if (!wasSelected && mFab.getVisibility() == View.VISIBLE) {
+                    if (position == 2) {
+                        hideFAB(true);
+                        mFab.setTag(FRAGMENT_ASSIGNMENTS);
+                    } else if (position == 3) {
+                        hideFAB(true);
+                        mFab.setTag(FRAGMENT_NOTIFICATIONS);
+                    } else {
+                        hideFAB(false);
+                    }
+                } else if (!wasSelected && mFab.getVisibility() == View.GONE) {
+                    if (position == 2) {
+                        showFAB(false);
+                        mFab.setTag(FRAGMENT_ASSIGNMENTS);
+                    } else if (position == 3) {
+                        showFAB(false);
+                        mFab.setTag(FRAGMENT_NOTIFICATIONS);
+                    }
+                }
+
                 return onSwitchFragments(position, wasSelected);
             }
         });
-        mBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
+        mBottomNavigation.setOnNavigationPositionListener(
+                new AHBottomNavigation.OnNavigationPositionListener() {
             @Override public void onPositionChange(int y) {
                 // Manage the new y position
             }
@@ -263,7 +293,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initViewPager() {
         // ViewPager
-        ArrayList<EntityCardListViewerFragment> fragments = new ArrayList<>();
+        ArrayList<EntityCardListViewerFragment> fragments = new ArrayList<>(4);
 
         // Add fragments to the ViewPager
         EntityCardListViewerFragment oneDayTTF = EntityCardListViewerFragment.newInstance();
@@ -297,6 +327,79 @@ public class MainActivity extends AppCompatActivity
         // Default fragment
         mViewPager.setCurrentItem(FRAGMENT_ONE_DAY_TIMETABLE, false);
         mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
+    }
+
+    private void initFAB() {
+        mFab = (FloatingActionButton) findViewById(R.id.fab_main);
+    }
+
+    private void hideFAB(final boolean showAfterAnim) {
+        // Hide FAB with animation
+        mFab.animate().alpha(0).scaleX(0).scaleY(0).setDuration(FAB_ANIM_DURATION)
+                .setInterpolator(new LinearOutSlowInInterpolator())
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mFab.setVisibility(View.GONE);
+                        if (showAfterAnim) {
+                            // Show FAB again!
+                            showFAB(false);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        mFab.setVisibility(View.GONE);
+                        if (showAfterAnim) {
+                            showFAB(false);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).start();
+
+    }
+
+    private void showFAB(final boolean hideAfterAnim) {
+        // Show FAB with animation
+        mFab.setVisibility(View.VISIBLE);
+        mFab.setAlpha(0f);
+        mFab.setScaleX(0f);
+        mFab.setScaleY(0f);
+        mFab.animate().alpha(1).scaleX(1).scaleY(1).setDuration(FAB_ANIM_DURATION)
+                .setInterpolator(new OvershootInterpolator())
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (hideAfterAnim) {
+                            // Hide FAB again!
+                            hideFAB(false);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).start();
     }
 
     private boolean onSwitchFragments(final int position, final boolean wasSelected) {
