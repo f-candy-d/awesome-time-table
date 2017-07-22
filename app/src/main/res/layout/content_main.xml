@@ -14,18 +14,6 @@
         <!--layout="@layout/fragment_container"-->
         <!--android:layout_height="match_parent"-->
         <!--android:layout_width="match_parent"/>-->
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="48dp"
-        android:layout_marginRight="4dp"
-        android:src="@drawable/ic_add"
-        android:visibility="gone"
-        app:useCompatPadding="true"/>
-
     <com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager
         android:id="@+id/view_pager_main"
         android:layout_width="match_parent"

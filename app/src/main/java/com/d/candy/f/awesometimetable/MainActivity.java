@@ -20,6 +20,7 @@ package com.d.candy.f.awesometimetable;
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity
 //        mBottomNavigation.setColored(true);
 
 // Set current item programmatically
-        mBottomNavigation.setCurrentItem(0);
+        mBottomNavigation.setCurrentItem(FRAGMENT_ONE_DAY_TIMETABLE);
 
 // Customize notification (title, background, typeface)
 //        mBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity
                         // In this case, simply show FAB with animation.
                         if (mFab.getVisibility() == View.VISIBLE) {
                             hideFAB(true);
-                        } else if (mFab.getVisibility() == View.GONE) {
+                        } else if (mFab.getVisibility() == View.INVISIBLE) {
                             showFAB(false);
                         }
                         mFab.setTag(position);
@@ -281,6 +282,11 @@ public class MainActivity extends AppCompatActivity
                 new AHBottomNavigation.OnNavigationPositionListener() {
             @Override public void onPositionChange(int y) {
                 // Manage the new y position
+                if (y == 0 && mFab.getVisibility() == View.VISIBLE) {
+//                    hideFAB(false);
+                } else if (y == mBottomNavigation.getHeight() && mFab.getVisibility() == View.INVISIBLE) {
+//                    showFAB(false);
+                }
             }
         });
     }
@@ -330,6 +336,20 @@ public class MainActivity extends AppCompatActivity
 
     private void initFAB() {
         mFab = (FloatingActionButton) findViewById(R.id.fab_main);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((Integer) v.getTag()) == FRAGMENT_ASSIGNMENTS) {
+
+                } else if (((Integer) v.getTag()) == FRAGMENT_NOTIFICATIONS) {
+                }
+            }
+        });
+        if (mFab.getParent() instanceof CoordinatorLayout) {
+            Log.d(TAG, "FAB's parent is CoordinateLayout");
+        } else {
+            Log.d(TAG, "FAB's parent is not CoordinateLayout");
+        }
     }
 
     private void hideFAB(final boolean showAfterAnim) {
@@ -344,7 +364,7 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        mFab.setVisibility(View.GONE);
+                        mFab.setVisibility(View.INVISIBLE);
                         if (showAfterAnim) {
                             // Show FAB again!
                             showFAB(false);
@@ -353,7 +373,7 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
-                        mFab.setVisibility(View.GONE);
+                        mFab.setVisibility(View.INVISIBLE);
                         if (showAfterAnim) {
                             showFAB(false);
                         }
