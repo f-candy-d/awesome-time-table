@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity
         mViewPager.setOffscreenPageLimit(3);
         mViewerPagerAdapter = new TableViewerPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mViewerPagerAdapter);
+        mViewPager.setCurrentItem(FRAGMENT_WEEKLY_TIMETABLE, false);
         mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
 
         // The following code make a bug that beyond me on orientation change...
@@ -336,6 +337,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListItemClicked(int position) {
+        if (mCurrentFragment == null) {
+            mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
+        }
+
         if (mCurrentFragment.getID() == FRAGMENT_WEEKLY_TIMETABLE) {
             // TODO; test code
             SubjectCardAndHeaderAdapter sAhAdapter =
