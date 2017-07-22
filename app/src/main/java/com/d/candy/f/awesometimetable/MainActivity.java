@@ -254,24 +254,23 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
+                // Hide or show FAB
+                if (!wasSelected) {
+                    if (position == FRAGMENT_ASSIGNMENTS || position == FRAGMENT_NOTIFICATIONS) {
+                        // If FAB's visibility is VISIBLE, the previous position is 2 or 3.
+                        // So the first thing we do is to hide FAB with animation,
+                        // and then show it again.
+                        // If FAB's visibility is GONE, the previous position is 0 or 1.
+                        // In this case, simply show FAB with animation.
+                        if (mFab.getVisibility() == View.VISIBLE) {
+                            hideFAB(true);
+                        } else if (mFab.getVisibility() == View.GONE) {
+                            showFAB(false);
+                        }
+                        mFab.setTag(position);
 
-                if (!wasSelected && mFab.getVisibility() == View.VISIBLE) {
-                    if (position == 2) {
-                        hideFAB(true);
-                        mFab.setTag(FRAGMENT_ASSIGNMENTS);
-                    } else if (position == 3) {
-                        hideFAB(true);
-                        mFab.setTag(FRAGMENT_NOTIFICATIONS);
                     } else {
                         hideFAB(false);
-                    }
-                } else if (!wasSelected && mFab.getVisibility() == View.GONE) {
-                    if (position == 2) {
-                        showFAB(false);
-                        mFab.setTag(FRAGMENT_ASSIGNMENTS);
-                    } else if (position == 3) {
-                        showFAB(false);
-                        mFab.setTag(FRAGMENT_NOTIFICATIONS);
                     }
                 }
 
