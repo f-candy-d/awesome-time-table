@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.DBContract;
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.R;
@@ -23,7 +22,7 @@ import com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker;
  * Created by daichi on 7/21/17.
  */
 
-public class SubjectCardAndHeaderAdapter extends EntityCardAdapter {
+public class WeeklySubjectCardAdapter extends EntityCardAdapter {
 
     /**
      * View types
@@ -36,14 +35,14 @@ public class SubjectCardAndHeaderAdapter extends EntityCardAdapter {
     @NonNull private final DayOfWeek[] mDayOfWeeksOrder;
     private SparseIntArray mHeaderPositions;
 
-    public SubjectCardAndHeaderAdapter(@NonNull final WeeklyTimeTable timeTable,
-                                       @NonNull DayOfWeek[] dayOfWeeksOrder) {
+    public WeeklySubjectCardAdapter(@NonNull final WeeklyTimeTable timeTable,
+                                    @NonNull DayOfWeek[] dayOfWeeksOrder) {
         this(timeTable, dayOfWeeksOrder, null);
     }
 
-    public SubjectCardAndHeaderAdapter(@NonNull final WeeklyTimeTable timeTable,
-                                       @NonNull DayOfWeek[] dayOfWeeksOrder,
-                                       @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
+    public WeeklySubjectCardAdapter(@NonNull final WeeklyTimeTable timeTable,
+                                    @NonNull DayOfWeek[] dayOfWeeksOrder,
+                                    @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
 //        super(timeTable, onItemClickListener);
         super(onItemClickListener);
 
@@ -60,7 +59,7 @@ public class SubjectCardAndHeaderAdapter extends EntityCardAdapter {
 
     @Override
     public int getItemCount() {
-        return mTimeTable.countSubject() + mDayOfWeeksOrder.length;
+        return mTimeTable.countSubjectOn(mDayOfWeeksOrder) + mDayOfWeeksOrder.length;
     }
 
     @Override
@@ -177,13 +176,6 @@ public class SubjectCardAndHeaderAdapter extends EntityCardAdapter {
                     mTimeTable.countSubjectOn(mDayOfWeeksOrder[i - 1])
                             + mHeaderPositions.get(mDayOfWeeksOrder[i - 1].toInt())
                             + 1);
-        }
-
-        Log.d("mylog", "#################################################");
-        for (int i = 0; i < mHeaderPositions.size(); ++i) {
-            int key = mHeaderPositions.keyAt(i);
-            DayOfWeek dayOfWeek = DayOfWeek.getDayOfWeek(key);
-            Log.d("mylog", "key=" + dayOfWeek.toStringShort() + " : value=" + mHeaderPositions.get(key));
         }
     }
 

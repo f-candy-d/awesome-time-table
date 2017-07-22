@@ -70,7 +70,8 @@ public class WeeklyTimeTable extends TimeTable {
     public int countSubject() {
         int count = 0;
         for (int i = 0; i < mTable.size(); ++i) {
-            count += mTable.valueAt(i).countSubject();
+            int key = mTable.keyAt(i);
+            count += mTable.get(key).countSubject();
         }
         return count;
     }
@@ -82,6 +83,14 @@ public class WeeklyTimeTable extends TimeTable {
         } else {
             return 0;
         }
+    }
+
+    public int countSubjectOn(DayOfWeek[] dayOfWeeks) {
+        int count = 0;
+        for (DayOfWeek dayOfWeek : dayOfWeeks) {
+            count += countSubjectOn(dayOfWeek);
+        }
+        return count;
     }
 
     public int getBeginPeriodAtOrderOn(DayOfWeek dayOfWeek, int order) {

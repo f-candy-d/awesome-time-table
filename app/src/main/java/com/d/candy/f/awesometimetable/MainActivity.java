@@ -38,7 +38,7 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.d.candy.f.awesometimetable.Adapters.AssignmentCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.NotificationCardAdapter;
-import com.d.candy.f.awesometimetable.Adapters.SubjectCardAndHeaderAdapter;
+import com.d.candy.f.awesometimetable.Adapters.WeeklySubjectCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.TableViewerPagerAdapter;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
@@ -57,13 +57,17 @@ public class MainActivity extends AppCompatActivity
     /**
      * Fragment types
      */
-    private static final int FRAGMENT_WEEKLY_TIMETABLE = 0;
-    private static final int FRAGMENT_ONE_DAY_TIMETABLE = 1;
+    private static final int FRAGMENT_ONE_DAY_TIMETABLE = 0;
+    private static final int FRAGMENT_WEEKLY_TIMETABLE = 1;
     private static final int FRAGMENT_ASSIGNMENTS = 2;
     private static final int FRAGMENT_NOTIFICATIONS = 3;
 
+    private static final int VIEWPAGER_OFFSCREEN_LIMIT = 3;
+
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
     private int mCheckedItemID;
+    // TODO; This is used for 3Tabs bottom navigation
+//    private int mBottomNaviPos0FragmentID;
     // UI
     private AHBottomNavigation mBottomNavigation;
     private EntityCardListViewerFragment mCurrentFragment;
@@ -109,45 +113,10 @@ public class MainActivity extends AppCompatActivity
         // Init data
         initTimeTable();
 
-        // ViewPager
-        ArrayList<EntityCardListViewerFragment> fragments = new ArrayList<>();
-        // Add fragments to the ViewPager
-        EntityCardListViewerFragment fragment = EntityCardListViewerFragment.newInstance();
-        fragment.setTimeTable(mTimeTable);
-        fragment.setID(FRAGMENT_WEEKLY_TIMETABLE);
-        fragments.add(fragment);
-
-        EntityCardListViewerFragment fragment1 = EntityCardListViewerFragment.newInstance();
-        fragment1.setTimeTable(mTimeTable);
-        fragment1.setID(FRAGMENT_ASSIGNMENTS);
-        fragments.add(fragment1);
-
-        EntityCardListViewerFragment fragment2 = EntityCardListViewerFragment.newInstance();
-        fragment2.setTimeTable(mTimeTable);
-        fragment2.setID(FRAGMENT_NOTIFICATIONS);
-        fragments.add(fragment2);
-
-        mViewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager_main);
-        mViewPager.setOffscreenPageLimit(3);
-        mViewerPagerAdapter = new TableViewerPagerAdapter(getSupportFragmentManager(), fragments);
-        mViewPager.setAdapter(mViewerPagerAdapter);
-        mViewPager.setCurrentItem(FRAGMENT_WEEKLY_TIMETABLE, false);
-        mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
-
-        // The following code make a bug that beyond me on orientation change...
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.fragment_container, new WeeklyTimeTableFragment()).commit();
-        // TODO: This is Test Code
-//        mCurrentFragment = EntityCardListViewerFragment.newInstance();
-//        mCurrentFragment.setTimeTable(mTimeTable);
-//        mCurrentFragment.setID(0);
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container, mCurrentFragment).commit();
-
+        initViewPager();
         // Set the initial position of the NavigationView
         navigationView.setCheckedItem(R.id.nav_table1);
 
-        test();
     }
 
     @Override
@@ -210,6 +179,8 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation_bar);
 
         // Create items
+        AHBottomNavigationItem item0 = new AHBottomNavigationItem(
+                "Today", R.drawable.ic_view_day, R.color.colorPrimary);
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(
                 "Week", R.drawable.ic_view_week, R.color.colorPrimary);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(
@@ -218,6 +189,7 @@ public class MainActivity extends AppCompatActivity
                 "Notification", R.drawable.ic_notifications_active, R.color.md_teal_500);
 
         // Add items
+        mBottomNavigation.addItem(item0);
         mBottomNavigation.addItem(item1);
         mBottomNavigation.addItem(item2);
         mBottomNavigation.addItem(item3);
@@ -247,8 +219,8 @@ public class MainActivity extends AppCompatActivity
 //        mBottomNavigation.setTranslucentNavigationEnabled(false);
 
 // Manage titles
-        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
-//        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+//        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
+        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
 //        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
 
 // Use colored navigation with circle reveal effect
@@ -268,25 +240,13 @@ public class MainActivity extends AppCompatActivity
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.cardview_light_background))
                 .setTextColor(ContextCompat.getColor(this, R.color.cardview_dark_background))
                 .build();
-        mBottomNavigation.setNotification(notification, 1);
+        mBottomNavigation.setNotification(notification, 3);
 
 // Set listeners
         mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
-                if (mCurrentFragment == null) {
-                    mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
-                }
-
-                if (wasSelected) {
-                    mCurrentFragment.refresh();
-                    return true;
-                }
-                // Switch fragments
-                mViewPager.setCurrentItem(position, false);
-                mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
-
-                return true;
+                return onSwitchFragments(position, wasSelected);
             }
         });
         mBottomNavigation.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
@@ -299,6 +259,104 @@ public class MainActivity extends AppCompatActivity
     private void initTimeTable() {
         // TODO; This is TEST code
         mTimeTable = DataStructureFactory.makeTimeTable(0);
+    }
+
+    private void initViewPager() {
+        // ViewPager
+        ArrayList<EntityCardListViewerFragment> fragments = new ArrayList<>();
+
+        // Add fragments to the ViewPager
+        EntityCardListViewerFragment oneDayTTF = EntityCardListViewerFragment.newInstance();
+        oneDayTTF.setTimeTable(mTimeTable);
+        oneDayTTF.setID(FRAGMENT_ONE_DAY_TIMETABLE);
+        fragments.add(FRAGMENT_ONE_DAY_TIMETABLE, oneDayTTF);
+        // TODO; This is for 3Tabs bottom navigation
+//        mBottomNaviPos0FragmentID = FRAGMENT_ONE_DAY_TIMETABLE;
+
+
+        EntityCardListViewerFragment weeklyTTF = EntityCardListViewerFragment.newInstance();
+        weeklyTTF.setTimeTable(mTimeTable);
+        weeklyTTF.setID(FRAGMENT_WEEKLY_TIMETABLE);
+        fragments.add(FRAGMENT_WEEKLY_TIMETABLE, weeklyTTF);
+
+        EntityCardListViewerFragment assignmentF = EntityCardListViewerFragment.newInstance();
+        assignmentF.setTimeTable(mTimeTable);
+        assignmentF.setID(FRAGMENT_ASSIGNMENTS);
+        fragments.add(FRAGMENT_ASSIGNMENTS, assignmentF);
+
+        EntityCardListViewerFragment notificationF = EntityCardListViewerFragment.newInstance();
+        notificationF.setTimeTable(mTimeTable);
+        notificationF.setID(FRAGMENT_NOTIFICATIONS);
+        fragments.add(FRAGMENT_NOTIFICATIONS, notificationF);
+
+        mViewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager_main);
+        mViewPager.setOffscreenPageLimit(VIEWPAGER_OFFSCREEN_LIMIT);
+        mViewerPagerAdapter = new TableViewerPagerAdapter(getSupportFragmentManager(), fragments);
+        mViewPager.setAdapter(mViewerPagerAdapter);
+
+        // Default fragment
+        mViewPager.setCurrentItem(FRAGMENT_ONE_DAY_TIMETABLE, false);
+        mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
+    }
+
+    private boolean onSwitchFragments(final int position, final boolean wasSelected) {
+        // Avoid null pointer error
+        if (mCurrentFragment == null) {
+            mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
+        }
+
+        // TODO; Consider using 3Tabs or 4Tabs. The following codes is for 3Tabs.
+//        if (wasSelected) {
+//            if (mCurrentFragment.getID() == FRAGMENT_WEEKLY_TIMETABLE) {
+//                // Update
+//                mBottomNaviPos0FragmentID = FRAGMENT_ONE_DAY_TIMETABLE;
+//                switchFragments(FRAGMENT_ONE_DAY_TIMETABLE);
+//
+//                // Change AHBottomNavigationItem's drawable and title
+//                AHBottomNavigationItem item = mBottomNavigation.getItem(0);
+//                item.setDrawable(R.drawable.ic_view_day);
+//                item.setTitle("Today");
+//                mBottomNavigation.refresh();
+//
+//                return true;
+//
+//            } else if (mCurrentFragment.getID() == FRAGMENT_ONE_DAY_TIMETABLE) {
+//                // Update
+//                mBottomNaviPos0FragmentID = FRAGMENT_WEEKLY_TIMETABLE;
+//                switchFragments(FRAGMENT_WEEKLY_TIMETABLE);
+//
+//                AHBottomNavigationItem item = mBottomNavigation.getItem(0);
+//                item.setDrawable(R.drawable.ic_view_week);
+//                item.setTitle("Week");
+//                mBottomNavigation.refreshDrawableState();
+//                mBottomNavigation.refresh();
+//
+//                return true;
+//            }
+//
+//            mCurrentFragment.refresh();
+//            return true;
+//        }
+//
+//        switch (position) {
+//            case 0: switchFragments(mBottomNaviPos0FragmentID); break;
+//            case 1: switchFragments(FRAGMENT_ASSIGNMENTS); break;
+//            case 2: switchFragments(FRAGMENT_NOTIFICATIONS); break;
+//        }
+
+        // TODO; The following code is for 4Tabs
+        if (wasSelected) {
+            mCurrentFragment.refresh();
+        } else {
+            switchFragments(position);
+        }
+
+        return true;
+    }
+
+    private void switchFragments(final int fragmentID) {
+        mViewPager.setCurrentItem(fragmentID, false);
+        mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
     }
 
     /**
@@ -319,7 +377,13 @@ public class MainActivity extends AppCompatActivity
                         DayOfWeek.FRIDAY
                 };
 
-                return new SubjectCardAndHeaderAdapter(mTimeTable, order);
+                return new WeeklySubjectCardAdapter(mTimeTable, order);
+            }
+
+            case FRAGMENT_ONE_DAY_TIMETABLE: {
+                // TODO; test code
+                DayOfWeek[] order = { DayOfWeek.FRIDAY };
+                return new WeeklySubjectCardAdapter(mTimeTable, order);
             }
 
             case FRAGMENT_ASSIGNMENTS: {
@@ -356,33 +420,13 @@ public class MainActivity extends AppCompatActivity
 
         if (mCurrentFragment.getID() == FRAGMENT_WEEKLY_TIMETABLE) {
             // TODO; test code
-            SubjectCardAndHeaderAdapter sAhAdapter =
-                    (SubjectCardAndHeaderAdapter) mCurrentFragment.getListAdapter();
+            WeeklySubjectCardAdapter sAhAdapter =
+                    (WeeklySubjectCardAdapter) mCurrentFragment.getListAdapter();
             EnrollingInfo enrollingInfo = sAhAdapter.getEnrollingInfoAtPosition(position);
             if (enrollingInfo != null) {
                 Intent intent = new Intent(this, SubjectDetailsActivity.class);
                 intent.putExtra(EXTRA_ENROLLING_INFO_ID, enrollingInfo.getID());
                 startActivity(intent);
-            }
-        }
-    }
-
-    private void test() {
-        SparseArray<String> array = new SparseArray<>();
-        array.put(1, "key=1");
-        array.put(2, "key=2");
-        array.put(3, "key=3");
-        array.put(4, "key=4");
-        array.put(5, "key=5");
-        array.put(6, "key=6");
-        array.put(7, "key=7");
-
-        for (int i = 0; i < 8; ++i) {
-            String result = array.get(i, null);
-            if (result != null) {
-                Log.d(TAG, "i=" + String.valueOf(i) + " : " + "value=" + result);
-            } else {
-                Log.d(TAG, "i=" + String.valueOf(i) + " : NULL OBJECT");
             }
         }
     }
