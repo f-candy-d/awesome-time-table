@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -6,10 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
+import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
+import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.MyVH;
-import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 import java.util.ArrayList;
 

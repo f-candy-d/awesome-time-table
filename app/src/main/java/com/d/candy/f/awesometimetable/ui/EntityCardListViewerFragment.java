@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.d.candy.f.awesometimetable.structure.MyVH;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
-import com.d.candy.f.awesometimetable.EntityCardAdapter;
+import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 /**

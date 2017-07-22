@@ -9,5 +9,6 @@ public enum EntityType {
     LOCATION,
     ENROLLING_INFO,
     TEACHER,
-    ASSIGNMENT
+    ASSIGNMENT,
+    NOTIFICATION
 }

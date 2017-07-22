@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
+import com.d.candy.f.awesometimetable.Adapters.SubjectAndRelationsCardAdapter;
 import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Entity;

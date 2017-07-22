@@ -126,4 +126,13 @@ public class TimeDateHelper {
         }
         return month;
     }
+
+    public String getAsString() {
+        return String.valueOf(mYear) + "."
+                + getMonthAsStringInShort() + "."
+                + String.valueOf(mDay) + " - "
+                + String.valueOf(mHour) + ":"
+                + String.valueOf(mMin) + " ("
+                + getDayOfWeek().toStringShort() + ")";
+    }
 }

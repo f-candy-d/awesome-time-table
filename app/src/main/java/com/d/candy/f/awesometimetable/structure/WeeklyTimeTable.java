@@ -70,10 +70,8 @@ public class WeeklyTimeTable extends TimeTable {
     public int countSubject() {
         int count = 0;
         for (int i = 0; i < mTable.size(); ++i) {
-            int key = mTable.keyAt(i);
-            count += mTable.valueAt(key).countSubject();
+            count += mTable.valueAt(i).countSubject();
         }
-
         return count;
     }
 

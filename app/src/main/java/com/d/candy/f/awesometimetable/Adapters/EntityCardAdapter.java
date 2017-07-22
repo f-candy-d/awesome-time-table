@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

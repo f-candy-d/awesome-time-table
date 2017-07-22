@@ -2,6 +2,9 @@ package com.d.candy.f.awesometimetable;
 
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 
+import java.net.PortUnreachableException;
+import java.security.PublicKey;
+
 /**
  * Created by daichi on 7/14/17.
  */
@@ -93,12 +96,14 @@ public class DBContract {
     public static class NotificationEntity {
         private NotificationEntity() {}
 
+        public static final int NULL_ID = 0;
+
         public static final String TABLE_NAME = "notification";
         public static final String COL_ID = "id";
         public static final String COL_TITLE = "title";
         public static final String COL_NOTE = "note";
         public static final String COL_SUBJECT_ID = "subject_id";
-        public static final String COL_CATEGORY_ID = "category_type";
+        public static final String COL_CATEGORY = "category";
         public static final String COL_DATETIME_START = "datetime_start";
         public static final String COL_DATETIME_END = "datetime_end";
         public static final String COL_IS_DONE = "is_done";

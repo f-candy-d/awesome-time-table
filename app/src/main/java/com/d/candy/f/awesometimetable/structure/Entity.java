@@ -12,6 +12,12 @@ abstract public class Entity implements Serializable {
 
     private int mID;
 
+    public Entity() {}
+
+    public Entity(final int id) {
+        mID = id;
+    }
+
     public int getID() {
         return mID;
     }

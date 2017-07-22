@@ -7,14 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.structure.Assignment;
-import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
-import com.d.candy.f.awesometimetable.structure.Entity;
-import com.d.candy.f.awesometimetable.structure.EntityType;
-import com.d.candy.f.awesometimetable.structure.Location;
-import com.d.candy.f.awesometimetable.structure.Subject;
-import com.d.candy.f.awesometimetable.structure.Teacher;
 import com.d.candy.f.awesometimetable.ui.CircularTimeLineMarker;
+import com.d.candy.f.awesometimetable.utils.TimeDateHelper;
 
 /**
  * Created by daichi on 7/19/17.
@@ -266,4 +260,41 @@ public class MyVH {
         }
     }
 
+    public static class NotificationViewHolder extends BaseViewHolder {
+
+        private TextView mTitle;
+        private TextView mNote;
+        private TextView mCategory;
+        private TextView mEnrollingInfo;
+        private TextView mDTStart;
+        private TextView mDTEnd;
+        private TextView mIsDone;
+
+        public NotificationViewHolder(View view) {
+            super(view);
+
+            mTitle = (TextView) view.findViewById(R.id.text_notification_card_title);
+            mNote = (TextView) view.findViewById(R.id.text_notification_card_note);
+            mCategory = (TextView) view.findViewById(R.id.text_notification_card_category);
+            mEnrollingInfo = (TextView) view.findViewById(R.id.text_notification_card_enrolling_info);
+            mDTStart = (TextView) view.findViewById(R.id.text_notification_card_datetime_start);
+            mDTEnd = (TextView) view.findViewById(R.id.text_notification_card_datetime_end);
+            mIsDone = (TextView) view.findViewById(R.id.text_notification_card_datetime_is_done);
+        }
+
+        @Override
+        public void bind(int position, Entity entity, OnItemClickListener itemClickListener) {
+            super.bind(position, entity, itemClickListener);
+            isEntityTypeValidAndThrowExcepIfNot(entity, EntityType.NOTIFICATION);
+
+            Notification notification = (Notification) entity;
+            mTitle.setText(notification.getTitle());
+            mNote.setText(notification.getNote());
+            mCategory.setText(notification.getCategory().toString());
+            mEnrollingInfo.setText("EnrollingInfoID : " + String.valueOf(notification.getEnrollingInfoID()));
+            mDTStart.setText(new TimeDateHelper(notification.getDateTimeStart()).getAsString());
+            mDTEnd.setText(new TimeDateHelper(notification.getDateTimeEnd()).getAsString());
+            mIsDone.setText(String.valueOf(notification.isDone()));
+        }
+    }
 }

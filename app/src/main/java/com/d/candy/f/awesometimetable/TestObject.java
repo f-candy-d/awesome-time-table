@@ -3,8 +3,11 @@ package com.d.candy.f.awesometimetable;
 import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Location;
+import com.d.candy.f.awesometimetable.structure.Notification;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.Teacher;
+
+import java.util.Calendar;
 
 /**
  * Created by daichi on 7/16/17.
@@ -144,6 +147,48 @@ public class TestObject {
                 return new Assignment(id, "Hack my PC in 100 seconds!",
                         "My name is IRON MAN, thank you...", 8, 2017, 7 , 20,
                         DayOfWeek.WEDNESDAY, true);
+            default:
+                throw new IllegalArgumentException("id=" + String.valueOf(id) + " is not supported");
+        }
+    }
+
+    public static Notification makeNotification(int id) {
+        switch (id) {
+            case 1: {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2017, Calendar.JULY, 22, 10, 44);
+                long s = calendar.getTimeInMillis();
+                return new Notification(id, "Math is cancelled", "You are lucky men!",
+                        1, Notification.Category.CANCELLATION, s, s, false);
+            }
+
+            case 2: {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2017, Calendar.AUGUST, 4, 19, 0);
+                long s = calendar.getTimeInMillis();
+                calendar.set(2017, Calendar.AUGUST, 10, 19, 0);
+                long e = calendar.getTimeInMillis();
+                return new Notification(id, "Finals Week!", "Math, Japanese, English...",
+                        DBContract.EnrollingInfoEntity.NULL_ID,
+                        Notification.Category.OTHER, s, e, false);
+            }
+
+            case 3: {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2016, Calendar.DECEMBER, 25, 18, 30);
+                long s = calendar.getTimeInMillis();
+                return new Notification(id, "Math Supplementary Class!", null,
+                        1, Notification.Category.SUPPLEMENT, s, s, false);
+            }
+
+            case 4: {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2017, Calendar.APRIL, 1, 9, 30);
+                long s = calendar.getTimeInMillis();
+                return new Notification(id, "English Classroom Change", null,
+                        5, Notification.Category.CHANGE, s, s, true);
+            }
+
             default:
                 throw new IllegalArgumentException("id=" + String.valueOf(id) + " is not supported");
         }

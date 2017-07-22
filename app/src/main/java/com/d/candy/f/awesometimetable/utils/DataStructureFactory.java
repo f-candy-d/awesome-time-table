@@ -5,6 +5,7 @@ import com.d.candy.f.awesometimetable.TestObject;
 import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Location;
+import com.d.candy.f.awesometimetable.structure.Notification;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.Teacher;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
@@ -137,5 +138,18 @@ public class DataStructureFactory {
         assignments.add(makeAssignment(3));
 
         return assignments;
+    }
+
+    public static ArrayList<Notification> makeAllNotifications() {
+        ArrayList<Notification> notifications = new ArrayList<>();
+        notifications.add(makeNotification(1));
+        notifications.add(makeNotification(2));
+        notifications.add(makeNotification(3));
+        notifications.add(makeNotification(4));
+        return notifications;
+    }
+
+    public static Notification makeNotification(int id) {
+        return TestObject.makeNotification(id);
     }
 }

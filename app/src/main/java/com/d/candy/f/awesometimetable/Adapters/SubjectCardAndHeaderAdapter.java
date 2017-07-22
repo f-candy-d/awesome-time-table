@@ -1,15 +1,16 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.DBContract;
 import com.d.candy.f.awesometimetable.DayOfWeek;
-import com.d.candy.f.awesometimetable.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Location;
@@ -176,6 +177,13 @@ public class SubjectCardAndHeaderAdapter extends EntityCardAdapter {
                     mTimeTable.countSubjectOn(mDayOfWeeksOrder[i - 1])
                             + mHeaderPositions.get(mDayOfWeeksOrder[i - 1].toInt())
                             + 1);
+        }
+
+        Log.d("mylog", "#################################################");
+        for (int i = 0; i < mHeaderPositions.size(); ++i) {
+            int key = mHeaderPositions.keyAt(i);
+            DayOfWeek dayOfWeek = DayOfWeek.getDayOfWeek(key);
+            Log.d("mylog", "key=" + dayOfWeek.toStringShort() + " : value=" + mHeaderPositions.get(key));
         }
     }
 

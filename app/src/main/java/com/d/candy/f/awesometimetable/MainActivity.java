@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -34,6 +35,11 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.d.candy.f.awesometimetable.Adapters.AssignmentCardAdapter;
+import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
+import com.d.candy.f.awesometimetable.Adapters.NotificationCardAdapter;
+import com.d.candy.f.awesometimetable.Adapters.SubjectCardAndHeaderAdapter;
+import com.d.candy.f.awesometimetable.Adapters.TableViewerPagerAdapter;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
@@ -42,7 +48,6 @@ import com.d.candy.f.awesometimetable.utils.LogHelper;
 import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -119,7 +124,7 @@ public class MainActivity extends AppCompatActivity
 
         EntityCardListViewerFragment fragment2 = EntityCardListViewerFragment.newInstance();
         fragment2.setTimeTable(mTimeTable);
-        fragment2.setID(FRAGMENT_WEEKLY_TIMETABLE);
+        fragment2.setID(FRAGMENT_NOTIFICATIONS);
         fragments.add(fragment2);
 
         mViewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager_main);
@@ -141,6 +146,8 @@ public class MainActivity extends AppCompatActivity
 
         // Set the initial position of the NavigationView
         navigationView.setCheckedItem(R.id.nav_table1);
+
+        test();
     }
 
     @Override
@@ -319,6 +326,12 @@ public class MainActivity extends AppCompatActivity
                 return new AssignmentCardAdapter(
                         DataStructureFactory.makeAllAssignments());
             }
+
+            case FRAGMENT_NOTIFICATIONS: {
+                // TODO; test code
+                return new NotificationCardAdapter(
+                        DataStructureFactory.makeAllNotifications());
+            }
         }
 
         return null;
@@ -354,21 +367,23 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-//    private void test(int year, int month, int day, int eE, int hour, int min) {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(year, month, day, hour, min);
-//        long milli = calendar.getTimeInMillis();
-//        Log.d(TAG, String.valueOf(year) + "/" + String.valueOf(month)+"/"+String.valueOf(day)
-//                +"/"+String.valueOf(hour)+":"+String.valueOf(min)+" ("+String.valueOf(eE)+") => " +  String.valueOf(milli));
-//        Calendar calendar1 = Calendar.getInstance();
-//        calendar1.setTimeInMillis(milli);
-//        int y = calendar1.get(Calendar.YEAR);
-//        int m = calendar1.get(Calendar.MONTH);
-//        int d = calendar1.get(Calendar.DATE);
-//        int ee = calendar1.get(Calendar.DAY_OF_WEEK);
-//        int h = calendar1.get(Calendar.HOUR);
-//        int mim = calendar1.get(Calendar.MINUTE);
-//        Log.d(TAG, String.valueOf(milli) + " => " + String.valueOf(y) + "/" + String.valueOf(m)+"/"+String.valueOf(d)
-//                +"/"+String.valueOf(h)+":"+String.valueOf(mim)+" ("+String.valueOf(ee)+")");
-//    }
+    private void test() {
+        SparseArray<String> array = new SparseArray<>();
+        array.put(1, "key=1");
+        array.put(2, "key=2");
+        array.put(3, "key=3");
+        array.put(4, "key=4");
+        array.put(5, "key=5");
+        array.put(6, "key=6");
+        array.put(7, "key=7");
+
+        for (int i = 0; i < 8; ++i) {
+            String result = array.get(i, null);
+            if (result != null) {
+                Log.d(TAG, "i=" + String.valueOf(i) + " : " + "value=" + result);
+            } else {
+                Log.d(TAG, "i=" + String.valueOf(i) + " : NULL OBJECT");
+            }
+        }
+    }
 }
