@@ -571,9 +571,6 @@ public class MainActivity extends AppCompatActivity
 
             case FRAGMENT_NOTIFICATIONS: {
                 // TODO; test code
-//                return new NotificationCardAdapter(
-//                        mTimeTable,
-//                        DataStructureFactory.makeAllNotifications());
                 return new NotificationCardAdapter(mTimeTable);
             }
         }

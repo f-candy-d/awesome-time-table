@@ -34,7 +34,6 @@ public class SubjectAndRelationsCardAdapter extends EntityCardAdapter {
     public SubjectAndRelationsCardAdapter(
             @NonNull final WeeklyTimeTable timeTable,
             @NonNull final ArrayList<Entity> entities) {
-//        this(entities, null);
         this(timeTable, entities, null);
     }
 
@@ -43,7 +42,6 @@ public class SubjectAndRelationsCardAdapter extends EntityCardAdapter {
             @NonNull final ArrayList<Entity> entities,
             @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
 
-//        super(onItemClickListener);
         super(timeTable, onItemClickListener);
 
         // noinspection ConstantConditions
