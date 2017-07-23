@@ -27,78 +27,78 @@ public class DataStructureFactory {
     public static WeeklyTimeTable makeTimeTable(int id) {
         // TODO: The following codes are test code, Remove later
         WeeklyTimeTable table = new WeeklyTimeTable(id);
-        Subject math = DataStructureFactory.makeSubject(2);
-        Subject japanese = DataStructureFactory.makeSubject(3);
-        Subject english = DataStructureFactory.makeSubject(4);
-        Subject physics = DataStructureFactory.makeSubject(5);
-        Subject chemistry = DataStructureFactory.makeSubject(6);
+//        Subject math = DataStructureFactory.makeSubject(2);
+//        Subject japanese = DataStructureFactory.makeSubject(3);
+//        Subject english = DataStructureFactory.makeSubject(4);
+//        Subject physics = DataStructureFactory.makeSubject(5);
+//        Subject chemistry = DataStructureFactory.makeSubject(6);
+//
+//        Location locA = DataStructureFactory.makeLocation(0);
+//        Location locB = DataStructureFactory.makeLocation(1);
+//        Location locC = DataStructureFactory.makeLocation(2);
+//        Location locD = DataStructureFactory.makeLocation(3);
 
-        Location locA = DataStructureFactory.makeLocation(0);
-        Location locB = DataStructureFactory.makeLocation(1);
-        Location locC = DataStructureFactory.makeLocation(2);
-        Location locD = DataStructureFactory.makeLocation(3);
-
-        EnrollingInfo infoMon1 = DataStructureFactory.makeEnrollingInfo(1);
-        EnrollingInfo infoMon3 = DataStructureFactory.makeEnrollingInfo(2);
-        EnrollingInfo infoMon4 = DataStructureFactory.makeEnrollingInfo(3);
-        EnrollingInfo infoMon5 = DataStructureFactory.makeEnrollingInfo(4);
-        EnrollingInfo infoMon7 = DataStructureFactory.makeEnrollingInfo(5);
-
-        EnrollingInfo infoTue1 = DataStructureFactory.makeEnrollingInfo(6);
-        EnrollingInfo infoTue2 = DataStructureFactory.makeEnrollingInfo(7);
-        EnrollingInfo infoTue6 = DataStructureFactory.makeEnrollingInfo(8);
-
-        EnrollingInfo infoWed1 = DataStructureFactory.makeEnrollingInfo(9);
-        EnrollingInfo infoWed2 = DataStructureFactory.makeEnrollingInfo(10);
-        EnrollingInfo infoWed3 = DataStructureFactory.makeEnrollingInfo(11);
-        EnrollingInfo infoWed4 = DataStructureFactory.makeEnrollingInfo(12);
-
-        EnrollingInfo infoThu1 = DataStructureFactory.makeEnrollingInfo(13);
-        EnrollingInfo infoThu2 = DataStructureFactory.makeEnrollingInfo(14);
-        EnrollingInfo infoThu4 = DataStructureFactory.makeEnrollingInfo(15);
-        EnrollingInfo infoThu6 = DataStructureFactory.makeEnrollingInfo(16);
-
-        EnrollingInfo infoFri1 = DataStructureFactory.makeEnrollingInfo(17);
+//        EnrollingInfo infoMon1 = DataStructureFactory.makeEnrollingInfo(1);
+//        EnrollingInfo infoMon3 = DataStructureFactory.makeEnrollingInfo(2);
+//        EnrollingInfo infoMon4 = DataStructureFactory.makeEnrollingInfo(3);
+//        EnrollingInfo infoMon5 = DataStructureFactory.makeEnrollingInfo(4);
+//        EnrollingInfo infoMon7 = DataStructureFactory.makeEnrollingInfo(5);
+//
+//        EnrollingInfo infoTue1 = DataStructureFactory.makeEnrollingInfo(6);
+//        EnrollingInfo infoTue2 = DataStructureFactory.makeEnrollingInfo(7);
+//        EnrollingInfo infoTue6 = DataStructureFactory.makeEnrollingInfo(8);
+//
+//        EnrollingInfo infoWed1 = DataStructureFactory.makeEnrollingInfo(9);
+//        EnrollingInfo infoWed2 = DataStructureFactory.makeEnrollingInfo(10);
+//        EnrollingInfo infoWed3 = DataStructureFactory.makeEnrollingInfo(11);
+//        EnrollingInfo infoWed4 = DataStructureFactory.makeEnrollingInfo(12);
+//
+//        EnrollingInfo infoThu1 = DataStructureFactory.makeEnrollingInfo(13);
+//        EnrollingInfo infoThu2 = DataStructureFactory.makeEnrollingInfo(14);
+//        EnrollingInfo infoThu4 = DataStructureFactory.makeEnrollingInfo(15);
+//        EnrollingInfo infoThu6 = DataStructureFactory.makeEnrollingInfo(16);
+//
+//        EnrollingInfo infoFri1 = DataStructureFactory.makeEnrollingInfo(17);
 
         // Register entities
-        table.addEntity(math);
-        table.addEntity(japanese);
-        table.addEntity(english);
-        table.addEntity(physics);
-        table.addEntity(chemistry);
+//        table.addEntity(math);
+//        table.addEntity(japanese);
+//        table.addEntity(english);
+//        table.addEntity(physics);
+//        table.addEntity(chemistry);
+//
+//        table.addEntity(locA);
+//        table.addEntity(locB);
+//        table.addEntity(locC);
+//        table.addEntity(locD);
 
-        table.addEntity(locA);
-        table.addEntity(locB);
-        table.addEntity(locC);
-        table.addEntity(locD);
-
-        // Enroll subjects
-        table.enrollSubjectTo(infoMon1);
-        table.enrollSubjectTo(infoMon3);
-        table.enrollSubjectTo(infoMon4);
-        table.enrollSubjectTo(infoMon5);
-        table.enrollSubjectTo(infoMon7);
-
-        table.enrollSubjectTo(infoTue1);
-        table.enrollSubjectTo(infoTue2);
-        table.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
-        table.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
-        table.enrollSubjectTo(infoTue6);
-
-        table.enrollSubjectTo(infoWed1);
-        table.enrollSubjectTo(infoWed2);
-        table.enrollSubjectTo(infoWed3);
-        table.enrollSubjectTo(infoWed4);
-        table.enrollBlankSubjectTo(DayOfWeek.WEDNESDAY, 1);
-
-        table.enrollSubjectTo(infoThu1);
-        table.enrollSubjectTo(infoThu2);
-        table.enrollSubjectTo(infoThu4);
-        table.enrollSubjectTo(infoThu6);
-        table.enrollBlankSubjectTo(DayOfWeek.THURSDAY, 1);
-
-        table.enrollSubjectTo(infoFri1);
-        table.enrollBlankSubjectTo(DayOfWeek.FRIDAY, 2);
+//        // Enroll subjects
+//        table.enrollSubjectTo(infoMon1);
+//        table.enrollSubjectTo(infoMon3);
+//        table.enrollSubjectTo(infoMon4);
+//        table.enrollSubjectTo(infoMon5);
+//        table.enrollSubjectTo(infoMon7);
+//
+//        table.enrollSubjectTo(infoTue1);
+//        table.enrollSubjectTo(infoTue2);
+//        table.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
+//        table.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
+//        table.enrollSubjectTo(infoTue6);
+//
+//        table.enrollSubjectTo(infoWed1);
+//        table.enrollSubjectTo(infoWed2);
+//        table.enrollSubjectTo(infoWed3);
+//        table.enrollSubjectTo(infoWed4);
+//        table.enrollBlankSubjectTo(DayOfWeek.WEDNESDAY, 1);
+//
+//        table.enrollSubjectTo(infoThu1);
+//        table.enrollSubjectTo(infoThu2);
+//        table.enrollSubjectTo(infoThu4);
+//        table.enrollSubjectTo(infoThu6);
+//        table.enrollBlankSubjectTo(DayOfWeek.THURSDAY, 1);
+//
+//        table.enrollSubjectTo(infoFri1);
+//        table.enrollBlankSubjectTo(DayOfWeek.FRIDAY, 2);
 
         return table;
     }

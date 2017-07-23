@@ -8,23 +8,23 @@ import com.d.candy.f.awesometimetable.utils.EntityCache;
 
 public class TimeTable {
 
-    EntityCache mEntityCache = null;
+    EntityCache mDataSet = null;
 
     public TimeTable() {}
 
-    public TimeTable(EntityCache cache) {
-        mEntityCache = cache;
+    public TimeTable(EntityCache dataSet) {
+        mDataSet = dataSet;
     }
 
-    protected void setEntityCache(EntityCache cache) {
-        mEntityCache = cache;
+    public void setDataSet(EntityCache cache) {
+        mDataSet = cache;
     }
 
-    protected EntityCache getEntityCache() {
-        return mEntityCache;
+    protected EntityCache getDataSet() {
+        return mDataSet;
     }
 
-    public void addEntity(Entity entity) {
-        mEntityCache.cache(entity, false);
-    }
+//    public void addEntity(Entity entity) {
+//        mDataSet.cache(entity, false);
+//    }
 }

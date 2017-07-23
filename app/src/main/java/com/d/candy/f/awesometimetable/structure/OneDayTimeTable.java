@@ -1,5 +1,6 @@
 package com.d.candy.f.awesometimetable.structure;
 
+import android.app.DatePickerDialog;
 import android.util.Log;
 
 import com.d.candy.f.awesometimetable.DBContract;
@@ -18,8 +19,12 @@ public class OneDayTimeTable extends TimeTable {
     private DayOfWeek mDayOfWeek;
     private ArrayList<EnrollingInfo> mTable;
 
-    public OneDayTimeTable(DayOfWeek dayOfWeek, EntityCache cache) {
-        super(cache);
+    public OneDayTimeTable(final DayOfWeek dayOfWeek) {
+        this(dayOfWeek, null);
+    }
+
+    public OneDayTimeTable(final DayOfWeek dayOfWeek, EntityCache dataSet) {
+        super(dataSet);
         mDayOfWeek = dayOfWeek;
         mTable = new ArrayList<>();
     }
@@ -61,7 +66,7 @@ public class OneDayTimeTable extends TimeTable {
     }
 
     public Location getLocation(int id) {
-        return getEntityCache().getLocation(id);
+        return getDataSet().getLocation(id);
     }
 
     public void enrollSubject(EnrollingInfo enrollingInfo) {
@@ -74,9 +79,9 @@ public class OneDayTimeTable extends TimeTable {
                     "enrolling-info's subject id and subject's one does not match");
         }
 
-        if(subject != null && subject.getID() != DBContract.SubjectEntity.NULL_ID) {
-            addEntity(subject);
-        }
+//        if(subject != null && subject.getID() != DBContract.SubjectEntity.NULL_ID) {
+//            addEntity(subject);
+//        }
         mTable.add(enrollingInfo);
     }
 
@@ -91,12 +96,14 @@ public class OneDayTimeTable extends TimeTable {
     public void enrollBlankSubject(final int size) {
         if(0 < size) {
             int blankSbjID = -size;
-            if(!getEntityCache().isCached(blankSbjID, EntityType.SUBJECT)) {
+            if(!getDataSet().isCached(blankSbjID, EntityType.SUBJECT)) {
                 Subject blank = DataStructureFactory
                         .makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
                 blank.setID(blankSbjID);
                 blank.setLength(size);
-                addEntity(blank);
+//                addEntity(blank);
+                // TODO; Is there any other suggestions?
+                getDataSet().cache(blank, true);
             }
 
             // Enroll a blank subject as a spacer
@@ -111,7 +118,7 @@ public class OneDayTimeTable extends TimeTable {
     }
 
     public Subject getSubjectAtOrder(int order) {
-        return getEntityCache().getSubject(mTable.get(order).getSubjectID());
+        return getDataSet().getSubject(mTable.get(order).getSubjectID());
     }
 
     public int getSubjectIDAtOrder(int order) {

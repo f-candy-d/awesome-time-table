@@ -48,10 +48,13 @@ import com.d.candy.f.awesometimetable.Adapters.WeeklySubjectCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.TableViewerPagerAdapter;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.EntityType;
+import com.d.candy.f.awesometimetable.structure.Location;
+import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
 import com.d.candy.f.awesometimetable.utils.AHBottomNavigationObserver;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
+import com.d.candy.f.awesometimetable.utils.EntityCache;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
 
@@ -71,6 +74,9 @@ public class MainActivity extends AppCompatActivity
     private static final int FRAGMENT_ASSIGNMENTS = 2;
     private static final int FRAGMENT_NOTIFICATIONS = 3;
 
+    private static final int REQUEST_CODE_ADD_ASSIGNMENT = 1;
+    private static final int REQUEST_CODE_ADD_NOTIFICATION = 2;
+
     private static final int VIEWPAGER_OFFSCREEN_LIMIT = 3;
     private static final long FAB_ANIM_DURATION = 270L;
 
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity
 
     // Data
     private WeeklyTimeTable mTimeTable;
+    private EntityCache mDataSet;
 
     /**
      * Key strings being used in the Intent
@@ -162,6 +169,16 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_ADD_ASSIGNMENT:
+                if (resultCode == RESULT_OK) {
+
+                }
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -297,7 +314,82 @@ public class MainActivity extends AppCompatActivity
 
     private void initTimeTable() {
         // TODO; This is TEST code
+        Subject math = DataStructureFactory.makeSubject(2);
+        Subject japanese = DataStructureFactory.makeSubject(3);
+        Subject english = DataStructureFactory.makeSubject(4);
+        Subject physics = DataStructureFactory.makeSubject(5);
+        Subject chemistry = DataStructureFactory.makeSubject(6);
+
+        Location locA = DataStructureFactory.makeLocation(0);
+        Location locB = DataStructureFactory.makeLocation(1);
+        Location locC = DataStructureFactory.makeLocation(2);
+        Location locD = DataStructureFactory.makeLocation(3);
+
+        EnrollingInfo infoMon1 = DataStructureFactory.makeEnrollingInfo(1);
+        EnrollingInfo infoMon3 = DataStructureFactory.makeEnrollingInfo(2);
+        EnrollingInfo infoMon4 = DataStructureFactory.makeEnrollingInfo(3);
+        EnrollingInfo infoMon5 = DataStructureFactory.makeEnrollingInfo(4);
+        EnrollingInfo infoMon7 = DataStructureFactory.makeEnrollingInfo(5);
+
+        EnrollingInfo infoTue1 = DataStructureFactory.makeEnrollingInfo(6);
+        EnrollingInfo infoTue2 = DataStructureFactory.makeEnrollingInfo(7);
+        EnrollingInfo infoTue6 = DataStructureFactory.makeEnrollingInfo(8);
+
+        EnrollingInfo infoWed1 = DataStructureFactory.makeEnrollingInfo(9);
+        EnrollingInfo infoWed2 = DataStructureFactory.makeEnrollingInfo(10);
+        EnrollingInfo infoWed3 = DataStructureFactory.makeEnrollingInfo(11);
+        EnrollingInfo infoWed4 = DataStructureFactory.makeEnrollingInfo(12);
+
+        EnrollingInfo infoThu1 = DataStructureFactory.makeEnrollingInfo(13);
+        EnrollingInfo infoThu2 = DataStructureFactory.makeEnrollingInfo(14);
+        EnrollingInfo infoThu4 = DataStructureFactory.makeEnrollingInfo(15);
+        EnrollingInfo infoThu6 = DataStructureFactory.makeEnrollingInfo(16);
+
+        EnrollingInfo infoFri1 = DataStructureFactory.makeEnrollingInfo(17);
+
+        mDataSet = new EntityCache();
+        // Register entities
+        mDataSet.cache(math, true);
+        mDataSet.cache(japanese, true);
+        mDataSet.cache(english, true);
+        mDataSet.cache(physics, true);
+        mDataSet.cache(chemistry, true);
+
+        mDataSet.cache(locA, true);
+        mDataSet.cache(locB, true);
+        mDataSet.cache(locC, true);
+        mDataSet.cache(locD, true);
+
         mTimeTable = DataStructureFactory.makeTimeTable(0);
+        mTimeTable.setDataSet(mDataSet);
+
+        // Enroll subjects
+        mTimeTable.enrollSubjectTo(infoMon1);
+        mTimeTable.enrollSubjectTo(infoMon3);
+        mTimeTable.enrollSubjectTo(infoMon4);
+        mTimeTable.enrollSubjectTo(infoMon5);
+        mTimeTable.enrollSubjectTo(infoMon7);
+
+        mTimeTable.enrollSubjectTo(infoTue1);
+        mTimeTable.enrollSubjectTo(infoTue2);
+        mTimeTable.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
+        mTimeTable.enrollBlankSubjectTo(DayOfWeek.TUESDAY, 1);
+        mTimeTable.enrollSubjectTo(infoTue6);
+
+        mTimeTable.enrollSubjectTo(infoWed1);
+        mTimeTable.enrollSubjectTo(infoWed2);
+        mTimeTable.enrollSubjectTo(infoWed3);
+        mTimeTable.enrollSubjectTo(infoWed4);
+        mTimeTable.enrollBlankSubjectTo(DayOfWeek.WEDNESDAY, 1);
+
+        mTimeTable.enrollSubjectTo(infoThu1);
+        mTimeTable.enrollSubjectTo(infoThu2);
+        mTimeTable.enrollSubjectTo(infoThu4);
+        mTimeTable.enrollSubjectTo(infoThu6);
+        mTimeTable.enrollBlankSubjectTo(DayOfWeek.THURSDAY, 1);
+
+        mTimeTable.enrollSubjectTo(infoFri1);
+        mTimeTable.enrollBlankSubjectTo(DayOfWeek.FRIDAY, 2);
     }
 
     private void initViewPager() {
@@ -347,7 +439,7 @@ public class MainActivity extends AppCompatActivity
                     // Show add-Assignment screen
                     Intent intent = new Intent(MainActivity.this, EntityEditorActivity.class);
                     intent.putExtra(EntityEditorActivity.EXTRA_EDIT_ENTITY_TYPE, EntityType.ASSIGNMENT);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_ADD_ASSIGNMENT);
 
                 } else if (((Integer) v.getTag()) == FRAGMENT_NOTIFICATIONS) {
                 }

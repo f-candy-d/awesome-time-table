@@ -8,8 +8,11 @@ import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.structure.Location;
+import com.d.candy.f.awesometimetable.structure.Notification;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.Teacher;
+
+import java.util.ArrayList;
 
 /**
  * Created by daichi on 7/16/17.
@@ -23,6 +26,7 @@ public class EntityCache {
     private SparseArray<Teacher> mTeacherCache = null;
     private SparseArray<EnrollingInfo> mEnrollingInfoCache = null;
     private SparseArray<Assignment> mAssignmentCache = null;
+    private SparseArray<Notification> mNotificationCache = null;
 
     public EntityCache() {}
 
@@ -74,6 +78,15 @@ public class EntityCache {
                     Log.d(TAG, "Cached ASSIGNMENT -> " + ((Assignment) entity).getTitle() + " | id=" + String.valueOf(entity.getID()));
                     break;
                 }
+
+                case NOTIFICATION: {
+                    if(mNotificationCache == null) {
+                        mNotificationCache = new SparseArray<>();
+                    }
+                    mNotificationCache.put(entity.getID(), (Notification) entity);
+                    Log.d(TAG, "Cached NOTIFICATION-> " + ((Notification) entity).getTitle() + " | id=" + String.valueOf(entity.getID()));
+                    break;
+                }
             }
         }
     }
@@ -122,6 +135,14 @@ public class EntityCache {
                 }
             }
 
+            case NOTIFICATION: {
+                if(mNotificationCache == null) {
+                    return false;
+                } else {
+                    return (mNotificationCache.get(id, null) != null);
+                }
+            }
+
             default:
                 return false;
         }
@@ -161,4 +182,45 @@ public class EntityCache {
         }
         return null;
     }
+
+    public Notification getNotification(int id) {
+        if (mNotificationCache != null) {
+            return mNotificationCache.get(id, null);
+        }
+        return null;
+    }
+
+    public ArrayList<Integer> getAllSubjectID() {
+        if (mSubjectCache != null) {
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int i = 0; i < mSubjectCache.size(); ++i) {
+                list.add(mSubjectCache.keyAt(i));
+            }
+            return list;
+        }
+        return null;
+    }
+
+    public ArrayList<Integer> getAllAssignmentID() {
+        if (mAssignmentCache != null) {
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int i = 0; i < mAssignmentCache.size(); ++i) {
+                list.add(mAssignmentCache.keyAt(i));
+            }
+            return list;
+        }
+        return null;
+    }
+
+    public ArrayList<Integer> getAllNotificationID() {
+        if (mNotificationCache != null) {
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int i = 0; i < mNotificationCache.size(); ++i) {
+                list.add(mNotificationCache.keyAt(i));
+            }
+            return list;
+        }
+        return null;
+    }
+
 }

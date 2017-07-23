@@ -5,6 +5,8 @@ import android.util.SparseArray;
 import com.d.candy.f.awesometimetable.DayOfWeek;
 import com.d.candy.f.awesometimetable.utils.EntityCache;
 
+import java.util.ArrayList;
+
 /**
  * Created by daichi on 7/11/17.
  */
@@ -12,23 +14,20 @@ import com.d.candy.f.awesometimetable.utils.EntityCache;
 public class WeeklyTimeTable extends TimeTable {
 
     private int mID;
-    private SparseArray<OneDayTimeTable> mTable;
+    private SparseArray<OneDayTimeTable> mTables;
 
-    public WeeklyTimeTable(int id) {
+    public WeeklyTimeTable(final int id) {
+        this(id, null);
+    }
+
+    public WeeklyTimeTable(final int id, final EntityCache dataSet) {
+        super(dataSet);
         mID = id;
-        mTable = new SparseArray<>();
-        setEntityCache(new EntityCache());
+        mTables = new SparseArray<>();
     }
 
     public void enrollSubjectTo(EnrollingInfo enrollingInfo, Subject subject) {
-        // If a time table does not exist on 'dayOfWeek', create new one
-        OneDayTimeTable oneDayTimeTable;
-        if((oneDayTimeTable = isTimeTableExistOn(enrollingInfo.getDayOfWeek())) == null) {
-            oneDayTimeTable = new OneDayTimeTable(enrollingInfo.getDayOfWeek(), getEntityCache());
-            mTable.put(enrollingInfo.getDayOfWeek().toInt(), oneDayTimeTable);
-        }
-
-        oneDayTimeTable.enrollSubject(enrollingInfo, subject);
+        getOneDayTimeTableOf(enrollingInfo.getDayOfWeek()).enrollSubject(enrollingInfo, subject);
     }
 
     public void enrollSubjectTo(EnrollingInfo enrollingInfo) {
@@ -36,17 +35,11 @@ public class WeeklyTimeTable extends TimeTable {
     }
 
     public Location getLocation(int id) {
-        return getEntityCache().getLocation(id);
+        return getDataSet().getLocation(id);
     }
 
     public void enrollBlankSubjectTo(DayOfWeek dayOfWeek, int size) {
-        OneDayTimeTable oneDayTimeTable;
-        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) == null) {
-            oneDayTimeTable = new OneDayTimeTable(dayOfWeek, getEntityCache());
-            mTable.put(dayOfWeek.toInt(), oneDayTimeTable);
-        }
-
-        oneDayTimeTable.enrollBlankSubject(size);
+        getOneDayTimeTableOf(dayOfWeek).enrollBlankSubject(size);
     }
 
     public Subject getSubjectAtOrderOn(DayOfWeek dayOfWeek, int order) {
@@ -69,9 +62,9 @@ public class WeeklyTimeTable extends TimeTable {
 
     public int countSubject() {
         int count = 0;
-        for (int i = 0; i < mTable.size(); ++i) {
-            int key = mTable.keyAt(i);
-            count += mTable.get(key).countSubject();
+        for (int i = 0; i < mTables.size(); ++i) {
+            int key = mTables.keyAt(i);
+            count += mTables.get(key).countSubject();
         }
         return count;
     }
@@ -109,7 +102,7 @@ public class WeeklyTimeTable extends TimeTable {
     }
 
     private OneDayTimeTable isTimeTableExistOn(DayOfWeek dayOfWeek) {
-        return (mTable.get(dayOfWeek.toInt(), null));
+        return (mTables.get(dayOfWeek.toInt(), null));
     }
 
     public EnrollingInfo getEnrollingInfoAtOrderOn(DayOfWeek dayOfWeek, int order) {
@@ -118,5 +111,30 @@ public class WeeklyTimeTable extends TimeTable {
             return oneDayTimeTable.getEnrollingInfoAtOrder(order);
         }
         return null;
+    }
+
+    public ArrayList<Integer> getAllAssignmentID() {
+        return getDataSet().getAllAssignmentID();
+    }
+
+    public ArrayList<Integer> getAllNotificationID() {
+        return getDataSet().getAllNotificationID();
+    }
+
+    /**
+     * Return a one-day time table for 'dayOfWeek'.
+     * If it does not exit, create new one.
+     *
+     * @param dayOfWeek
+     * @return
+     */
+    private OneDayTimeTable getOneDayTimeTableOf(final DayOfWeek dayOfWeek) {
+        OneDayTimeTable timeTable;
+        if((timeTable = isTimeTableExistOn(dayOfWeek)) == null) {
+            timeTable = new OneDayTimeTable(dayOfWeek, getDataSet());
+            mTables.put(dayOfWeek.toInt(), timeTable);
+        }
+
+        return timeTable;
     }
 }

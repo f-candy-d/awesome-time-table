@@ -115,9 +115,6 @@ public class EntityCardListViewerFragment extends Fragment
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-        mListAdapter = null;
-        mTimeTable = null;
     }
 
     /**
