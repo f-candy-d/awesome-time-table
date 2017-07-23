@@ -49,6 +49,7 @@ import com.d.candy.f.awesometimetable.Adapters.TableViewerPagerAdapter;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
+import com.d.candy.f.awesometimetable.utils.AHBottomNavigationObserver;
 import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
 import com.d.candy.f.awesometimetable.utils.RecyclerViewScrollObserver;
@@ -58,7 +59,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
-        EntityCardListViewerFragment.OnInteractionListener {
+        EntityCardListViewerFragment.OnInteractionListener,
+        AHBottomNavigationObserver.NotificationListener {
 
     /**
      * Fragment types
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity
     private TableViewerPagerAdapter mViewerPagerAdapter;
     private AHBottomNavigationViewPager mViewPager;
     private FloatingActionButton mFab;
+
+    private AHBottomNavigationObserver mAHBottomNavigationObserver;
 
     // Data
     private WeeklyTimeTable mTimeTable;
@@ -125,7 +129,6 @@ public class MainActivity extends AppCompatActivity
         initViewPager();
         // Set the initial position of the NavigationView
         navigationView.setCheckedItem(R.id.nav_table1);
-
     }
 
     @Override
@@ -252,43 +255,43 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigation.setNotification(notification, 3);
 
 // Set listeners
-        mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                // Hide or show FAB
-                if (!wasSelected) {
-                    if (position == FRAGMENT_ASSIGNMENTS || position == FRAGMENT_NOTIFICATIONS) {
-                        // If FAB's visibility is VISIBLE, the previous position is 2 or 3.
-                        // So the first thing we do is to hide FAB with animation,
-                        // and then show it again.
-                        // If FAB's visibility is GONE, the previous position is 0 or 1.
-                        // In this case, simply show FAB with animation.
-                        if (mFab.getVisibility() == View.VISIBLE) {
-                            hideFAB(true);
-                        } else if (mFab.getVisibility() == View.INVISIBLE) {
-                            showFAB(false);
-                        }
-                        mFab.setTag(position);
+//        mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+//            @Override
+//            public boolean onTabSelected(int position, boolean wasSelected) {
+//                // Hide or show FAB
+//                if (!wasSelected) {
+//                    if (position == FRAGMENT_ASSIGNMENTS || position == FRAGMENT_NOTIFICATIONS) {
+//                        // If FAB's visibility is VISIBLE, the previous position is 2 or 3.
+//                        // So the first thing we do is to hide FAB with animation,
+//                        // and then show it again.
+//                        // If FAB's visibility is GONE, the previous position is 0 or 1.
+//                        // In this case, simply show FAB with animation.
+//                        if (mFab.getVisibility() == View.VISIBLE) {
+//                            hideFAB(true);
+//                        } else if (mFab.getVisibility() == View.INVISIBLE) {
+//                            showFAB(false);
+//                        }
+//                        mFab.setTag(position);
+//
+//                    } else {
+//                        hideFAB(false);
+//                    }
+//                }
+//
+//                return onSwitchFragments(position, wasSelected);
+//            }
+//        });
+//        mBottomNavigation.setOnNavigationPositionListener(
+//                new AHBottomNavigation.OnNavigationPositionListener() {
+//            @Override public void onPositionChange(int y) {
+//                // Manage the new y position
+//            }
+//        });
 
-                    } else {
-                        hideFAB(false);
-                    }
-                }
-
-                return onSwitchFragments(position, wasSelected);
-            }
-        });
-        mBottomNavigation.setOnNavigationPositionListener(
-                new AHBottomNavigation.OnNavigationPositionListener() {
-            @Override public void onPositionChange(int y) {
-                // Manage the new y position
-                if (y == 0 && mFab.getVisibility() == View.VISIBLE) {
-//                    hideFAB(false);
-                } else if (y == mBottomNavigation.getHeight() && mFab.getVisibility() == View.INVISIBLE) {
-//                    showFAB(false);
-                }
-            }
-        });
+        // Setup observer
+        int flags = AHBottomNavigationObserver.STATE | AHBottomNavigationObserver.TAB_SELECTION;
+        mAHBottomNavigationObserver = new AHBottomNavigationObserver(flags, mBottomNavigation);
+        mAHBottomNavigationObserver.setNotificationListener(this);
     }
 
     private void initTimeTable() {
@@ -345,11 +348,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        if (mFab.getParent() instanceof CoordinatorLayout) {
-            Log.d(TAG, "FAB's parent is CoordinateLayout");
-        } else {
-            Log.d(TAG, "FAB's parent is not CoordinateLayout");
-        }
     }
 
     private void hideFAB(final boolean showAfterAnim) {
@@ -549,6 +547,61 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(this, SubjectDetailsActivity.class);
                 intent.putExtra(EXTRA_ENROLLING_INFO_ID, enrollingInfo.getID());
                 startActivity(intent);
+            }
+        }
+    }
+
+    /**
+     * The implementation of AHBottomNavigationObserver.NotificationListener interface
+     */
+
+    @Override
+    public boolean onTabSelected(int position, boolean wasSelected) {
+        // Hide or show FAB
+        if (!wasSelected) {
+            if (position == FRAGMENT_ASSIGNMENTS || position == FRAGMENT_NOTIFICATIONS) {
+                // If FAB's visibility is VISIBLE, the previous position is 2 or 3.
+                // So the first thing we do is to hide FAB with animation,
+                // and then show it again.
+                // If FAB's visibility is GONE, the previous position is 0 or 1.
+                // In this case, simply show FAB with animation.
+                if (mFab.getVisibility() == View.VISIBLE) {
+                    hideFAB(true);
+                } else if (mFab.getVisibility() == View.INVISIBLE) {
+                    showFAB(false);
+                }
+                mFab.setTag(position);
+
+            } else {
+                hideFAB(false);
+            }
+        }
+
+        return onSwitchFragments(position, wasSelected);
+    }
+
+    @Override
+    public void onPositionChange(int y) {
+        // Nothing to do for now...
+    }
+
+    @Override
+    public void onNavigationStateChanged(AHBottomNavigationObserver.State state) {
+        if (mCurrentFragment == null) {
+            mCurrentFragment = mViewerPagerAdapter.getCurrentFragment();
+        }
+
+        int id = mCurrentFragment.getID();
+        if (id == FRAGMENT_ASSIGNMENTS || id == FRAGMENT_NOTIFICATIONS) {
+            if (state == AHBottomNavigationObserver.State.SHOWN
+                    && mFab.getVisibility() == View.INVISIBLE) {
+                // Show FAB after BottomNavigation appeared
+                showFAB(false);
+
+            } else if (state == AHBottomNavigationObserver.State.HIDDEN
+                    && mFab.getVisibility() == View.VISIBLE) {
+                // Hide FAB after BottomNavigation disappeared
+                hideFAB(false);
             }
         }
     }
