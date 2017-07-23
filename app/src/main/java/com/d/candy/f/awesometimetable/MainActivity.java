@@ -47,6 +47,7 @@ import com.d.candy.f.awesometimetable.Adapters.NotificationCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.WeeklySubjectCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.TableViewerPagerAdapter;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
+import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
 import com.d.candy.f.awesometimetable.utils.AHBottomNavigationObserver;
@@ -343,6 +344,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (((Integer) v.getTag()) == FRAGMENT_ASSIGNMENTS) {
+                    // Show add-Assignment screen
+                    Intent intent = new Intent(MainActivity.this, EntityEditorActivity.class);
+                    intent.putExtra(EntityEditorActivity.EXTRA_EDIT_ENTITY_TYPE, EntityType.ASSIGNMENT);
+                    startActivity(intent);
 
                 } else if (((Integer) v.getTag()) == FRAGMENT_NOTIFICATIONS) {
                 }

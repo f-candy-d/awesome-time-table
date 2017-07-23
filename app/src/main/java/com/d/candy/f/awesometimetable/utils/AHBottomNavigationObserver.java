@@ -11,8 +11,11 @@ public class AHBottomNavigationObserver
         AHBottomNavigation.OnTabSelectedListener {
 
     public interface NotificationListener {
+        // Called if mFlags has TAB_SELECTION flag
         boolean onTabSelected(final int position, final boolean wasSelected);
+        // Called if mFlags has POSITION_Y flag
         void onPositionChange(int y);
+        // Called if mFlags has STATE flag
         void onNavigationStateChanged(State state);
     }
 
@@ -24,7 +27,7 @@ public class AHBottomNavigationObserver
         UNDETERMINED
     }
 
-    private AHBottomNavigation mBottomNavigation;
+    private AHBottomNavigation mBottomNavigation = null;
     private int mOldPosY = -1;
     private NotificationListener mListener = null;
     private int mFlags = NULL_FLAG;

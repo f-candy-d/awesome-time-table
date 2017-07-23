@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".SubjectDetailsActivity">
         </activity>
+        <activity android:name=".EntityEditorActivity">
+        </activity>
     </application>
 
 </manifest>
