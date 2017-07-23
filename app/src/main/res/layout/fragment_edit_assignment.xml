@@ -1,13 +1,112 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.d.candy.f.awesometimetable.ui.EditAssignmentFragment">
+              android:orientation="vertical"
+             tools:context="com.d.candy.f.awesometimetable.ui.EditAssignmentFragment"
+    android:paddingTop="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="wrap_content"
+        android:text="TITLE"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/edit_assignment_sec1"/>
 
-</FrameLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_text_assignment_title"
+        android:hint="title here..."
+        android:layout_below="@+id/edit_assignment_sec1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DEADLINE"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="8dp"
+        android:id="@+id/edit_assignment_sec2"
+        android:layout_below="@+id/edit_text_assignment_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/edit_assignment_sec3"
+        android:layout_below="@+id/edit_assignment_sec2">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="YYYY/MM/DD (EE)"
+            android:id="@+id/btn_pick_year_month_day"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="HH:MM"
+            android:id="@+id/btn_pick_hour_min"
+            android:layout_marginBottom="8dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EnrollingInfoID"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="8dp"
+        android:id="@+id/edit_assignment_sec4"
+        android:layout_below="@+id/edit_assignment_sec3"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SubjectID=X | Period=Y | EE=Z"
+        android:id="@+id/btn_pick_enrolling_info_id"
+        android:layout_below="@+id/edit_assignment_sec4"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NOTE"
+        android:id="@+id/edit_assignment_sec5"
+        android:layout_below="@+id/btn_pick_enrolling_info_id"
+        android:textColor="@color/colorAccent"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_text_assignment_note"
+        android:hint="note here..."
+        android:layout_below="@+id/edit_assignment_sec5"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CANCEL"
+            android:id="@+id/btn_cancel"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="OK"
+            android:id="@+id/btn_ok"
+            android:layout_marginBottom="16dp"/>
+    </LinearLayout>
+
+</RelativeLayout>

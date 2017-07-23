@@ -42,4 +42,9 @@ public class BundleBuilder {
         mBundle.putSerializable(key, val);
         return this;
     }
+
+    public BundleBuilder put(final String key, CharSequence[] val) {
+        mBundle.putCharSequenceArray(key, val);
+        return this;
+    }
 }

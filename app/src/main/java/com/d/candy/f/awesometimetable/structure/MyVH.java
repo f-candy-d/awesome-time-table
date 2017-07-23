@@ -292,8 +292,8 @@ public class MyVH {
             mNote.setText(notification.getNote());
             mCategory.setText(notification.getCategory().toString());
             mEnrollingInfo.setText("EnrollingInfoID : " + String.valueOf(notification.getEnrollingInfoID()));
-            mDTStart.setText(new TimeDateHelper(notification.getDateTimeStart()).getAsString());
-            mDTEnd.setText(new TimeDateHelper(notification.getDateTimeEnd()).getAsString());
+            mDTStart.setText(new TimeDateHelper(notification.getDateTimeStart()).getAsString(true));
+            mDTEnd.setText(new TimeDateHelper(notification.getDateTimeEnd()).getAsString(true));
             mIsDone.setText(String.valueOf(notification.isDone()));
         }
     }

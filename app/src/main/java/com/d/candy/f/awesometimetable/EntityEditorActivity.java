@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.ui.EditAssignmentFragment;
 import com.d.candy.f.awesometimetable.utils.LogHelper;
@@ -43,4 +44,13 @@ public class EntityEditorActivity extends AppCompatActivity
     /**
      * The implementation of EditAssignmentFragment.OnInteractionListener interface
      */
+    @Override
+    public void onOkButtonClicked(Assignment assignment) {
+        finish();
+    }
+
+    @Override
+    public void onCancelButtonClicked() {
+        finish();
+    }
 }

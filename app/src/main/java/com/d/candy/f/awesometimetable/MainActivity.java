@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(
                 "Assignments", R.drawable.ic_assignment, R.color.colorAccent);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(
-                "Notification", R.drawable.ic_notifications_active, R.color.md_teal_500);
+                "Notifications", R.drawable.ic_notifications_active, R.color.md_teal_500);
 
         // Add items
         mBottomNavigation.addItem(item0);

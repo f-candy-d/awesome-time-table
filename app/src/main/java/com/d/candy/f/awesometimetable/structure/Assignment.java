@@ -28,6 +28,38 @@ public class Assignment extends Entity {
         return mNote;
     }
 
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public void setNote(String note) {
+        mNote = note;
+    }
+
+    public void setEnrollingInfoID(int enrollingInfoID) {
+        mEnrollingInfoID = enrollingInfoID;
+    }
+
+    public void setDeadlineYear(int deadlineYear) {
+        mDeadlineYear = deadlineYear;
+    }
+
+    public void setDeadlineMonth(int deadlineMonth) {
+        mDeadlineMonth = deadlineMonth;
+    }
+
+    public void setDeadlineDay(int deadlineDay) {
+        mDeadlineDay = deadlineDay;
+    }
+
+    public void setDeadlineDayOfWeek(DayOfWeek deadlineDayOfWeek) {
+        mDeadlineDayOfWeek = deadlineDayOfWeek;
+    }
+
+    public void setDone(boolean done) {
+        mIsDone = done;
+    }
+
     public int getEnrollingInfoID() {
         return mEnrollingInfoID;
     }

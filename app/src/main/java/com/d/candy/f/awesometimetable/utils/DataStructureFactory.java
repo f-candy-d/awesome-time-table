@@ -152,4 +152,28 @@ public class DataStructureFactory {
     public static Notification makeNotification(int id) {
         return TestObject.makeNotification(id);
     }
+
+    public static CharSequence[] makeEnrolledSubjectNameList() {
+        CharSequence[] names = new CharSequence[17];
+
+        EnrollingInfo info;
+        Subject subject;
+        for (int i = 1; i <= 17; ++i) {
+            info = makeEnrollingInfo(i);
+            subject = makeSubject(info.getSubjectID());
+            names[i-1] = subject.getName() + "/Period="
+                    + String.valueOf(info.getPeriod()) + " on " + info.getDayOfWeek().toString();
+        }
+
+        return names;
+    }
+
+    public static ArrayList<EnrollingInfo> makeEnrollingInfoList() {
+        ArrayList<EnrollingInfo> infos = new ArrayList<>();
+        for (int i = 1; i <= 17; ++i) {
+            infos.add(makeEnrollingInfo(i));
+        }
+
+        return infos;
+    }
 }

@@ -127,12 +127,17 @@ public class TimeDateHelper {
         return month;
     }
 
-    public String getAsString() {
-        return String.valueOf(mYear) + "."
+    public String getAsString(boolean withTime) {
+        String date = String.valueOf(mYear) + "."
                 + getMonthAsStringInShort() + "."
-                + String.valueOf(mDay) + " - "
-                + String.valueOf(mHour) + ":"
-                + String.valueOf(mMin) + " ("
+                + String.valueOf(mDay) + " ("
                 + getDayOfWeek().toStringShort() + ")";
+
+        if (withTime) {
+            date += " - " + String.valueOf(mHour)
+                    + ":" + String.valueOf(mMin);
+        }
+
+        return date;
     }
 }
