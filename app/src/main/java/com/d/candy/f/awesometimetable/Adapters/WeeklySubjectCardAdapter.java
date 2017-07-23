@@ -139,7 +139,7 @@ public class WeeklySubjectCardAdapter extends EntityCardAdapter {
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
             Subject subject = mTimeTable.getSubjectAtOrderOn(dayOfWeek, offset);
             MyVH.SpacerViewHolder vh = (MyVH.SpacerViewHolder) holder;
-            vh.bind(adpPos, subject, getOnItemClickListener());
+            vh.bind(adpPos, subject, null);
 
             // Setup the marker
             CircularTimeLineMarker marker = vh.getTimeLineMarker();

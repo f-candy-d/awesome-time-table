@@ -566,17 +566,15 @@ public class MainActivity extends AppCompatActivity
             }
 
             case FRAGMENT_ASSIGNMENTS: {
-//                return new AssignmentCardAdapter(
-//                        mTimeTable,
-//                        DataStructureFactory.makeAllAssignments());
                 return new AssignmentCardAdapter(mTimeTable);
             }
 
             case FRAGMENT_NOTIFICATIONS: {
                 // TODO; test code
-                return new NotificationCardAdapter(
-                        mTimeTable,
-                        DataStructureFactory.makeAllNotifications());
+//                return new NotificationCardAdapter(
+//                        mTimeTable,
+//                        DataStructureFactory.makeAllNotifications());
+                return new NotificationCardAdapter(mTimeTable);
             }
         }
 

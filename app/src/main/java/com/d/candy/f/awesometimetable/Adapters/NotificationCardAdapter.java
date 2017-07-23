@@ -22,26 +22,15 @@ public class NotificationCardAdapter extends EntityCardAdapter {
     @NonNull private final ArrayList<Notification> mNotifications;
 
     public NotificationCardAdapter(
-            @NonNull final WeeklyTimeTable timeTable,
-            @NonNull final ArrayList<Notification> notifications) {
-//        this(notifications, null);
-        this(timeTable, notifications, null);
+            @NonNull final WeeklyTimeTable timeTable) {
+        this(timeTable, null);
     }
 
     public NotificationCardAdapter(
             @NonNull final WeeklyTimeTable timeTable,
-            @NonNull final ArrayList<Notification> notifications,
             @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
-
-//        super(onItemClickListener);
         super(timeTable, onItemClickListener);
-
-        // noinspection ConstantConditions
-        if (notifications== null) {
-            throw new NullPointerException();
-        }
-
-        mNotifications = notifications;
+        mNotifications = timeTable.getAllNotifications();
     }
 
     @Override

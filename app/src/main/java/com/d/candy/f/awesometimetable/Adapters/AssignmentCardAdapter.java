@@ -31,28 +31,16 @@ public class AssignmentCardAdapter extends EntityCardAdapter {
     private SparseIntArray mHeaderPositions;
 
     public AssignmentCardAdapter(
-            @NonNull final WeeklyTimeTable timeTable)
-//            @NonNull ArrayList<Assignment> assignments) {
-    {
-//        this(timeTable, assignments, null);
+            @NonNull final WeeklyTimeTable timeTable) {
         this(timeTable, null);
     }
 
     public AssignmentCardAdapter(
             @NonNull final WeeklyTimeTable timeTable,
-//            @NonNull ArrayList<Assignment> assignments,
             @Nullable MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
         super(timeTable, onItemClickListener);
-
-//        // noinspection ConstantConditions
-//        if (assignments == null) {
-//            throw new NullPointerException();
-//        }
-
-//        mAssignments = assignments;
         mHeaderPositions = new SparseIntArray();
         mAssignments = timeTable.getAllAssignments();
-
         init();
     }
 
