@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.MyVH;
+import com.d.candy.f.awesometimetable.structure.TimeTable;
+import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 import java.util.ArrayList;
 
@@ -28,22 +30,28 @@ public class AssignmentCardAdapter extends EntityCardAdapter {
     @NonNull private ArrayList<Assignment> mAssignments;
     private SparseIntArray mHeaderPositions;
 
-    public AssignmentCardAdapter(@NonNull ArrayList<Assignment> assignments) {
-        this(assignments, null);
+    public AssignmentCardAdapter(
+            @NonNull final WeeklyTimeTable timeTable)
+//            @NonNull ArrayList<Assignment> assignments) {
+    {
+//        this(timeTable, assignments, null);
+        this(timeTable, null);
     }
 
     public AssignmentCardAdapter(
-            @NonNull ArrayList<Assignment> assignments,
+            @NonNull final WeeklyTimeTable timeTable,
+//            @NonNull ArrayList<Assignment> assignments,
             @Nullable MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
-        super(onItemClickListener);
+        super(timeTable, onItemClickListener);
 
-        // noinspection ConstantConditions
-        if (assignments == null) {
-            throw new NullPointerException();
-        }
+//        // noinspection ConstantConditions
+//        if (assignments == null) {
+//            throw new NullPointerException();
+//        }
 
-        mAssignments = assignments;
+//        mAssignments = assignments;
         mHeaderPositions = new SparseIntArray();
+        mAssignments = timeTable.getAllAssignments();
 
         init();
     }
@@ -67,7 +75,6 @@ public class AssignmentCardAdapter extends EntityCardAdapter {
                 return new MyVH.AssignmentCardViewHolder(view);
             }
         }
-
         return null;
     }
 

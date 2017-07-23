@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.ui;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

@@ -10,6 +10,7 @@ import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.Entity;
 import com.d.candy.f.awesometimetable.structure.MyVH;
+import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 import java.util.ArrayList;
 
@@ -30,15 +31,20 @@ public class SubjectAndRelationsCardAdapter extends EntityCardAdapter {
 
     @NonNull private final ArrayList<Entity> mEntities;
 
-    public SubjectAndRelationsCardAdapter(@NonNull final ArrayList<Entity> entities) {
-        this(entities, null);
+    public SubjectAndRelationsCardAdapter(
+            @NonNull final WeeklyTimeTable timeTable,
+            @NonNull final ArrayList<Entity> entities) {
+//        this(entities, null);
+        this(timeTable, entities, null);
     }
 
     public SubjectAndRelationsCardAdapter(
+            @NonNull final WeeklyTimeTable timeTable,
             @NonNull final ArrayList<Entity> entities,
             @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
 
-        super(onItemClickListener);
+//        super(onItemClickListener);
+        super(timeTable, onItemClickListener);
 
         // noinspection ConstantConditions
         if (entities == null) {

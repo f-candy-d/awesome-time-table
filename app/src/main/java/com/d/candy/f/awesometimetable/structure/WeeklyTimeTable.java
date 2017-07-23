@@ -26,38 +26,16 @@ public class WeeklyTimeTable extends TimeTable {
         mTables = new SparseArray<>();
     }
 
-    public void enrollSubjectTo(EnrollingInfo enrollingInfo, Subject subject) {
+    public void enrollSubjectTo(final EnrollingInfo enrollingInfo, final Subject subject) {
         getOneDayTimeTableOf(enrollingInfo.getDayOfWeek()).enrollSubject(enrollingInfo, subject);
     }
 
-    public void enrollSubjectTo(EnrollingInfo enrollingInfo) {
+    public void enrollSubjectTo(final EnrollingInfo enrollingInfo) {
         enrollSubjectTo(enrollingInfo, null);
     }
 
-    public Location getLocation(int id) {
-        return getDataSet().getLocation(id);
-    }
-
-    public void enrollBlankSubjectTo(DayOfWeek dayOfWeek, int size) {
+    public void enrollBlankSubjectTo(final DayOfWeek dayOfWeek, final int size) {
         getOneDayTimeTableOf(dayOfWeek).enrollBlankSubject(size);
-    }
-
-    public Subject getSubjectAtOrderOn(DayOfWeek dayOfWeek, int order) {
-        OneDayTimeTable oneDayTimeTable;
-        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
-            return oneDayTimeTable.getSubjectAtOrder(order);
-        } else {
-            return null;
-        }
-    }
-
-    public Subject getSubjectAtPeriodOn(DayOfWeek dayOfWeek, int period) {
-        OneDayTimeTable oneDayTimeTable;
-        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
-            return oneDayTimeTable.getSubjectAtPeriod(period);
-        } else {
-            return null;
-        }
     }
 
     public int countSubject() {
@@ -101,10 +79,23 @@ public class WeeklyTimeTable extends TimeTable {
         return 0;
     }
 
-    private OneDayTimeTable isTimeTableExistOn(DayOfWeek dayOfWeek) {
-        return (mTables.get(dayOfWeek.toInt(), null));
+    public Subject getSubjectAtOrderOn(final DayOfWeek dayOfWeek, final int order) {
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
+            return oneDayTimeTable.getSubjectAtOrder(order);
+        } else {
+            return null;
+        }
     }
 
+    public Subject getSubjectAtPeriodOn(DayOfWeek dayOfWeek, int period) {
+        OneDayTimeTable oneDayTimeTable;
+        if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
+            return oneDayTimeTable.getSubjectAtPeriod(period);
+        } else {
+            return null;
+        }
+    }
     public EnrollingInfo getEnrollingInfoAtOrderOn(DayOfWeek dayOfWeek, int order) {
         OneDayTimeTable oneDayTimeTable;
         if((oneDayTimeTable = isTimeTableExistOn(dayOfWeek)) != null) {
@@ -117,8 +108,24 @@ public class WeeklyTimeTable extends TimeTable {
         return getDataSet().getAllAssignmentID();
     }
 
+    public ArrayList<Assignment> getAllAssignments() {
+        return getDataSet().getAllAssignments();
+    }
+
+    public ArrayList<Notification> getAllNotifications() {
+        return getDataSet().getAllNotifications();
+    }
+
     public ArrayList<Integer> getAllNotificationID() {
         return getDataSet().getAllNotificationID();
+    }
+
+    public Location getLocation(int id) {
+        return getDataSet().getLocation(id);
+    }
+
+    private OneDayTimeTable isTimeTableExistOn(DayOfWeek dayOfWeek) {
+        return (mTables.get(dayOfWeek.toInt(), null));
     }
 
     /**

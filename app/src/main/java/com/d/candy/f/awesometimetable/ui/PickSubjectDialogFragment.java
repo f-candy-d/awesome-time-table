@@ -1,4 +1,4 @@
-package com.d.candy.f.awesometimetable;
+package com.d.candy.f.awesometimetable.ui;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -7,10 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.d.candy.f.awesometimetable.utils.BundleBuilder;
-import com.d.candy.f.awesometimetable.utils.DataStructureFactory;
 
 /**
  * Created by daichi on 7/23/17.

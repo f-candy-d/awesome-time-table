@@ -61,14 +61,6 @@ public class OneDayTimeTable extends TimeTable {
 
     public int countPeriodCorrectly() { return 0; }
 
-    public DayOfWeek getDayOfWeek() {
-        return mDayOfWeek;
-    }
-
-    public Location getLocation(int id) {
-        return getDataSet().getLocation(id);
-    }
-
     public void enrollSubject(EnrollingInfo enrollingInfo) {
         enrollSubject(enrollingInfo, null);
     }
@@ -78,10 +70,6 @@ public class OneDayTimeTable extends TimeTable {
             throw new IllegalArgumentException(
                     "enrolling-info's subject id and subject's one does not match");
         }
-
-//        if(subject != null && subject.getID() != DBContract.SubjectEntity.NULL_ID) {
-//            addEntity(subject);
-//        }
         mTable.add(enrollingInfo);
     }
 
@@ -101,7 +89,6 @@ public class OneDayTimeTable extends TimeTable {
                         .makeSubject(DBContract.SubjectEntity.BLANK_SUBJECT_ID);
                 blank.setID(blankSbjID);
                 blank.setLength(size);
-//                addEntity(blank);
                 // TODO; Is there any other suggestions?
                 getDataSet().cache(blank, true);
             }
@@ -117,6 +104,14 @@ public class OneDayTimeTable extends TimeTable {
         }
     }
 
+    public DayOfWeek getDayOfWeek() {
+        return mDayOfWeek;
+    }
+
+    public Location getLocation(int id) {
+        return getDataSet().getLocation(id);
+    }
+
     public Subject getSubjectAtOrder(int order) {
         return getDataSet().getSubject(mTable.get(order).getSubjectID());
     }
@@ -130,5 +125,4 @@ public class OneDayTimeTable extends TimeTable {
     public EnrollingInfo getEnrollingInfoAtOrder(int order) {
         return mTable.get(order);
     }
-
 }

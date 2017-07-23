@@ -43,15 +43,6 @@ public class EntityCardListViewerFragment extends Fragment
         void onListItemClicked(final int position);
     }
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-
     private OnInteractionListener mListener;
     private EntityCardAdapter mListAdapter;
     private RecyclerView mRecyclerView;
@@ -71,31 +62,19 @@ public class EntityCardListViewerFragment extends Fragment
     // TODO: Rename and change types and number of parameters
     public static EntityCardListViewerFragment newInstance() {
         EntityCardListViewerFragment fragment = new EntityCardListViewerFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
         init();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_entity_card_list_viewer, container, false);
-
-        // Initialization
         initUI(root);
 
         return root;
@@ -124,7 +103,7 @@ public class EntityCardListViewerFragment extends Fragment
      * interface ({@link MyVH.BaseViewHolder.OnItemClickListener#onItemClick(int)}).
      * In this case, we have to set a host activity as a the listener of MyVH.BaseViewHolder.OnItemClickListener in
      * {@link EntityCardAdapter#setOnItemClickListener(MyVH.BaseViewHolder.OnItemClickListener)} or
-     * {@link EntityCardAdapter#EntityCardAdapter(MyVH.BaseViewHolder.OnItemClickListener)}.
+     * {@link EntityCardAdapter#EntityCardAdapter(WeeklyTimeTable, MyVH.BaseViewHolder.OnItemClickListener)}.
      *
      * @param delegate
      */
@@ -152,15 +131,12 @@ public class EntityCardListViewerFragment extends Fragment
         mRecyclerView.smoothScrollToPosition(0);
     }
 
-    public void setTimeTable(final WeeklyTimeTable timeTable) {
-        mTimeTable = timeTable;
-    }
-
     private void init() {
         mListAdapter = mListener.getListAdapter(this);
         if (mListAdapter == null) {
             throw new NullPointerException();
         }
+        mTimeTable = mListAdapter.getTimeTable();
     }
 
     private void initUI(View root) {

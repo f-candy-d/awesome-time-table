@@ -14,11 +14,8 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.d.candy.f.awesometimetable.DBContract;
-import com.d.candy.f.awesometimetable.DatePickerDialogFragment;
 import com.d.candy.f.awesometimetable.DayOfWeek;
-import com.d.candy.f.awesometimetable.PickSubjectDialogFragment;
 import com.d.candy.f.awesometimetable.R;
-import com.d.candy.f.awesometimetable.TimePickerDialogFragment;
 import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.Subject;

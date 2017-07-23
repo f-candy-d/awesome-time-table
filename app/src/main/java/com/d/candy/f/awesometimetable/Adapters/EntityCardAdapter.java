@@ -13,32 +13,32 @@ import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 abstract public class EntityCardAdapter extends RecyclerView.Adapter<MyVH.BaseViewHolder> {
 
-//    @NonNull private WeeklyTimeTable mTimeTable;
+    @NonNull private WeeklyTimeTable mTimeTable;
     @Nullable private MyVH.BaseViewHolder.OnItemClickListener mOnItemClickListener = null;
 
-//    public EntityCardAdapter(@NonNull final WeeklyTimeTable timeTable) {
-//        this(timeTable, null);
-//    }
-
-    public EntityCardAdapter() {
-        this(null);
+    public EntityCardAdapter(@NonNull final WeeklyTimeTable timeTable) {
+        this(timeTable, null);
     }
 
-//    public EntityCardAdapter(@NonNull final WeeklyTimeTable timeTable,
-//                             @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
-//        // noinspection ConstantConditions
-//        if(timeTable == null) {
-//            throw new NullPointerException();
-//        }
-//
-//        mTimeTable = timeTable;
-//        mOnItemClickListener = onItemClickListener;
+//    public EntityCardAdapter() {
+//        this(null);
 //    }
 
-    public EntityCardAdapter(
-            @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
+    public EntityCardAdapter(@NonNull final WeeklyTimeTable timeTable,
+                             @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
+        // noinspection ConstantConditions
+        if(timeTable == null) {
+            throw new NullPointerException();
+        }
+
+        mTimeTable = timeTable;
         mOnItemClickListener = onItemClickListener;
     }
+
+//    public EntityCardAdapter(
+//            @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
+//        mOnItemClickListener = onItemClickListener;
+//    }
 
 
     public void setOnItemClickListener(
@@ -50,10 +50,10 @@ abstract public class EntityCardAdapter extends RecyclerView.Adapter<MyVH.BaseVi
         return (mOnItemClickListener == null);
     }
 
-//    @NonNull
-//    public WeeklyTimeTable getTimeTable() {
-//        return mTimeTable;
-//    }
+    @NonNull
+    public WeeklyTimeTable getTimeTable() {
+        return mTimeTable;
+    }
 
     @Nullable
     protected MyVH.BaseViewHolder.OnItemClickListener getOnItemClickListener() {

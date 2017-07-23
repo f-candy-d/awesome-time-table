@@ -2,7 +2,6 @@ package com.d.candy.f.awesometimetable.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,8 +42,7 @@ public class WeeklySubjectCardAdapter extends EntityCardAdapter {
     public WeeklySubjectCardAdapter(@NonNull final WeeklyTimeTable timeTable,
                                     @NonNull DayOfWeek[] dayOfWeeksOrder,
                                     @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
-//        super(timeTable, onItemClickListener);
-        super(onItemClickListener);
+        super(timeTable, onItemClickListener);
 
         // noinspection ConstantConditions
         if (dayOfWeeksOrder == null) {
@@ -64,7 +62,7 @@ public class WeeklySubjectCardAdapter extends EntityCardAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if(isPositionHeader(position)) {
+        if(isHeaderPosition(position)) {
             return VIEW_TYPE_HEADER;
         } else {
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(position);
@@ -106,11 +104,11 @@ public class WeeklySubjectCardAdapter extends EntityCardAdapter {
 
     @Override
     public void onBindViewHolder(MyVH.BaseViewHolder holder, int position) {
-
         int adpPos = holder.getAdapterPosition();
         int viewType = getItemViewType(adpPos);
 
         if (viewType == VIEW_TYPE_SUBJECT) {
+            // Set data
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
             Subject subject = mTimeTable.getSubjectAtOrderOn(dayOfWeek, offset);
@@ -136,6 +134,7 @@ public class WeeklySubjectCardAdapter extends EntityCardAdapter {
 
 
         } else if (viewType == VIEW_TYPE_SPACER) {
+            // Set data
             DayOfWeek dayOfWeek = getDayOfWeekContainsPosition(adpPos);
             int offset = adpPos - mHeaderPositions.get(dayOfWeek.toInt()) - 1;
             Subject subject = mTimeTable.getSubjectAtOrderOn(dayOfWeek, offset);
@@ -179,7 +178,7 @@ public class WeeklySubjectCardAdapter extends EntityCardAdapter {
         }
     }
 
-    private boolean isPositionHeader(int position) {
+    private boolean isHeaderPosition(int position) {
         for(int i = 0; i < mDayOfWeeksOrder.length; ++i) {
             int headerPos = mHeaderPositions.get(mDayOfWeeksOrder[i].toInt());
             if(position == headerPos) return true;

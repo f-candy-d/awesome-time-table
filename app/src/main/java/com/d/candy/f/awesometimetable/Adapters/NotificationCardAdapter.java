@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.d.candy.f.awesometimetable.R;
 import com.d.candy.f.awesometimetable.structure.MyVH;
 import com.d.candy.f.awesometimetable.structure.Notification;
+import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 import java.util.ArrayList;
 
@@ -20,15 +21,20 @@ public class NotificationCardAdapter extends EntityCardAdapter {
 
     @NonNull private final ArrayList<Notification> mNotifications;
 
-    public NotificationCardAdapter(@NonNull final ArrayList<Notification> notifications) {
-        this(notifications, null);
+    public NotificationCardAdapter(
+            @NonNull final WeeklyTimeTable timeTable,
+            @NonNull final ArrayList<Notification> notifications) {
+//        this(notifications, null);
+        this(timeTable, notifications, null);
     }
 
     public NotificationCardAdapter(
+            @NonNull final WeeklyTimeTable timeTable,
             @NonNull final ArrayList<Notification> notifications,
             @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
 
-        super(onItemClickListener);
+//        super(onItemClickListener);
+        super(timeTable, onItemClickListener);
 
         // noinspection ConstantConditions
         if (notifications== null) {

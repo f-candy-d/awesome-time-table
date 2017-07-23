@@ -20,7 +20,7 @@ package com.d.candy.f.awesometimetable;
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -30,8 +30,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,9 +44,11 @@ import com.d.candy.f.awesometimetable.Adapters.EntityCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.NotificationCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.WeeklySubjectCardAdapter;
 import com.d.candy.f.awesometimetable.Adapters.TableViewerPagerAdapter;
+import com.d.candy.f.awesometimetable.structure.Assignment;
 import com.d.candy.f.awesometimetable.structure.EnrollingInfo;
 import com.d.candy.f.awesometimetable.structure.EntityType;
 import com.d.candy.f.awesometimetable.structure.Location;
+import com.d.candy.f.awesometimetable.structure.Notification;
 import com.d.candy.f.awesometimetable.structure.Subject;
 import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 import com.d.candy.f.awesometimetable.ui.EntityCardListViewerFragment;
@@ -67,47 +67,62 @@ public class MainActivity extends AppCompatActivity
         AHBottomNavigationObserver.NotificationListener {
 
     /**
-     * Fragment types
+     * Fragment types.
+     * These values are used as position of AHBottomNavigation.
      */
     private static final int FRAGMENT_ONE_DAY_TIMETABLE = 0;
     private static final int FRAGMENT_WEEKLY_TIMETABLE = 1;
     private static final int FRAGMENT_ASSIGNMENTS = 2;
     private static final int FRAGMENT_NOTIFICATIONS = 3;
 
+    /**
+     * Request codes. Use in {@link MainActivity#startActivityForResult(Intent, int)}
+     * and {@link MainActivity#onActivityResult(int, int, Intent)}.
+     */
     private static final int REQUEST_CODE_ADD_ASSIGNMENT = 1;
     private static final int REQUEST_CODE_ADD_NOTIFICATION = 2;
 
+    /**
+     * Misc
+     */
     private static final int VIEWPAGER_OFFSCREEN_LIMIT = 3;
-    private static final long FAB_ANIM_DURATION = 270L;
-
+    private static final long FAB_ANIMATION_DURATION = 270L;
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
-    private int mCheckedItemID;
-    // TODO; This is used for 3Tabs bottom navigation
-//    private int mBottomNaviPos0FragmentID;
-    // UI
-    private AHBottomNavigation mBottomNavigation;
-    private EntityCardListViewerFragment mCurrentFragment;
-    private TableViewerPagerAdapter mViewerPagerAdapter;
-    private AHBottomNavigationViewPager mViewPager;
-    private FloatingActionButton mFab;
-
-    private AHBottomNavigationObserver mAHBottomNavigationObserver;
-
-    // Data
-    private WeeklyTimeTable mTimeTable;
-    private EntityCache mDataSet;
 
     /**
      * Key strings being used in the Intent
      */
     public static final String EXTRA_ENROLLING_INFO_ID = "enrolling_info_id";
 
+    /**
+     * An ID of a checked item of the NavigationDrawer
+     */
+    private int mCheckedNavigationItemID;
+
+    // TODO; This is used for 3Tabs bottom navigation
+//    private int mBottomNaviPos0FragmentID;
+
+    // UI
+    private AHBottomNavigation mBottomNavigation;
+    private EntityCardListViewerFragment mCurrentFragment;
+    private AHBottomNavigationViewPager mViewPager;
+    private FloatingActionButton mFab;
+    private Toolbar mToolbar;
+
+    // Utils
+    private AHBottomNavigationObserver mAHBottomNavigationObserver;
+
+    // Data
+    private TableViewerPagerAdapter mViewerPagerAdapter;
+    private WeeklyTimeTable mTimeTable;
+    private EntityCache mDataSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -118,25 +133,12 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
+        // Initialization
+        initNavDrawer();
         initFAB();
-        // Setup BottomNavigationBar
         initBottomNavigationBar();
-
-        // Init data
         initTimeTable();
-
         initViewPager();
-        // Set the initial position of the NavigationView
-        navigationView.setCheckedItem(R.id.nav_table1);
     }
 
     @Override
@@ -171,25 +173,15 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CODE_ADD_ASSIGNMENT:
-                if (resultCode == RESULT_OK) {
-
-                }
-        }
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_table1 && id != mCheckedItemID) {
+        if (id == R.id.nav_table1 && id != mCheckedNavigationItemID) {
             mCurrentFragment.refresh();
-        } else if (id == R.id.nav_table2 && id != mCheckedItemID) {
+        } else if (id == R.id.nav_table2 && id != mCheckedNavigationItemID) {
 
         } else if (id == R.id.nav_subjects) {
 
@@ -201,8 +193,32 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
 
         // update
-        mCheckedItemID = id;
+        mCheckedNavigationItemID = id;
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_ADD_ASSIGNMENT:
+                if (resultCode == RESULT_OK) {
+
+                }
+        }
+    }
+
+    private void initNavDrawer() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Set the initial position of the NavigationView
+        navigationView.setCheckedItem(R.id.nav_table1);
     }
 
     private void initBottomNavigationBar() {
@@ -224,87 +240,26 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigation.addItem(item2);
         mBottomNavigation.addItem(item3);
 
-// Set background color
-//        mBottomNavigation.setDefaultBackgroundColor(
-//                getResources().getColor(R.color.md_green_500));
-
-// Disable the translation inside the CoordinatorLayout
-//        mBottomNavigation.setBehaviorTranslationEnabled(false);
-
-
-// Enable the translation of the FloatingActionButton
+        // Enable the translation of the FloatingActionButton
         mBottomNavigation.manageFloatingActionButtonBehavior(mFab);
 
-// Change colors
+        // Change colors
         mBottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
         mBottomNavigation.setInactiveColor(getResources().getColor(R.color.colorBottomNavigationInactive));
 
-// Force to tint the drawable (useful for font with icon for example)
-//        mBottomNavigation.setForceTint(true);
-
-// Display color under navigation bar (API 21+)
-// Don't forget these lines in your style-v21
-// <item name="android:windowTranslucentNavigation">true</item>
-// <item name="android:fitsSystemWindows">true</item>
-//        mBottomNavigation.setTranslucentNavigationEnabled(false);
-
-// Manage titles
-//        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.SHOW_WHEN_ACTIVE);
+        // Show item title always
         mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-//        mBottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
 
-// Use colored navigation with circle reveal effect
-//        mBottomNavigation.setColored(true);
-
-// Set current item programmatically
+        // Set current item programmatically
         mBottomNavigation.setCurrentItem(FRAGMENT_ONE_DAY_TIMETABLE);
 
-// Customize notification (title, background, typeface)
-//        mBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
-
-// Add or remove notification for each item
-//        mBottomNavigation.setNotification("1", 2);
-// OR
+        // Notification
         AHNotification notification = new AHNotification.Builder()
                 .setText("1")
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.cardview_light_background))
                 .setTextColor(ContextCompat.getColor(this, R.color.cardview_dark_background))
                 .build();
         mBottomNavigation.setNotification(notification, 3);
-
-// Set listeners
-//        mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-//            @Override
-//            public boolean onTabSelected(int position, boolean wasSelected) {
-//                // Hide or show FAB
-//                if (!wasSelected) {
-//                    if (position == FRAGMENT_ASSIGNMENTS || position == FRAGMENT_NOTIFICATIONS) {
-//                        // If FAB's visibility is VISIBLE, the previous position is 2 or 3.
-//                        // So the first thing we do is to hide FAB with animation,
-//                        // and then show it again.
-//                        // If FAB's visibility is GONE, the previous position is 0 or 1.
-//                        // In this case, simply show FAB with animation.
-//                        if (mFab.getVisibility() == View.VISIBLE) {
-//                            hideFAB(true);
-//                        } else if (mFab.getVisibility() == View.INVISIBLE) {
-//                            showFAB(false);
-//                        }
-//                        mFab.setTag(position);
-//
-//                    } else {
-//                        hideFAB(false);
-//                    }
-//                }
-//
-//                return onSwitchFragments(position, wasSelected);
-//            }
-//        });
-//        mBottomNavigation.setOnNavigationPositionListener(
-//                new AHBottomNavigation.OnNavigationPositionListener() {
-//            @Override public void onPositionChange(int y) {
-//                // Manage the new y position
-//            }
-//        });
 
         // Setup observer
         int flags = AHBottomNavigationObserver.STATE | AHBottomNavigationObserver.TAB_SELECTION;
@@ -314,6 +269,8 @@ public class MainActivity extends AppCompatActivity
 
     private void initTimeTable() {
         // TODO; This is TEST code
+        mDataSet = new EntityCache();
+
         Subject math = DataStructureFactory.makeSubject(2);
         Subject japanese = DataStructureFactory.makeSubject(3);
         Subject english = DataStructureFactory.makeSubject(4);
@@ -347,7 +304,16 @@ public class MainActivity extends AppCompatActivity
 
         EnrollingInfo infoFri1 = DataStructureFactory.makeEnrollingInfo(17);
 
-        mDataSet = new EntityCache();
+        ArrayList<Assignment> assignments = DataStructureFactory.makeAllAssignments();
+        for (Assignment assignment : assignments) {
+            mDataSet.cache(assignment, true);
+        }
+
+        ArrayList<Notification> notifications = DataStructureFactory.makeAllNotifications();
+        for (Notification notification : notifications) {
+            mDataSet.cache(notification, true);
+        }
+
         // Register entities
         mDataSet.cache(math, true);
         mDataSet.cache(japanese, true);
@@ -398,7 +364,6 @@ public class MainActivity extends AppCompatActivity
 
         // Add fragments to the ViewPager
         EntityCardListViewerFragment oneDayTTF = EntityCardListViewerFragment.newInstance();
-        oneDayTTF.setTimeTable(mTimeTable);
         oneDayTTF.setID(FRAGMENT_ONE_DAY_TIMETABLE);
         fragments.add(FRAGMENT_ONE_DAY_TIMETABLE, oneDayTTF);
         // TODO; This is for 3Tabs bottom navigation
@@ -406,17 +371,14 @@ public class MainActivity extends AppCompatActivity
 
 
         EntityCardListViewerFragment weeklyTTF = EntityCardListViewerFragment.newInstance();
-        weeklyTTF.setTimeTable(mTimeTable);
         weeklyTTF.setID(FRAGMENT_WEEKLY_TIMETABLE);
         fragments.add(FRAGMENT_WEEKLY_TIMETABLE, weeklyTTF);
 
         EntityCardListViewerFragment assignmentF = EntityCardListViewerFragment.newInstance();
-        assignmentF.setTimeTable(mTimeTable);
         assignmentF.setID(FRAGMENT_ASSIGNMENTS);
         fragments.add(FRAGMENT_ASSIGNMENTS, assignmentF);
 
         EntityCardListViewerFragment notificationF = EntityCardListViewerFragment.newInstance();
-        notificationF.setTimeTable(mTimeTable);
         notificationF.setID(FRAGMENT_NOTIFICATIONS);
         fragments.add(FRAGMENT_NOTIFICATIONS, notificationF);
 
@@ -449,7 +411,7 @@ public class MainActivity extends AppCompatActivity
 
     private void hideFAB(final boolean showAfterAnim) {
         // Hide FAB with animation
-        mFab.animate().alpha(0).scaleX(0).scaleY(0).setDuration(FAB_ANIM_DURATION)
+        mFab.animate().alpha(0).scaleX(0).scaleY(0).setDuration(FAB_ANIMATION_DURATION)
                 .setInterpolator(new LinearOutSlowInInterpolator())
                 .setListener(new Animator.AnimatorListener() {
                     @Override
@@ -488,7 +450,7 @@ public class MainActivity extends AppCompatActivity
         mFab.setAlpha(0f);
         mFab.setScaleX(0f);
         mFab.setScaleY(0f);
-        mFab.animate().alpha(1).scaleX(1).scaleY(1).setDuration(FAB_ANIM_DURATION)
+        mFab.animate().alpha(1).scaleX(1).scaleY(1).setDuration(FAB_ANIMATION_DURATION)
                 .setInterpolator(new OvershootInterpolator())
                 .setListener(new Animator.AnimatorListener() {
                     @Override
@@ -604,13 +566,16 @@ public class MainActivity extends AppCompatActivity
             }
 
             case FRAGMENT_ASSIGNMENTS: {
-                return new AssignmentCardAdapter(
-                        DataStructureFactory.makeAllAssignments());
+//                return new AssignmentCardAdapter(
+//                        mTimeTable,
+//                        DataStructureFactory.makeAllAssignments());
+                return new AssignmentCardAdapter(mTimeTable);
             }
 
             case FRAGMENT_NOTIFICATIONS: {
                 // TODO; test code
                 return new NotificationCardAdapter(
+                        mTimeTable,
                         DataStructureFactory.makeAllNotifications());
             }
         }

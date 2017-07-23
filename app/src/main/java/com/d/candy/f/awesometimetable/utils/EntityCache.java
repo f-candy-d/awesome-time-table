@@ -24,7 +24,6 @@ public class EntityCache {
     private SparseArray<Subject> mSubjectCache = null;
     private SparseArray<Location> mLocationCache = null;
     private SparseArray<Teacher> mTeacherCache = null;
-    private SparseArray<EnrollingInfo> mEnrollingInfoCache = null;
     private SparseArray<Assignment> mAssignmentCache = null;
     private SparseArray<Notification> mNotificationCache = null;
 
@@ -61,15 +60,6 @@ public class EntityCache {
                     break;
                 }
 
-                case ENROLLING_INFO: {
-                    if(mEnrollingInfoCache == null) {
-                        mEnrollingInfoCache = new SparseArray<>();
-                    }
-                    mEnrollingInfoCache.put(entity.getID(), (EnrollingInfo) entity);
-                    Log.d(TAG, "Cached ENROLLING_INFO -> id=" + String.valueOf(entity.getID()));
-                    break;
-                }
-
                 case ASSIGNMENT: {
                     if(mAssignmentCache == null) {
                         mAssignmentCache = new SparseArray<>();
@@ -87,6 +77,9 @@ public class EntityCache {
                     Log.d(TAG, "Cached NOTIFICATION-> " + ((Notification) entity).getTitle() + " | id=" + String.valueOf(entity.getID()));
                     break;
                 }
+
+                default:
+                    throw new IllegalArgumentException("EntityType::" + entity.getEntityType().toString() + " is not supported");
             }
         }
     }
@@ -116,14 +109,6 @@ public class EntityCache {
                     return false;
                 } else {
                     return (mTeacherCache.get(id, null) != null);
-                }
-            }
-
-            case ENROLLING_INFO: {
-                if(mEnrollingInfoCache == null) {
-                    return false;
-                } else {
-                    return (mEnrollingInfoCache.get(id, null) != null);
                 }
             }
 
@@ -169,13 +154,6 @@ public class EntityCache {
         return null;
     }
 
-    public EnrollingInfo getEnrollingInfo(int id) {
-        if(mEnrollingInfoCache != null) {
-            return mEnrollingInfoCache.get(id, null);
-        }
-        return null;
-    }
-
     public Assignment getAssignment(int id) {
         if (mAssignmentCache != null) {
             return mAssignmentCache.get(id, null);
@@ -192,7 +170,7 @@ public class EntityCache {
 
     public ArrayList<Integer> getAllSubjectID() {
         if (mSubjectCache != null) {
-            ArrayList<Integer> list = new ArrayList<>();
+            ArrayList<Integer> list = new ArrayList<>(mSubjectCache.size());
             for (int i = 0; i < mSubjectCache.size(); ++i) {
                 list.add(mSubjectCache.keyAt(i));
             }
@@ -201,9 +179,33 @@ public class EntityCache {
         return null;
     }
 
+    public ArrayList<Assignment> getAllAssignments() {
+        if (mAssignmentCache != null) {
+            ArrayList<Assignment> list = new ArrayList<>(mAssignmentCache.size());
+            for (int i = 0; i < mAssignmentCache.size(); ++i) {
+                int key = mAssignmentCache.keyAt(i);
+                list.add(mAssignmentCache.get(key));
+            }
+            return list;
+        }
+        return null;
+    }
+
+    public ArrayList<Notification> getAllNotifications() {
+        if (mNotificationCache != null) {
+            ArrayList<Notification> list = new ArrayList<>(mNotificationCache.size());
+            for (int i = 0; i < mNotificationCache.size(); ++i) {
+                int key = mNotificationCache.keyAt(i);
+                list.add(mNotificationCache.get(key));
+            }
+            return list;
+        }
+        return null;
+    }
+
     public ArrayList<Integer> getAllAssignmentID() {
         if (mAssignmentCache != null) {
-            ArrayList<Integer> list = new ArrayList<>();
+            ArrayList<Integer> list = new ArrayList<>(mAssignmentCache.size());
             for (int i = 0; i < mAssignmentCache.size(); ++i) {
                 list.add(mAssignmentCache.keyAt(i));
             }
@@ -214,7 +216,7 @@ public class EntityCache {
 
     public ArrayList<Integer> getAllNotificationID() {
         if (mNotificationCache != null) {
-            ArrayList<Integer> list = new ArrayList<>();
+            ArrayList<Integer> list = new ArrayList<>(mNotificationCache.size());
             for (int i = 0; i < mNotificationCache.size(); ++i) {
                 list.add(mNotificationCache.keyAt(i));
             }
@@ -222,5 +224,4 @@ public class EntityCache {
         }
         return null;
     }
-
 }

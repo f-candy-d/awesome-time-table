@@ -93,6 +93,7 @@ implements EntityCardListViewerFragment.OnInteractionListener {
             entities.add(assignment);
         }
 
-        return new SubjectAndRelationsCardAdapter(entities);
+        // TODO; this is sample code
+        return new SubjectAndRelationsCardAdapter(DataStructureFactory.makeTimeTable(0), entities);
     }
 }

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.d.candy.f.awesometimetable.structure.MyVH;
 import com.d.candy.f.awesometimetable.structure.OneDayTimeTable;
+import com.d.candy.f.awesometimetable.structure.WeeklyTimeTable;
 
 /**
  * Created by daichi on 7/22/17.
@@ -15,22 +16,27 @@ public class DaySubjectCardAdapter extends EntityCardAdapter {
 
     @NonNull private OneDayTimeTable mTimeTable;
 
-    public DaySubjectCardAdapter(@NonNull final OneDayTimeTable timeTable) {
-        this(timeTable, null);
+    public DaySubjectCardAdapter(
+            @NonNull final WeeklyTimeTable timeTable,
+            @NonNull final OneDayTimeTable oneDayTimeTable) {
+//        this(timeTable, null);
+        this(timeTable, oneDayTimeTable, null);
     }
 
     public DaySubjectCardAdapter(
-            @NonNull final OneDayTimeTable timeTable,
+            @NonNull final WeeklyTimeTable timeTable,
+            @NonNull final OneDayTimeTable oneDayTimeTable,
             @Nullable final MyVH.BaseViewHolder.OnItemClickListener onItemClickListener) {
 
-        super(onItemClickListener);
+//        super(onItemClickListener);
+        super(timeTable, onItemClickListener);
 
         // noinspection ConstantConditions
         if (timeTable == null) {
             throw new NullPointerException();
         }
 
-        mTimeTable = timeTable;
+        mTimeTable = oneDayTimeTable;
         init();
     }
 

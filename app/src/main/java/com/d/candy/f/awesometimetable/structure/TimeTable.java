@@ -12,19 +12,15 @@ public class TimeTable {
 
     public TimeTable() {}
 
-    public TimeTable(EntityCache dataSet) {
+    public TimeTable(final EntityCache dataSet) {
         mDataSet = dataSet;
     }
 
-    public void setDataSet(EntityCache cache) {
+    public void setDataSet(final EntityCache cache) {
         mDataSet = cache;
     }
 
     protected EntityCache getDataSet() {
         return mDataSet;
     }
-
-//    public void addEntity(Entity entity) {
-//        mDataSet.cache(entity, false);
-//    }
 }
